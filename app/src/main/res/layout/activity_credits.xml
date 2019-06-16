@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/grad_bg"
+    tools:context=".activities.Credits">
+
+    <ImageView
+        android:id="@+id/vis"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:src="@drawable/visio_logo"
+        android:layout_centerInParent="true"
+        android:layout_alignParentTop="true"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_below="@id/vis">
+
+        <TextView
+            android:id="@+id/cred"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:textAllCaps="true"
+            android:text="@string/credit"
+            android:textStyle="bold"
+            android:fontFamily="sans-serif"
+            android:textColor="@color/white"
+            android:layout_marginTop="20dp"
+            android:textSize="25dp"
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/n1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="@string/n1"
+            android:textAlignment="center"
+            android:textStyle="bold"
+            android:fontFamily="sans-serif"
+            android:textColor="@color/white"
+            android:textSize="20dp"
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/n2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/n2"
+            android:textAlignment="center"
+            android:fontFamily="sans-serif"
+            android:textColor="@color/white"
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/n3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/n3"
+            android:textAlignment="center"
+            android:fontFamily="sans-serif"
+            android:textColor="@color/white"
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/n4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="@string/n4"
+            android:textAlignment="center"
+            android:textStyle="bold"
+            android:fontFamily="sans-serif"
+            android:textColor="@color/white"
+            android:textSize="20dp"
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/n5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/n5"
+            android:textAlignment="center"
+            android:fontFamily="sans-serif"
+            android:textColor="@color/white"
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/n6"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="@string/n6"
+            android:textAlignment="center"
+            android:textStyle="bold"
+            android:fontFamily="sans-serif"
+            android:textColor="@color/white"
+            android:textSize="20dp"
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/n7"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/n7"
+            android:textAlignment="center"
+            android:fontFamily="sans-serif"
+            android:textColor="@color/white"
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/n8"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/n8"
+            android:textAlignment="center"
+            android:fontFamily="sans-serif"
+            android:textColor="@color/white"
+            android:visibility="gone"/>
+    </LinearLayout>
+</RelativeLayout>

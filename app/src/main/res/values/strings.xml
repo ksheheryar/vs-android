@@ -1,0 +1,29 @@
+<resources>
+    <string name="app_name">VisioSpark</string>
+
+    <string name="credit">Credits</string>
+    <string name="n1">DEVELOPED BY :</string>
+    <string name="n2">Sheheryar Khan (SP16-BSE-026)</string>
+    <string name="n3">Kashif Saleem (SP16-BSE-092)</string>
+    <string name="n4">SUPERVISED BY :</string>
+    <string name="n5">Dr. Maaz Rehan</string>
+    <string name="n6">Patrons :</string>
+    <string name="n7">Dr. Ehsan Ullah Munir</string>
+    <string name="n8">Dr. Wasif Nisar</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="contact">Contact Us:\n\nCOMSATS University Islamabad, Wah Campus\nGT Road,Wah Cantt\nPakistan\n\nPhone:\n+92 51 9314382-83\nFax: \n+92-51-4546850</string>
+    <string name="title_activity_faculty">FacultyActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="winner">Winner</string>
+    <string name="account">Account</string>
+
+</resources>

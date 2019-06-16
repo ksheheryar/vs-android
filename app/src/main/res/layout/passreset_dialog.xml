@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="10dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-light"
+        android:text="Current Password"
+        android:textAllCaps="true"
+        android:textColor="@color/white"
+        android:textSize="15sp"
+        android:layout_marginTop="20dp"/>
+
+    <EditText
+        android:id="@+id/c_pass"
+        android:hint="Current Password"
+        android:inputType="textPassword"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:background="@drawable/et_bg"
+        android:fontFamily="sans-serif-light"
+        android:textAlignment="center"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:textColor="@color/white"
+        android:textSize="15sp"
+        android:layout_marginTop="5dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-light"
+        android:text="New Password"
+        android:textAllCaps="true"
+        android:textColor="@color/white"
+        android:textSize="15sp"
+        android:layout_marginTop="20dp"/>
+
+    <EditText
+        android:id="@+id/n_pass"
+        android:hint="New Password"
+        android:inputType="textPassword"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:background="@drawable/et_bg"
+        android:fontFamily="sans-serif-light"
+        android:textAlignment="center"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:textColor="@color/white"
+        android:textSize="15sp"
+        android:layout_marginTop="5dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-light"
+        android:text="Confirm Password"
+        android:textAllCaps="true"
+        android:textColor="@color/white"
+        android:textSize="15sp"
+        android:layout_marginTop="20dp"/>
+
+    <EditText
+        android:id="@+id/cn_pass"
+        android:hint="Confirm Password"
+        android:inputType="textPassword"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:background="@drawable/et_bg"
+        android:fontFamily="sans-serif-light"
+        android:textAlignment="center"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:textColor="@color/white"
+        android:textSize="15sp"
+        android:layout_marginTop="5dp"/>
+
+
+</LinearLayout>
