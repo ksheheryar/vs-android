@@ -9,11 +9,25 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.util.ArrayList;
+
 import e.shery.visiospark.R;
+import e.shery.visiospark.api.RetrofitClient;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
 
 public class FacultyActivity extends AppCompatActivity {
 
@@ -21,6 +35,10 @@ public class FacultyActivity extends AppCompatActivity {
 
     RelativeLayout r1,r2,r3,r4;
     Button b,logout;
+    ListView l;
+    String name,token;
+    ArrayList plist;
+    TextView userName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,8 +49,18 @@ public class FacultyActivity extends AppCompatActivity {
         r2 = findViewById(R.id.rl2);
         r3 = findViewById(R.id.rl3);
         r4 = findViewById(R.id.rl4);
+        userName = findViewById(R.id.userName);
         b = findViewById(R.id.passreset);
         logout = findViewById(R.id.logout);
+        l = findViewById(R.id.rp_list);
+        plist = new ArrayList<String>();
+
+        Bundle bundle = getIntent().getExtras();
+        name = bundle.getString("name");
+        token = bundle.getString("token");
+        userName.setText(name);
+
+        participantData();
 
         b.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,6 +102,9 @@ public class FacultyActivity extends AppCompatActivity {
                         r2.setVisibility(View.VISIBLE);
                         r3.setVisibility(View.GONE);
                         r4.setVisibility(View.GONE);
+
+                        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(FacultyActivity.this,R.layout.listview,R.id.listText,plist);
+                        l.setAdapter(arrayAdapter);
 
                         item.setChecked(true);
                         break;
@@ -130,6 +161,51 @@ public class FacultyActivity extends AppCompatActivity {
 //            //set the input text in TextView
 //            mainInfoTv.setText("Name:"+ name +"\nEmail: "+ email +"\nPassword: "+ password)
 
+    }
+
+    private void participantData(){
+
+        Call<ResponseBody> call = RetrofitClient
+                .getInstance()
+                .getApi()
+                .Registered_participant("application/json","Bearer "+token);
+
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
+                String s = null;
+                try {
+                    s = response.body().string();
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+
+                if (s!=null){
+                    try {
+                        JSONObject jsonObject = new JSONObject(s);
+                        JSONArray jsonArray = jsonObject.getJSONArray("users");
+
+                        String name1,email;
+
+                        for (int i=0;i<jsonArray.length();i++){
+                            JSONObject e = jsonArray.getJSONObject(i);
+
+                            name1 = e.getString("name");
+                            email = e.getString("email");
+
+
+                            plist.add("Name : "+name1+"\n"+"Email : "+email);
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+            }
+        });
     }
 
 }

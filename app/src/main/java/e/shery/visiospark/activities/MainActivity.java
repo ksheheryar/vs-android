@@ -80,14 +80,9 @@ public class MainActivity extends AppCompatActivity {
         credit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                Intent intent = new Intent(MainActivity.this,FacultyActivity.class);
+                Intent intent = new Intent(MainActivity.this,Credits.class);
                 MainActivity.this.startActivity(intent);
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-
-//                Intent intent = new Intent(MainActivity.this,Credits.class);
-//                MainActivity.this.startActivity(intent);
-//                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
             }
         });
 
@@ -145,24 +140,40 @@ public class MainActivity extends AppCompatActivity {
 
                                     JSONObject json1 = jsonObject.getJSONObject("success");
                                     JSONObject json2 = jsonObject.getJSONObject("user");
+                                    JSONObject json3 = jsonObject.getJSONObject("role");
                                     String j = json1.getString("token");
                                     String name = json2.getString("name");
                                     String userId = json2.getString("id");
 
+                                    String r_name = json3.getString("name");
+
                                     email.setText("");
                                     pass.setText("");
 
-                                    Intent intent = new Intent(MainActivity.this,LoginActivity.class);
+                                    if (r_name.equals("superadministrator")){
+                                        Intent intent = new Intent(MainActivity.this,FacultyActivity.class);
 
-                                    Bundle user = new Bundle();
-                                    user.putString("name",name);
-                                    user.putString("token",j);
-                                    user.putString("id",userId);
-                                    intent.putExtras(user);
+                                        Bundle user = new Bundle();
+                                        user.putString("name",name);
+                                        user.putString("token",j);
+                                        user.putString("id",userId);
+                                        intent.putExtras(user);
 
-                                    MainActivity.this.startActivity(intent);
-                                    overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                                        MainActivity.this.startActivity(intent);
+                                        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                                    }
+                                    else if (r_name.equals("user")){
+                                        Intent intent = new Intent(MainActivity.this,LoginActivity.class);
 
+                                        Bundle user = new Bundle();
+                                        user.putString("name",name);
+                                        user.putString("token",j);
+                                        user.putString("id",userId);
+                                        intent.putExtras(user);
+
+                                        MainActivity.this.startActivity(intent);
+                                        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                                    }
                                 } catch (JSONException e1) {
                                     e1.printStackTrace();
                                 }

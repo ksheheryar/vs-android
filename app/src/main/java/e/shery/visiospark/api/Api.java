@@ -84,4 +84,11 @@ public interface Api {
     @GET("getdata")
     Call<ResponseBody> getData();
 
+
+    @POST("superadministrator/registeredUsers")
+    Call<ResponseBody> Registered_participant(
+            @Header("Active") String Active,
+            @Header("Authorization") String Auth
+    );
+
 }

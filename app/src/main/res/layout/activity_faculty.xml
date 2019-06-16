@@ -22,6 +22,24 @@
         android:layout_height="wrap_content"
         android:visibility="gone">
 
+        <TextView
+            android:id="@+id/rl2_t"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-light"
+            android:text="Registered Participant's"
+            android:textAlignment="center"
+            android:textAllCaps="true"
+            android:textColor="@color/white"
+            android:textSize="25sp"
+            android:layout_marginTop="35dp"/>
+
+        <ListView
+            android:id="@+id/rp_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:layout_below="@+id/rl2_t"/>
 
     </RelativeLayout>
 
@@ -43,7 +61,7 @@
             android:id="@+id/linear"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/grad_bg"
+            android:background="@drawable/grad_bot"
             android:gravity="bottom"
             android:orientation="vertical">
 
@@ -51,22 +69,28 @@
                 android:id="@+id/imageView"
                 android:layout_width="wrap_content"
                 android:layout_height="90dp"
+                android:paddingTop="15dp"
                 android:src="@drawable/visio_logo"/>
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingTop="20dp"
+                android:paddingTop="25dp"
                 android:paddingLeft="10dp"
                 android:textSize="25dp"
                 android:text="Welcome"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
             <TextView
-                android:id="@+id/userN"
-                android:textSize="15dp"
+                android:id="@+id/userName"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:paddingTop="7dp"
+                android:paddingLeft="10dp"
+                android:layout_marginBottom="12dp"
+                android:textSize="18dp"
+                android:text="Welcome"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
         </LinearLayout>
 
@@ -77,7 +101,7 @@
             android:layout_height="wrap_content"
             android:text="Change Password"
             android:textAlignment="center"
-            android:layout_marginTop="35dp"
+            android:layout_marginTop="80dp"
             android:background="@drawable/btn"
             android:fontFamily="sans-serif"
             android:textAllCaps="true"
