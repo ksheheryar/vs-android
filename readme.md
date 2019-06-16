@@ -10,20 +10,6 @@ If you discover a security vulnerability within VisioSpark, please send an e-mai
 
 ## Third Party Pacakages
 <ul>
-    <li>Laratrust - MIT</li>
-    <li>Passport - MIT</li>
-    <li>Breadcrumbs - MIT</li>
+    <li>Retrofit - MIT</li>
 </ul>
 
-## Starting After Fresh Installization
-
-<ol>
-    <li>Composer install</li>
-    <li>Create database and configure .env file</li>
-    <li>php artisan migrate</li>
-    <li>php artisan db:seed</li>
-</ol>
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
