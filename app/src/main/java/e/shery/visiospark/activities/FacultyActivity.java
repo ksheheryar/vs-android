@@ -1,6 +1,7 @@
 package e.shery.visiospark.activities;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -41,7 +42,7 @@ public class FacultyActivity extends AppCompatActivity {
     ListView l;
     String name,token;
     ArrayList plist;
-    TextView userName,textViewUser,textViewOnspot;
+    TextView userName,textViewUser,textViewOnspot,udetail,vudetail;
     ToggleButton toggleButton_user,toggleButton_onspot;
 
     @Override
@@ -62,13 +63,18 @@ public class FacultyActivity extends AppCompatActivity {
         toggleButton_onspot = findViewById(R.id.toggle_onspot);
         textViewUser = findViewById(R.id.buser);
         textViewOnspot = findViewById(R.id.bonspot);
+        udetail = findViewById(R.id.u_detail);
+        vudetail = findViewById(R.id.vu_detail);
 
         Bundle bundle = getIntent().getExtras();
         name = bundle.getString("name");
         token = bundle.getString("token");
         userName.setText(name);
 
+        r1.setVisibility(View.VISIBLE);
         participantData();
+        status();
+
 
         toggleButton_user.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -76,10 +82,12 @@ public class FacultyActivity extends AppCompatActivity {
                 if (isChecked) {
                     textViewUser.setText("Registration is unlocked");
                     textViewUser.setTextColor(getResources().getColor(R.color.green));
+                    set_status("users","false");
                 }
                 else {
                     textViewUser.setText("Registration is locked");
                     textViewUser.setTextColor(getResources().getColor(R.color.red));
+                    set_status("users","true");
                 }
             }
         });
@@ -90,11 +98,13 @@ public class FacultyActivity extends AppCompatActivity {
                 if (isChecked) {
                     textViewOnspot.setText("Registration is unlocked");
                     textViewOnspot.setTextColor(getResources().getColor(R.color.green));
+                    set_status("onspot","false");
                 }
                 else {
+                    set_status("onspot","true");
                     textViewOnspot.setText("Registration is locked");
                     textViewOnspot.setTextColor(getResources().getColor(R.color.red));
-                };
+                }
             }
         });
 
@@ -232,6 +242,98 @@ public class FacultyActivity extends AppCompatActivity {
 
                             plist.add("Name : "+name1+"\n"+"Email : "+email);
                         }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+            }
+        });
+    }
+
+    private void set_status(String type,String value){
+
+        Call<ResponseBody> call = RetrofitClient
+                .getInstance()
+                .getApi()
+                .admin_setStatus(type,value,"application/json","Bearer "+token);
+
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
+
+                    if (response.code() == 200)
+                        Toast.makeText(getApplicationContext(),"Status Successfully Changed",Toast.LENGTH_LONG).show();
+                    else{
+                        Toast.makeText(getApplicationContext(),"Network Error",Toast.LENGTH_LONG).show();
+                    }
+            }
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Toast.makeText(FacultyActivity.this,t.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
+
+    }
+
+    private void status(){
+
+        Call<ResponseBody> call = RetrofitClient
+                .getInstance()
+                .getApi()
+                .admin_status("application/json","Bearer "+token);
+
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
+                String s = null;
+                try {
+                    s = response.body().string();
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+
+                if (s!=null){
+                    try {
+                        JSONObject jsonObject = new JSONObject(s);
+                        JSONObject jsonObject1 = jsonObject.getJSONObject("registrationForUsers");
+                        JSONObject jsonObject2 = jsonObject.getJSONObject("registrationOnSpot");
+                        int uni_data = jsonObject.getInt("users");
+                        int vuni_data = jsonObject.getInt("vfdUsers");
+
+                        udetail.setText("Registered Universities  :  "+uni_data);
+                        vudetail.setText("Verified Universities  :  "+vuni_data);
+
+                        int state_user,state_onspot;
+
+                        state_user = jsonObject1.getInt("value");
+                        state_onspot = jsonObject2.getInt("value");
+
+                        if (state_user == 0){
+                            toggleButton_user.setChecked(true);
+                            textViewUser.setText("Registration is unlocked");
+                            textViewUser.setTextColor(getResources().getColor(R.color.green));
+                        }
+                        else if (state_user == 1){
+                            toggleButton_user.setChecked(false);
+                            textViewUser.setText("Registration is locked");
+                            textViewUser.setTextColor(getResources().getColor(R.color.red));
+                        }
+
+                        if (state_onspot == 0){
+                            toggleButton_onspot.setChecked(true);
+                            textViewOnspot.setText("Registration is unlocked");
+                            textViewOnspot.setTextColor(getResources().getColor(R.color.green));
+                        }
+                        else if (state_onspot == 1){
+                            toggleButton_onspot.setChecked(false);
+                            textViewOnspot.setText("Registration is locked");
+                            textViewOnspot.setTextColor(getResources().getColor(R.color.red));
+                        }
+
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
