@@ -11,7 +11,8 @@
 
     <color name="gradStr">#28a6a4</color>
     <color name="gradStp">#23A7D8</color>
-    <color name="red">#d82335</color>
+    <color name="red">#d11a21</color>
     <color name="black">#000000</color>
     <color name="grey">#736c6c</color>
+    <color name="green">#3ebf27</color>
 </resources>

@@ -11,10 +11,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.ListView;
+import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -38,7 +41,8 @@ public class FacultyActivity extends AppCompatActivity {
     ListView l;
     String name,token;
     ArrayList plist;
-    TextView userName;
+    TextView userName,textViewUser,textViewOnspot;
+    ToggleButton toggleButton_user,toggleButton_onspot;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +58,10 @@ public class FacultyActivity extends AppCompatActivity {
         logout = findViewById(R.id.logout);
         l = findViewById(R.id.rp_list);
         plist = new ArrayList<String>();
+        toggleButton_user = findViewById(R.id.toggle_user);
+        toggleButton_onspot = findViewById(R.id.toggle_onspot);
+        textViewUser = findViewById(R.id.buser);
+        textViewOnspot = findViewById(R.id.bonspot);
 
         Bundle bundle = getIntent().getExtras();
         name = bundle.getString("name");
@@ -61,6 +69,34 @@ public class FacultyActivity extends AppCompatActivity {
         userName.setText(name);
 
         participantData();
+
+        toggleButton_user.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    textViewUser.setText("Registration is unlocked");
+                    textViewUser.setTextColor(getResources().getColor(R.color.green));
+                }
+                else {
+                    textViewUser.setText("Registration is locked");
+                    textViewUser.setTextColor(getResources().getColor(R.color.red));
+                }
+            }
+        });
+
+        toggleButton_onspot.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    textViewOnspot.setText("Registration is unlocked");
+                    textViewOnspot.setTextColor(getResources().getColor(R.color.green));
+                }
+                else {
+                    textViewOnspot.setText("Registration is locked");
+                    textViewOnspot.setTextColor(getResources().getColor(R.color.red));
+                };
+            }
+        });
 
         b.setOnClickListener(new View.OnClickListener() {
             @Override

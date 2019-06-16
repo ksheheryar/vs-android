@@ -14,6 +14,82 @@
         android:layout_height="wrap_content"
         android:visibility="gone">
 
+        <TextView
+            android:id="@+id/rl1_t1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-light"
+            android:text="@string/toggle_user"
+            android:textAlignment="center"
+            android:textAllCaps="true"
+            android:textColor="@color/white"
+            android:textSize="25sp"
+            android:layout_marginTop="35dp"/>
+
+        <ToggleButton
+            android:id="@+id/toggle_user"
+            android:layout_width="43dp"
+            android:layout_height="40dp"
+            android:background="@drawable/toggle_btn"
+            android:text=""
+            android:textOn=""
+            android:textOff=""
+            android:layout_below="@id/rl1_t1"
+            android:layout_marginTop="17dp"
+            android:layout_marginLeft="15dp"/>
+
+        <TextView
+            android:id="@+id/buser"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/toggle_user"
+            android:layout_marginLeft="20dp"
+            android:layout_below="@id/rl1_t1"
+            android:textAlignment="center"
+            android:textAllCaps="true"
+            android:textSize="15sp"
+            android:fontFamily="sans-serif-light"
+            android:layout_marginTop="25dp" />
+
+        <TextView
+            android:id="@+id/rl1_t2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-light"
+            android:text="@string/toggle_onspot"
+            android:textAlignment="center"
+            android:textAllCaps="true"
+            android:textColor="@color/white"
+            android:textSize="25sp"
+            android:layout_marginTop="35dp"
+            android:layout_below="@id/toggle_user"/>
+
+        <ToggleButton
+            android:id="@+id/toggle_onspot"
+            android:layout_width="43dp"
+            android:layout_height="40dp"
+            android:background="@drawable/toggle_btn"
+            android:text=""
+            android:textOn=""
+            android:textOff=""
+            android:layout_below="@id/rl1_t2"
+            android:layout_marginTop="17dp"
+            android:layout_marginLeft="15dp"/>
+
+        <TextView
+            android:id="@+id/bonspot"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/toggle_user"
+            android:layout_marginLeft="20dp"
+            android:layout_below="@id/rl1_t2"
+            android:textAlignment="center"
+            android:textAllCaps="true"
+            android:textSize="15sp"
+            android:fontFamily="sans-serif-light"
+            android:layout_marginTop="25dp"/>
+
+
     </RelativeLayout>
 
     <RelativeLayout

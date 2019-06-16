@@ -25,5 +25,7 @@
     <string name="title_notifications">Notifications</string>
     <string name="winner">Winner</string>
     <string name="account">Account</string>
+    <string name="toggle_user">Registration Toggle for Participant\'s Universities</string>
+    <string name="toggle_onspot">Registration Toggle for OnSpot Features</string>
 
 </resources>
