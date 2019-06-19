@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,6 +8,16 @@
     tools:context=".activities.SuperAdmin"
     tools:showIn="@layout/app_bar_super_admin"
     android:background="@color/white">
+
+    <TextView
+        android:id="@+id/welcomeText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="30sp"
+        android:visibility="gone"/>
 
     <RelativeLayout
         android:id="@+id/rl1"
@@ -162,14 +172,15 @@
             android:textAllCaps="true"
             android:textColor="@color/black"
             android:textSize="25sp"
-            android:layout_marginTop="35dp"/>
+            android:layout_marginTop="75dp"
+            android:background="@color/grey"/>
 
         <ListView
             android:id="@+id/rp_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="25dp"
-            android:layout_below="@+id/rl2_t"/>
+            android:layout_marginTop="100dp"
+            android:layout_below="@+id/rl2_t" />
 
     </RelativeLayout>
 
@@ -179,6 +190,26 @@
         android:layout_height="wrap_content"
         android:visibility="gone">
 
+        <TextView
+            android:id="@+id/rl3_t"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-light"
+            android:text="Notification's"
+            android:textAlignment="center"
+            android:textAllCaps="true"
+            android:textColor="@color/black"
+            android:textSize="25sp"
+            android:layout_marginTop="75dp"
+            android:background="@color/grey"/>
+
+        <ListView
+            android:id="@+id/notification_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="100dp"
+            android:layout_below="@+id/rl3_t"/>
+
     </RelativeLayout>
 
     <RelativeLayout
@@ -187,17 +218,33 @@
         android:layout_height="wrap_content"
         android:visibility="gone">
 
+        <TextView
+            android:id="@+id/rl4_t"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-light"
+            android:text="Profile Setting's"
+            android:textAlignment="center"
+            android:textAllCaps="true"
+            android:textColor="@color/black"
+            android:textSize="25sp"
+            android:layout_marginTop="75dp"
+            android:background="@color/grey"/>
+
         <Button
+            android:layout_below="@+id/rl4_t"
             android:id="@+id/passreset"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Change Password"
             android:textAlignment="center"
             android:layout_marginTop="80dp"
-            android:background="@drawable/btn"
+            android:background="@drawable/btn_black"
             android:fontFamily="sans-serif"
             android:textAllCaps="true"
-            android:textColor="@color/black"/>
+            android:textColor="@color/black"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"/>
 
         <Button
             android:layout_below="@id/passreset"
@@ -207,11 +254,13 @@
             android:text="LogOut"
             android:textAlignment="center"
             android:layout_marginTop="35dp"
-            android:background="@drawable/btn"
+            android:background="@drawable/btn_black"
             android:fontFamily="sans-serif"
             android:textAllCaps="true"
-            android:textColor="@color/black"/>
+            android:textColor="@color/black"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"/>
 
     </RelativeLayout>
 
-</android.support.constraint.ConstraintLayout>
+</RelativeLayout>

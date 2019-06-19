@@ -47,7 +47,7 @@ public class SuperAdmin extends AppCompatActivity
     Button b,logout;
     ListView l;
     ArrayList plist;
-    TextView userName,textViewUser,textViewOnspot,udetail,vudetail;
+    TextView userName,textViewUser,textViewOnspot,udetail,vudetail,t;
     ToggleButton toggleButton_user,toggleButton_onspot;
 
     @Override
@@ -69,8 +69,10 @@ public class SuperAdmin extends AppCompatActivity
         textViewOnspot = findViewById(R.id.bonspot);
         udetail = findViewById(R.id.u_detail);
         vudetail = findViewById(R.id.vu_detail);
+        t = findViewById(R.id.welcomeText);
 
-        r1.setVisibility(View.VISIBLE);
+        t.setVisibility(View.VISIBLE);
+        t.setText("Welcome...!!!");
         participantData();
         status();
 
@@ -391,24 +393,28 @@ public class SuperAdmin extends AppCompatActivity
             r2.setVisibility(View.GONE);
             r3.setVisibility(View.GONE);
             r4.setVisibility(View.GONE);
+            t.setVisibility(View.GONE);
         } else if (id == R.id.nav_r_participant) {
             r1.setVisibility(View.GONE);
             r2.setVisibility(View.VISIBLE);
             r3.setVisibility(View.GONE);
             r4.setVisibility(View.GONE);
+            t.setVisibility(View.GONE);
 
-            ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(SuperAdmin.this,R.layout.listview,R.id.listText,plist);
+            ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(SuperAdmin.this,R.layout.listview1,R.id.listText1,plist);
             l.setAdapter(arrayAdapter);
         } else if (id == R.id.nav_notification) {
             r1.setVisibility(View.GONE);
             r2.setVisibility(View.GONE);
             r3.setVisibility(View.VISIBLE);
             r4.setVisibility(View.GONE);
+            t.setVisibility(View.GONE);
         } else if (id == R.id.nav_profile) {
             r1.setVisibility(View.GONE);
             r2.setVisibility(View.GONE);
             r3.setVisibility(View.GONE);
             r4.setVisibility(View.VISIBLE);
+            t.setVisibility(View.GONE);
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
