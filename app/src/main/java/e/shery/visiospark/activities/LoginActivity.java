@@ -30,6 +30,7 @@ import java.util.ArrayList;
 
 import e.shery.visiospark.R;
 import e.shery.visiospark.api.RetrofitClient;
+import e.shery.visiospark.utilities.PreferenceData;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -440,6 +441,13 @@ public class LoginActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+
+            PreferenceData.saveEmail(null, LoginActivity.this);
+            PreferenceData.savePassword(null, LoginActivity.this);
+            PreferenceData.saveName(null, LoginActivity.this);
+            PreferenceData.saveTOKEN(null, LoginActivity.this);
+            PreferenceData.saveID(null, LoginActivity.this);
+
             Toast.makeText(getApplicationContext(),"Logged Out",Toast.LENGTH_LONG).show();
             finish();
         }

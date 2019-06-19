@@ -29,6 +29,7 @@ import java.util.ArrayList;
 
 import e.shery.visiospark.R;
 import e.shery.visiospark.api.RetrofitClient;
+import e.shery.visiospark.utilities.PreferenceData;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -118,6 +119,13 @@ public class FacultyActivity extends AppCompatActivity {
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                PreferenceData.saveEmail(null, FacultyActivity.this);
+                PreferenceData.savePassword(null, FacultyActivity.this);
+                PreferenceData.saveName(null, FacultyActivity.this);
+                PreferenceData.saveTOKEN(null, FacultyActivity.this);
+                PreferenceData.saveID(null, FacultyActivity.this);
+
                 Toast.makeText(getApplicationContext(),"Logged Out",Toast.LENGTH_LONG).show();
                 finish();
             }
@@ -261,21 +269,21 @@ public class FacultyActivity extends AppCompatActivity {
                 .getApi()
                 .admin_setStatus(type,value,"application/json","Bearer "+token);
 
-        call.enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
-
-                    if (response.code() == 200)
-                        Toast.makeText(getApplicationContext(),"Status Successfully Changed",Toast.LENGTH_LONG).show();
-                    else{
-                        Toast.makeText(getApplicationContext(),"Network Error",Toast.LENGTH_LONG).show();
-                    }
-            }
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                Toast.makeText(FacultyActivity.this,t.getMessage(), Toast.LENGTH_LONG).show();
-            }
-        });
+//        call.enqueue(new Callback<ResponseBody>() {
+//            @Override
+//            public void onResponse(Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
+//
+//                    if (response.code() == 200)
+//                        Toast.makeText(getApplicationContext(),"Status Successfully Changed",Toast.LENGTH_LONG).show();
+//                    else{
+//                        Toast.makeText(getApplicationContext(),"Network Error",Toast.LENGTH_LONG).show();
+//                    }
+//            }
+//            @Override
+//            public void onFailure(Call<ResponseBody> call, Throwable t) {
+//                Toast.makeText(FacultyActivity.this,t.getMessage(), Toast.LENGTH_LONG).show();
+//            }
+//        });
 
     }
 

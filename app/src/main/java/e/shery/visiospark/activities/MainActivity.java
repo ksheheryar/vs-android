@@ -22,6 +22,7 @@ import java.io.IOException;
 
 import e.shery.visiospark.R;
 import e.shery.visiospark.api.RetrofitClient;
+import e.shery.visiospark.utilities.PreferenceData;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -59,6 +60,32 @@ public class MainActivity extends AppCompatActivity {
         r2 = findViewById(R.id.rellay2);
         email = findViewById(R.id.email);
         pass = findViewById(R.id.pass);
+        PreferenceData data = new PreferenceData();
+
+        if (data.getEmail(MainActivity.this) != null ){
+            if (data.getUSERTYPE(MainActivity.this).equals("superadministrator")){
+                Intent intent = new Intent(MainActivity.this, FacultyActivity.class);
+
+                Bundle user = new Bundle();
+                user.putString("name",data.getNAME(MainActivity.this));
+                user.putString("token",data.getTOKEN(MainActivity.this));
+                user.putString("id",data.getID(MainActivity.this));
+                intent.putExtras(user);
+
+                startActivity(intent);
+            }
+            else if (data.getUSERTYPE(MainActivity.this).equals("user")){
+                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+
+                Bundle user = new Bundle();
+                user.putString("name",data.getNAME(MainActivity.this));
+                user.putString("token",data.getTOKEN(MainActivity.this));
+                user.putString("id",data.getID(MainActivity.this));
+                intent.putExtras(user);
+
+                startActivity(intent);
+            }
+        }
 
         handler.postDelayed(runnable,2000);
 
@@ -89,8 +116,8 @@ public class MainActivity extends AppCompatActivity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String e = email.getText().toString().trim();
-                String p = pass.getText().toString().trim();
+                final String e = email.getText().toString().trim();
+                final String p = pass.getText().toString().trim();
 
                 if (e.isEmpty()) {
                     email.setError("Email is required");
@@ -149,6 +176,13 @@ public class MainActivity extends AppCompatActivity {
 
                                     email.setText("");
                                     pass.setText("");
+
+                                    PreferenceData.saveEmail(e, MainActivity.this);
+                                    PreferenceData.savePassword(p, MainActivity.this);
+                                    PreferenceData.saveName(name, MainActivity.this);
+                                    PreferenceData.saveTOKEN(j, MainActivity.this);
+                                    PreferenceData.saveID(userId, MainActivity.this);
+                                    PreferenceData.saveUSERTYPE(r_name, MainActivity.this);
 
                                     if (r_name.equals("superadministrator")){
                                         Intent intent = new Intent(MainActivity.this,FacultyActivity.class);

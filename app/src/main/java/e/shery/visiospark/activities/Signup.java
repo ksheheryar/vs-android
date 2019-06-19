@@ -23,6 +23,7 @@ import java.util.ArrayList;
 
 import e.shery.visiospark.R;
 import e.shery.visiospark.api.RetrofitClient;
+import e.shery.visiospark.utilities.PreferenceData;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -130,7 +131,7 @@ public class Signup extends AppCompatActivity {
         Call<ResponseBody> call = RetrofitClient
                 .getInstance()
                 .getApi()
-                .Register(uniName,email.getText().toString(),pass.getText().toString(),pass1.getText().toString(),dep);
+                .Register(uniName,email.getText().toString().trim(),pass.getText().toString().trim(),pass1.getText().toString().trim(),dep);
 
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -158,6 +159,12 @@ public class Signup extends AppCompatActivity {
                         String name = json2.getString("name");
                         String userId = json2.getString("id");
 
+                        PreferenceData.saveEmail(email.getText().toString().trim(), Signup.this);
+                        PreferenceData.savePassword(pass.getText().toString().trim(), Signup.this);
+                        PreferenceData.saveName(name, Signup.this);
+                        PreferenceData.saveTOKEN(j, Signup.this);
+                        PreferenceData.saveID(userId, Signup.this);
+                        PreferenceData.saveUSERTYPE("user", Signup.this);
 
                         Intent intent = new Intent(Signup.this,LoginActivity.class);
 
