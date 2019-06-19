@@ -3,18 +3,22 @@ package e.shery.visiospark.activities;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.design.widget.BottomNavigationView;
+import android.os.Handler;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ListView;
-import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,14 +38,14 @@ import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 
-public class FacultyActivity extends AppCompatActivity {
+public class SuperAdmin extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener {
 
-//    private TextView mTextMessage;
-
+    boolean doubleBackToExitPressedOnce = false;
+    String name,token,userId;
     RelativeLayout r1,r2,r3,r4;
     Button b,logout;
     ListView l;
-    String name,token;
     ArrayList plist;
     TextView userName,textViewUser,textViewOnspot,udetail,vudetail;
     ToggleButton toggleButton_user,toggleButton_onspot;
@@ -49,13 +53,12 @@ public class FacultyActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_faculty);
+        setContentView(R.layout.activity_super_admin);
 
         r1 = findViewById(R.id.rl1);
         r2 = findViewById(R.id.rl2);
         r3 = findViewById(R.id.rl3);
         r4 = findViewById(R.id.rl4);
-        userName = findViewById(R.id.userName);
         b = findViewById(R.id.passreset);
         logout = findViewById(R.id.logout);
         l = findViewById(R.id.rp_list);
@@ -67,15 +70,19 @@ public class FacultyActivity extends AppCompatActivity {
         udetail = findViewById(R.id.u_detail);
         vudetail = findViewById(R.id.vu_detail);
 
-        Bundle bundle = getIntent().getExtras();
-        name = bundle.getString("name");
-        token = bundle.getString("token");
-        userName.setText(name);
-
         r1.setVisibility(View.VISIBLE);
         participantData();
         status();
 
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        View headview = navigationView.getHeaderView(0);
+        userName = headview.findViewById(R.id.user_Name);
+
+        Bundle bundle = getIntent().getExtras();
+        name = bundle.getString("name");
+        token = bundle.getString("token");
+        userId = bundle.getString("id");
+        userName.setText(name);
 
         toggleButton_user.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -120,70 +127,31 @@ public class FacultyActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                PreferenceData.saveEmail(null, FacultyActivity.this);
-                PreferenceData.savePassword(null, FacultyActivity.this);
-                PreferenceData.saveName(null, FacultyActivity.this);
-                PreferenceData.saveTOKEN(null, FacultyActivity.this);
-                PreferenceData.saveID(null, FacultyActivity.this);
+                PreferenceData.saveEmail(null, SuperAdmin.this);
+                PreferenceData.savePassword(null, SuperAdmin.this);
+                PreferenceData.saveName(null, SuperAdmin.this);
+                PreferenceData.saveTOKEN(null, SuperAdmin.this);
+                PreferenceData.saveID(null, SuperAdmin.this);
+
+                Intent intent = new Intent(SuperAdmin.this,MainActivity.class);
+                startActivity(intent);
 
                 Toast.makeText(getApplicationContext(),"Logged Out",Toast.LENGTH_LONG).show();
                 finish();
             }
         });
 
-//        mTextMessage = findViewById(R.id.message);
-        BottomNavigationView navigation = findViewById(R.id.navigation);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
-//        Menu menu = navigation.getMenu();
-//        MenuItem menuItem = menu.getItem(0);
-//        menuItem.setChecked(true);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        drawer.openDrawer(GravityCompat.START);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
 
-        navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.navigation_dashboard:
-                        r1.setVisibility(View.VISIBLE);
-                        r2.setVisibility(View.GONE);
-                        r3.setVisibility(View.GONE);
-                        r4.setVisibility(View.GONE);
-
-                        item.setChecked(true);
-                        break;
-
-                    case R.id.navigation_home:
-                        r1.setVisibility(View.GONE);
-                        r2.setVisibility(View.VISIBLE);
-                        r3.setVisibility(View.GONE);
-                        r4.setVisibility(View.GONE);
-
-                        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(FacultyActivity.this,R.layout.listview,R.id.listText,plist);
-                        l.setAdapter(arrayAdapter);
-
-                        item.setChecked(true);
-                        break;
-
-                    case R.id.navigation_notifications:
-                        r1.setVisibility(View.GONE);
-                        r2.setVisibility(View.GONE);
-                        r3.setVisibility(View.VISIBLE);
-                        r4.setVisibility(View.GONE);
-
-                        item.setChecked(true);
-                        break;
-
-                    case R.id.navigation_profile:
-                        r1.setVisibility(View.GONE);
-                        r2.setVisibility(View.GONE);
-                        r3.setVisibility(View.GONE);
-                        r4.setVisibility(View.VISIBLE);
-
-                        item.setChecked(true);
-                        break;
-                }
-                return false;
-            }
-        });
+        navigationView.setNavigationItemSelectedListener(this);
     }
 
     public void pass_reset(){
@@ -281,7 +249,7 @@ public class FacultyActivity extends AppCompatActivity {
 //            }
 //            @Override
 //            public void onFailure(Call<ResponseBody> call, Throwable t) {
-//                Toast.makeText(FacultyActivity.this,t.getMessage(), Toast.LENGTH_LONG).show();
+//                Toast.makeText(SuperAdmin.this,t.getMessage(), Toast.LENGTH_LONG).show();
 //            }
 //        });
 
@@ -354,4 +322,97 @@ public class FacultyActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        }
+        else {
+            if (doubleBackToExitPressedOnce) {
+                super.onBackPressed();
+                return;
+            }
+
+            this.doubleBackToExitPressedOnce = true;
+            Toast.makeText(this, "Press BACK again to exit", Toast.LENGTH_SHORT).show();
+
+            new Handler().postDelayed(new Runnable() {
+
+                @Override
+                public void run() {
+                    doubleBackToExitPressedOnce=false;
+                }
+            }, 3000);
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.super_admin, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_logout) {
+
+            PreferenceData.saveEmail(null, SuperAdmin.this);
+            PreferenceData.savePassword(null, SuperAdmin.this);
+            PreferenceData.saveName(null, SuperAdmin.this);
+            PreferenceData.saveTOKEN(null, SuperAdmin.this);
+            PreferenceData.saveID(null, SuperAdmin.this);
+
+            Intent intent = new Intent(SuperAdmin.this,MainActivity.class);
+            startActivity(intent);
+
+            Toast.makeText(getApplicationContext(),"Logged Out",Toast.LENGTH_LONG).show();
+            finish();
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @SuppressWarnings("StatementWithEmptyBody")
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
+
+        if (id == R.id.nav_dashboard) {
+            r1.setVisibility(View.VISIBLE);
+            r2.setVisibility(View.GONE);
+            r3.setVisibility(View.GONE);
+            r4.setVisibility(View.GONE);
+        } else if (id == R.id.nav_r_participant) {
+            r1.setVisibility(View.GONE);
+            r2.setVisibility(View.VISIBLE);
+            r3.setVisibility(View.GONE);
+            r4.setVisibility(View.GONE);
+
+            ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(SuperAdmin.this,R.layout.listview,R.id.listText,plist);
+            l.setAdapter(arrayAdapter);
+        } else if (id == R.id.nav_notification) {
+            r1.setVisibility(View.GONE);
+            r2.setVisibility(View.GONE);
+            r3.setVisibility(View.VISIBLE);
+            r4.setVisibility(View.GONE);
+        } else if (id == R.id.nav_profile) {
+            r1.setVisibility(View.GONE);
+            r2.setVisibility(View.GONE);
+            r3.setVisibility(View.GONE);
+            r4.setVisibility(View.VISIBLE);
+        }
+
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
+    }
 }

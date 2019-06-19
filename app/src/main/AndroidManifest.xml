@@ -28,8 +28,9 @@
             android:label="VisioSpark"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".activities.FacultyActivity"
-            android:label="@string/title_activity_faculty" />
+            android:name=".activities.SuperAdmin"
+            android:label="@string/title_activity_super_admin"
+            android:theme="@style/AppTheme"></activity>
     </application>
 
 </manifest>

@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (data.getEmail(MainActivity.this) != null ){
             if (data.getUSERTYPE(MainActivity.this).equals("superadministrator")){
-                Intent intent = new Intent(MainActivity.this, FacultyActivity.class);
+                Intent intent = new Intent(MainActivity.this, SuperAdmin.class);
 
                 Bundle user = new Bundle();
                 user.putString("name",data.getNAME(MainActivity.this));
@@ -73,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtras(user);
 
                 startActivity(intent);
+                finish();
             }
             else if (data.getUSERTYPE(MainActivity.this).equals("user")){
                 Intent intent = new Intent(MainActivity.this, LoginActivity.class);
@@ -84,6 +85,7 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtras(user);
 
                 startActivity(intent);
+                finish();
             }
         }
 
@@ -185,7 +187,7 @@ public class MainActivity extends AppCompatActivity {
                                     PreferenceData.saveUSERTYPE(r_name, MainActivity.this);
 
                                     if (r_name.equals("superadministrator")){
-                                        Intent intent = new Intent(MainActivity.this,FacultyActivity.class);
+                                        Intent intent = new Intent(MainActivity.this,SuperAdmin.class);
 
                                         Bundle user = new Bundle();
                                         user.putString("name",name);

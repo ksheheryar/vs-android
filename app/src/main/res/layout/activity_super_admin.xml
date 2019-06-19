@@ -6,11 +6,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    android:background="@drawable/grad_bg"
     tools:openDrawer="start">
 
     <include
-        layout="@layout/app_bar_login"
+        layout="@layout/app_bar_super_admin"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
@@ -20,7 +19,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
-        app:headerLayout="@layout/nav_header_login1"
-        app:menu="@menu/activity_login_drawer" />
+        app:headerLayout="@layout/nav_header_super_admin"
+        app:menu="@menu/activity_super_admin_drawer" />
 
 </android.support.v4.widget.DrawerLayout>
