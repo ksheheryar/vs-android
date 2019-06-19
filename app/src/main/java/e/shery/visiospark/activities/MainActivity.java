@@ -195,6 +195,7 @@ public class MainActivity extends AppCompatActivity {
 
                                         MainActivity.this.startActivity(intent);
                                         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                                        finish();
                                     }
                                     else if (r_name.equals("user")){
                                         Intent intent = new Intent(MainActivity.this,LoginActivity.class);
@@ -207,6 +208,7 @@ public class MainActivity extends AppCompatActivity {
 
                                         MainActivity.this.startActivity(intent);
                                         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                                        finish();
                                     }
                                 } catch (JSONException e1) {
                                     e1.printStackTrace();

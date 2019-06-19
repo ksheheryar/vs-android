@@ -1,6 +1,7 @@
 package e.shery.visiospark.activities;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -51,6 +52,7 @@ public class LoginActivity extends AppCompatActivity
     ArrayList<String> list,event;
     JSONArray jsonArray;
     String EventArray[][],particpant[][];
+    boolean doubleBackToExitPressedOnce = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -416,12 +418,22 @@ public class LoginActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         }
-        else if (!drawer.isDrawerOpen(GravityCompat.START)){
-            drawer.openDrawer(GravityCompat.START);
-        }
         else {
-            super.onBackPressed();
-            Toast.makeText(getApplicationContext(),"Logged Out",Toast.LENGTH_LONG).show();
+            if (doubleBackToExitPressedOnce) {
+                super.onBackPressed();
+                return;
+            }
+
+            this.doubleBackToExitPressedOnce = true;
+            Toast.makeText(this, "Press BACK again to exit", Toast.LENGTH_SHORT).show();
+
+            new Handler().postDelayed(new Runnable() {
+
+                @Override
+                public void run() {
+                    doubleBackToExitPressedOnce=false;
+                }
+            }, 3000);
         }
     }
 
