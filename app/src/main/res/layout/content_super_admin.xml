@@ -203,6 +203,15 @@
             android:layout_marginTop="75dp"
             android:background="@color/grey"/>
 
+        <Button
+            android:id="@+id/rl3_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/rl3_t"
+            android:layout_marginTop="100dp"
+            android:text="Notify"
+            android:textColor="@color/black"/>
+
         <ListView
             android:id="@+id/notification_list"
             android:layout_width="match_parent"

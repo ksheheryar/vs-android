@@ -1,9 +1,15 @@
 package e.shery.visiospark.activities;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,13 +44,15 @@ import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 
+import static android.app.Notification.VISIBILITY_PUBLIC;
+
 public class SuperAdmin extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     boolean doubleBackToExitPressedOnce = false;
     String name,token,userId;
     RelativeLayout r1,r2,r3,r4;
-    Button b,logout;
+    Button b,logout,notify;
     ListView l;
     ArrayList plist;
     TextView userName,textViewUser,textViewOnspot,udetail,vudetail,t;
@@ -70,11 +78,15 @@ public class SuperAdmin extends AppCompatActivity
         udetail = findViewById(R.id.u_detail);
         vudetail = findViewById(R.id.vu_detail);
         t = findViewById(R.id.welcomeText);
+        notify = findViewById(R.id.rl3_button);
 
         t.setVisibility(View.VISIBLE);
         t.setText("Welcome...!!!");
         participantData();
         status();
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(SuperAdmin.this,R.layout.listview1,R.id.listText1,plist);
+        l.setAdapter(arrayAdapter);
+        createNotificationChannel();
 
         NavigationView navigationView = findViewById(R.id.nav_view);
         View headview = navigationView.getHeaderView(0);
@@ -143,6 +155,30 @@ public class SuperAdmin extends AppCompatActivity
             }
         });
 
+        final NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
+
+        final NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "CHANNEL_ID")
+                .setSmallIcon(R.drawable.visio_logo)
+                .setContentTitle("VisioSpark")
+                .setContentText("New Registration..!!")
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setCategory(NotificationCompat.CATEGORY_MESSAGE)
+                .setContentIntent(pendingIntent)
+                .setAutoCancel(true)
+                .setVisibility(VISIBILITY_PUBLIC)
+                .setBadgeIconType(NotificationCompat.BADGE_ICON_SMALL);
+
+        notify.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                notificationManager.notify(1, builder.build());
+            }
+        });
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -154,6 +190,22 @@ public class SuperAdmin extends AppCompatActivity
         toggle.syncState();
 
         navigationView.setNavigationItemSelectedListener(this);
+    }
+
+    private void createNotificationChannel() {
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = "VisioSpark";
+//            String description = "this channel 1";
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel("CHANNEL_ID", name, importance);
+//            channel.setDescription(description);
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
     }
 
     public void pass_reset(){
@@ -239,21 +291,18 @@ public class SuperAdmin extends AppCompatActivity
                 .getApi()
                 .admin_setStatus(type,value,"application/json","Bearer "+token);
 
-//        call.enqueue(new Callback<ResponseBody>() {
-//            @Override
-//            public void onResponse(Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
-//
-//                    if (response.code() == 200)
-//                        Toast.makeText(getApplicationContext(),"Status Successfully Changed",Toast.LENGTH_LONG).show();
-//                    else{
-//                        Toast.makeText(getApplicationContext(),"Network Error",Toast.LENGTH_LONG).show();
-//                    }
-//            }
-//            @Override
-//            public void onFailure(Call<ResponseBody> call, Throwable t) {
-//                Toast.makeText(SuperAdmin.this,t.getMessage(), Toast.LENGTH_LONG).show();
-//            }
-//        });
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
+
+                if (response.code() != 200)
+                    Toast.makeText(getApplicationContext(),"Network Error",Toast.LENGTH_LONG).show();
+            }
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Toast.makeText(SuperAdmin.this,t.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
 
     }
 
@@ -400,9 +449,6 @@ public class SuperAdmin extends AppCompatActivity
             r3.setVisibility(View.GONE);
             r4.setVisibility(View.GONE);
             t.setVisibility(View.GONE);
-
-            ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(SuperAdmin.this,R.layout.listview1,R.id.listText1,plist);
-            l.setAdapter(arrayAdapter);
         } else if (id == R.id.nav_notification) {
             r1.setVisibility(View.GONE);
             r2.setVisibility(View.GONE);
