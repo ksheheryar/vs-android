@@ -88,6 +88,10 @@ public class SuperAdmin extends AppCompatActivity
         l.setAdapter(arrayAdapter);
         createNotificationChannel();
 
+        int c = l.getCount();
+
+        Toast.makeText(getApplicationContext(),Integer.toString(c),Toast.LENGTH_LONG).show();
+
         NavigationView navigationView = findViewById(R.id.nav_view);
         View headview = navigationView.getHeaderView(0);
         userName = headview.findViewById(R.id.user_Name);
@@ -162,7 +166,7 @@ public class SuperAdmin extends AppCompatActivity
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
 
         final NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "CHANNEL_ID")
-                .setSmallIcon(R.drawable.visio_logo)
+                .setSmallIcon(R.drawable.ic_stat_visio)
                 .setContentTitle("VisioSpark")
                 .setContentText("New Registration..!!")
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
@@ -270,7 +274,7 @@ public class SuperAdmin extends AppCompatActivity
                             email = e.getString("email");
 
 
-                            plist.add("Name : "+name1+"\n"+"Email : "+email);
+                            plist.add("Name : "+name1+"\n"+"Email : "+email+"\n");
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
