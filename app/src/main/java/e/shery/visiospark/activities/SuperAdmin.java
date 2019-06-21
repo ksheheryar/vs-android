@@ -50,6 +50,7 @@ public class SuperAdmin extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     boolean doubleBackToExitPressedOnce = false;
+    int count1=0;
     String name,token,userId;
     RelativeLayout r1,r2,r3,r4;
     Button b,logout,notify;
@@ -57,6 +58,9 @@ public class SuperAdmin extends AppCompatActivity
     ArrayList plist;
     TextView userName,textViewUser,textViewOnspot,udetail,vudetail,t;
     ToggleButton toggleButton_user,toggleButton_onspot;
+    PreferenceData data;
+    NotificationManagerCompat notificationManager;
+    NotificationCompat.Builder builder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +83,7 @@ public class SuperAdmin extends AppCompatActivity
         vudetail = findViewById(R.id.vu_detail);
         t = findViewById(R.id.welcomeText);
         notify = findViewById(R.id.rl3_button);
+        data = new PreferenceData();
 
         t.setVisibility(View.VISIBLE);
         t.setText("Welcome...!!!");
@@ -87,10 +92,6 @@ public class SuperAdmin extends AppCompatActivity
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(SuperAdmin.this,R.layout.listview1,R.id.listText1,plist);
         l.setAdapter(arrayAdapter);
         createNotificationChannel();
-
-        int c = l.getCount();
-
-        Toast.makeText(getApplicationContext(),Integer.toString(c),Toast.LENGTH_LONG).show();
 
         NavigationView navigationView = findViewById(R.id.nav_view);
         View headview = navigationView.getHeaderView(0);
@@ -159,14 +160,14 @@ public class SuperAdmin extends AppCompatActivity
             }
         });
 
-        final NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+        notificationManager = NotificationManagerCompat.from(this);
 
         Intent intent = new Intent(this, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
 
-        final NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "CHANNEL_ID")
-                .setSmallIcon(R.drawable.ic_stat_visio)
+        builder = new NotificationCompat.Builder(this, "CHANNEL_ID")
+                .setSmallIcon(R.mipmap.ic_launcher3)
                 .setContentTitle("VisioSpark")
                 .setContentText("New Registration..!!")
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
@@ -179,7 +180,7 @@ public class SuperAdmin extends AppCompatActivity
         notify.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                notificationManager.notify(1, builder.build());
+                count();
             }
         });
 
@@ -194,6 +195,13 @@ public class SuperAdmin extends AppCompatActivity
         toggle.syncState();
 
         navigationView.setNavigationItemSelectedListener(this);
+    }
+    private void count(){
+        if (data.getCOUNT(SuperAdmin.this) < count1){
+            notificationManager.notify(1, builder.build());
+            PreferenceData.saveCOUNT(count1, SuperAdmin.this);
+            Toast.makeText(getApplicationContext(),Integer.toString(data.getCOUNT(SuperAdmin.this)),Toast.LENGTH_LONG).show();
+        }
     }
 
     private void createNotificationChannel() {
@@ -273,6 +281,7 @@ public class SuperAdmin extends AppCompatActivity
                             name1 = e.getString("name");
                             email = e.getString("email");
 
+                            count1 = count1 + 1;
 
                             plist.add("Name : "+name1+"\n"+"Email : "+email+"\n");
                         }

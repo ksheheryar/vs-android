@@ -87,4 +87,17 @@ public class PreferenceData {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         return prefs.getString(Constants.KEY_USERTYPE, null);
     }
+
+    public static boolean saveCOUNT(int count, Context context) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor prefsEditor = prefs.edit();
+        prefsEditor.putInt(Constants.KEY_COUNT, count);
+        prefsEditor.apply();
+        return true;
+    }
+
+    public static int getCOUNT(Context context) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        return prefs.getInt(Constants.KEY_COUNT, 0);
+    }
 }
