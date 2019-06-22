@@ -36,6 +36,8 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import e.shery.visiospark.R;
 import e.shery.visiospark.api.RetrofitClient;
@@ -50,7 +52,7 @@ public class SuperAdmin extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     boolean doubleBackToExitPressedOnce = false;
-    int count1=0;
+    int count1=0,cc=0;
     String name,token,userId;
     RelativeLayout r1,r2,r3,r4;
     Button b,logout,notify;
@@ -61,6 +63,8 @@ public class SuperAdmin extends AppCompatActivity
     PreferenceData data;
     NotificationManagerCompat notificationManager;
     NotificationCompat.Builder builder;
+    Timer timerObj;
+    TimerTask timerTaskObj;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -152,6 +156,12 @@ public class SuperAdmin extends AppCompatActivity
                 PreferenceData.saveTOKEN(null, SuperAdmin.this);
                 PreferenceData.saveID(null, SuperAdmin.this);
 
+                if(timerObj != null) {
+                    timerObj.cancel();
+                    timerObj.purge();
+//                    timerObj = null;
+                }
+
                 Intent intent = new Intent(SuperAdmin.this,MainActivity.class);
                 startActivity(intent);
 
@@ -184,6 +194,15 @@ public class SuperAdmin extends AppCompatActivity
             }
         });
 
+        timerObj = new Timer();
+        timerTaskObj = new TimerTask() {
+            public void run() {
+                cc++;
+                trun();
+            }
+        };
+        timerObj.schedule(timerTaskObj, 0, 3000);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -196,6 +215,11 @@ public class SuperAdmin extends AppCompatActivity
 
         navigationView.setNavigationItemSelectedListener(this);
     }
+
+    public void trun(){
+        notificationManager.notify(1, builder.build());
+    }
+
     private void count(){
         if (data.getCOUNT(SuperAdmin.this) < count1){
             notificationManager.notify(1, builder.build());
