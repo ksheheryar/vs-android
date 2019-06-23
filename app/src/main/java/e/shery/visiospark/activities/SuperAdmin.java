@@ -52,7 +52,7 @@ public class SuperAdmin extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     boolean doubleBackToExitPressedOnce = false;
-    int count1=0,cc=0;
+    int count1=0;
     String name,token,userId;
     RelativeLayout r1,r2,r3,r4;
     Button b,logout,notify;
@@ -190,18 +190,17 @@ public class SuperAdmin extends AppCompatActivity
         notify.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                count();
+                check_notification();
             }
         });
 
         timerObj = new Timer();
         timerTaskObj = new TimerTask() {
             public void run() {
-                cc++;
-                trun();
+                check_notification();
             }
         };
-        timerObj.schedule(timerTaskObj, 0, 3000);
+        timerObj.schedule(timerTaskObj, 0, 5000);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -216,11 +215,10 @@ public class SuperAdmin extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
     }
 
-    public void trun(){
-        notificationManager.notify(1, builder.build());
-    }
+    private void check_notification(){
+        count1 = 0;
+        participantData();
 
-    private void count(){
         if (data.getCOUNT(SuperAdmin.this) < count1){
             notificationManager.notify(1, builder.build());
             PreferenceData.saveCOUNT(count1, SuperAdmin.this);
@@ -486,7 +484,7 @@ public class SuperAdmin extends AppCompatActivity
             r3.setVisibility(View.GONE);
             r4.setVisibility(View.GONE);
             t.setVisibility(View.GONE);
-        } else if (id == R.id.nav_notification) {
+        } else if (id == R.id.nav_onspotReg) {
             r1.setVisibility(View.GONE);
             r2.setVisibility(View.GONE);
             r3.setVisibility(View.VISIBLE);

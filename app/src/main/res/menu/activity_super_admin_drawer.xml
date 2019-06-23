@@ -13,9 +13,9 @@
             android:icon="@drawable/university"
             android:title="Registered Participant's" />
         <item
-            android:id="@+id/nav_notification"
-            android:icon="@drawable/ic_notifications_black_24dp"
-            android:title="Notification's" />
+            android:id="@+id/nav_onspotReg"
+            android:icon="@drawable/ic_onspot"
+            android:title="Onspot Registration" />
         <item
             android:id="@+id/nav_profile"
             android:icon="@drawable/ic_person"
