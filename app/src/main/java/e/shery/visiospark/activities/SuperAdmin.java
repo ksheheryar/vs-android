@@ -21,6 +21,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -65,6 +66,7 @@ public class SuperAdmin extends AppCompatActivity
     NotificationCompat.Builder builder;
     Timer timerObj;
     TimerTask timerTaskObj;
+    ArrayAdapter<String> arrayAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,7 +95,7 @@ public class SuperAdmin extends AppCompatActivity
         t.setText("Welcome...!!!");
         participantData();
         status();
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(SuperAdmin.this,R.layout.listview1,R.id.listText1,plist);
+        arrayAdapter = new ArrayAdapter<>(SuperAdmin.this,R.layout.listview1,R.id.listText1,plist);
         l.setAdapter(arrayAdapter);
         createNotificationChannel();
 
@@ -170,6 +172,16 @@ public class SuperAdmin extends AppCompatActivity
             }
         });
 
+        l.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String s = l.getItemAtPosition(position).toString().trim();
+                String[] s1 = s.split(":");
+
+                Toast.makeText(getApplicationContext(),s1[2].trim(),Toast.LENGTH_LONG).show();
+            }
+        });
+
         notificationManager = NotificationManagerCompat.from(this);
 
         Intent intent = new Intent(this, MainActivity.class);
@@ -197,10 +209,15 @@ public class SuperAdmin extends AppCompatActivity
         timerObj = new Timer();
         timerTaskObj = new TimerTask() {
             public void run() {
-                check_notification();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        check_notification();
+                    }
+                });
             }
         };
-        timerObj.schedule(timerTaskObj, 0, 5000);
+        timerObj.schedule(timerTaskObj, 5000, 5000);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -216,13 +233,12 @@ public class SuperAdmin extends AppCompatActivity
     }
 
     private void check_notification(){
-        count1 = 0;
-        participantData();
+        check_dataChange();
 
         if (data.getCOUNT(SuperAdmin.this) < count1){
             notificationManager.notify(1, builder.build());
             PreferenceData.saveCOUNT(count1, SuperAdmin.this);
-            Toast.makeText(getApplicationContext(),Integer.toString(data.getCOUNT(SuperAdmin.this)),Toast.LENGTH_LONG).show();
+//            Toast.makeText(getApplicationContext(),Integer.toString(data.getCOUNT(SuperAdmin.this)),Toast.LENGTH_LONG).show();
         }
     }
 
@@ -273,7 +289,45 @@ public class SuperAdmin extends AppCompatActivity
 
     }
 
+    private void check_dataChange(){
+        count1 = 0;
+
+        Call<ResponseBody> call = RetrofitClient
+                .getInstance()
+                .getApi()
+                .Registered_participant("application/json","Bearer "+token);
+
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
+                String s = null;
+                try {
+                    s = response.body().string();
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+
+                if (s!=null){
+                    try {
+                        JSONObject jsonObject = new JSONObject(s);
+                        JSONArray jsonArray = jsonObject.getJSONArray("users");
+
+                        count1 = jsonArray.length();
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+            }
+        });
+    }
+
     private void participantData(){
+        count1 = 0;
 
         Call<ResponseBody> call = RetrofitClient
                 .getInstance()
