@@ -56,7 +56,7 @@ public class SuperAdmin extends AppCompatActivity
     int count1=0;
     String name,token,userId;
     RelativeLayout r1,r2,r3,r4;
-    Button b,logout,notify;
+    Button b,logout;
     ListView l;
     ArrayList plist;
     TextView userName,textViewUser,textViewOnspot,udetail,vudetail,t;
@@ -88,7 +88,6 @@ public class SuperAdmin extends AppCompatActivity
         udetail = findViewById(R.id.u_detail);
         vudetail = findViewById(R.id.vu_detail);
         t = findViewById(R.id.welcomeText);
-        notify = findViewById(R.id.rl3_button);
         data = new PreferenceData();
 
         t.setVisibility(View.VISIBLE);
@@ -199,13 +198,6 @@ public class SuperAdmin extends AppCompatActivity
                 .setVisibility(VISIBILITY_PUBLIC)
                 .setBadgeIconType(NotificationCompat.BADGE_ICON_SMALL);
 
-        notify.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                check_notification();
-            }
-        });
-
         timerObj = new Timer();
         timerTaskObj = new TimerTask() {
             public void run() {
@@ -217,7 +209,7 @@ public class SuperAdmin extends AppCompatActivity
                 });
             }
         };
-        timerObj.schedule(timerTaskObj, 5000, 5000);
+        timerObj.schedule(timerTaskObj, 0, 5000);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -290,7 +282,6 @@ public class SuperAdmin extends AppCompatActivity
     }
 
     private void check_dataChange(){
-        count1 = 0;
 
         Call<ResponseBody> call = RetrofitClient
                 .getInstance()
@@ -509,6 +500,12 @@ public class SuperAdmin extends AppCompatActivity
             PreferenceData.saveName(null, SuperAdmin.this);
             PreferenceData.saveTOKEN(null, SuperAdmin.this);
             PreferenceData.saveID(null, SuperAdmin.this);
+
+            if(timerObj != null) {
+                timerObj.cancel();
+                timerObj.purge();
+//                    timerObj = null;
+            }
 
             Intent intent = new Intent(SuperAdmin.this,MainActivity.class);
             startActivity(intent);
