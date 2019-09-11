@@ -14,7 +14,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activities.MainActivity"
+        <activity
+            android:name=".activities.MainActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -22,20 +23,26 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.Signup"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".activities.Credits"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".activities.Signup"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.Credits"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activities.LoginActivity"
             android:label="VisioSpark"
-            android:theme="@style/AppTheme"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".activities.SuperAdmin"
             android:label="@string/title_activity_super_admin"
-            android:theme="@style/AppTheme"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".activities.EventHead"
+            android:label="@string/title_activity_event_head"
+            android:theme="@style/AppTheme"></activity>
     </application>
 
 </manifest>

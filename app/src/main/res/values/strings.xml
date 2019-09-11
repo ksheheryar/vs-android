@@ -28,5 +28,6 @@
     <string name="toggle_user">Registration Toggle for Participant\'s Universities</string>
     <string name="toggle_onspot">Registration Toggle for OnSpot Features</string>
     <string name="title_activity_super_admin">VisioSpark</string>
+    <string name="title_activity_event_head">EventHead</string>
 
 </resources>
