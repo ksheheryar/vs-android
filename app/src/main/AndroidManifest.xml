@@ -42,7 +42,8 @@
         <activity
             android:name=".activities.EventHead"
             android:label="@string/title_activity_event_head"
-            android:theme="@style/AppTheme"></activity>
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
     </application>
 
 </manifest>
