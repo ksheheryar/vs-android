@@ -1,5 +1,6 @@
 package e.shery.visiospark.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -461,6 +462,10 @@ public class LoginActivity extends AppCompatActivity
             PreferenceData.saveID(null, LoginActivity.this);
 
             Toast.makeText(getApplicationContext(),"Logged Out",Toast.LENGTH_LONG).show();
+
+            Intent intent = new Intent(LoginActivity.this,MainActivity.class);
+            LoginActivity.this.startActivity(intent);
+
             finish();
         }
 
