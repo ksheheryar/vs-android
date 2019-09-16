@@ -29,5 +29,6 @@
     <string name="toggle_onspot">Registration Toggle for OnSpot Features</string>
     <string name="title_activity_super_admin">VisioSpark</string>
     <string name="title_activity_event_head">VisioSpark</string>
+    <string name="title_activity_qr_reader">QrReader</string>
 
 </resources>

@@ -110,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 //                Intent intent = new Intent(MainActivity.this,Credits.class);
-                Intent intent = new Intent(MainActivity.this,EventHead.class);
+                Intent intent = new Intent(MainActivity.this,QrReader.class);
                 MainActivity.this.startActivity(intent);
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
             }
