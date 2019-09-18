@@ -35,7 +35,7 @@ public class Signup extends AppCompatActivity {
     Spinner s1,s2;
     Button reg;
     TextView t;
-    EditText email,pass,pass1;
+    EditText email,num,pass,pass1;
     ArrayList<String> departments,universities;
 
     @Override
@@ -48,6 +48,7 @@ public class Signup extends AppCompatActivity {
         reg = findViewById(R.id.reg);
         t = findViewById(R.id.t1);
         email = findViewById(R.id.new_email);
+        num = findViewById(R.id.new_num);
         pass = findViewById(R.id.pass);
         pass1 = findViewById(R.id.pass1);
         departments = new ArrayList<>();
@@ -60,12 +61,18 @@ public class Signup extends AppCompatActivity {
                 String Email = email.getText().toString().trim();
                 String p = pass.getText().toString().trim();
                 String p1 = pass1.getText().toString().trim();
+                String phone = num.getText().toString().trim();
 
                 if (Email.isEmpty()) {
                     email.setError("Email is required");
-                    pass.setError("Password required");
-                    pass1.setError("Password required");
+//                    pass.setError("Password required");
+//                    pass1.setError("Password required");
                     email.requestFocus();
+                    return;
+                }
+                else if (phone.isEmpty()) {
+                    num.setError("Phone Number is required");
+                    num.requestFocus();
                     return;
                 }
                 else if (!Patterns.EMAIL_ADDRESS.matcher(Email).matches()) {

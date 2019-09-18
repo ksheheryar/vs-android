@@ -40,145 +40,179 @@
                 android:textColor="@color/white"
                 android:textSize="30sp" />
 
-            <LinearLayout
-                android:id="@+id/l1"
+            <ScrollView
+                android:id="@+id/scrollView1"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="380dp"
                 android:layout_below="@id/t1"
-                android:layout_marginTop="20dp"
-                android:orientation="vertical">
+                android:layout_marginTop="25dp">
 
-                <TextView
-                    android:id="@+id/passW"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif"
-                    android:layout_gravity="right"
-                    android:textColor="@color/red"
-                    android:visibility="gone"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif-light"
-                    android:text="University Name"
-                    android:textAllCaps="true"
-                    android:textColor="@color/white"
-                    android:textSize="15sp" />
-
-                <Spinner
-                    android:id="@+id/uni"
+                <LinearLayout
+                    android:id="@+id/l1"
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:background="@drawable/et_bg"
-                    android:layout_marginTop="5dp"
-                    android:textAlignment="center"
-                    android:paddingLeft="15dp"
-                    android:paddingRight="15dp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif-light"
-                    android:text="Department"
-                    android:textAllCaps="true"
-                    android:textColor="@color/white"
-                    android:textSize="15sp"
-                    android:layout_marginTop="20dp"/>
+                    android:orientation="vertical">
 
-                <Spinner
-                    android:id="@+id/dept"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:background="@drawable/et_bg"
-                    android:layout_marginTop="5dp"
-                    android:textAlignment="center"
-                    android:paddingLeft="15dp"
-                    android:paddingRight="15dp" />
+                    <TextView
+                        android:id="@+id/passW"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif"
+                        android:layout_gravity="right"
+                        android:textColor="@color/red"
+                        android:visibility="gone"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif-light"
+                        android:text="University Name"
+                        android:textAllCaps="true"
+                        android:textColor="@color/white"
+                        android:textSize="15sp" />
 
-                <TextView
-                    android:id="@+id/temail"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif-light"
-                    android:text="Email Address"
-                    android:textAllCaps="true"
-                    android:textColor="@color/white"
-                    android:textSize="15sp"
-                    android:layout_marginTop="20dp"/>
+                    <Spinner
+                        android:id="@+id/uni"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:background="@drawable/et_bg"
+                        android:layout_marginTop="5dp"
+                        android:textAlignment="center"
+                        android:paddingLeft="15dp"
+                        android:paddingRight="15dp" />
 
-                <EditText
-                    android:id="@+id/new_email"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:layout_marginTop="5dp"
-                    android:background="@drawable/et_bg"
-                    android:fontFamily="sans-serif-light"
-                    android:hint="Email"
-                    android:textAlignment="center"
-                    android:paddingLeft="15dp"
-                    android:paddingRight="15dp"
-                    android:textColor="@color/white"
-                    android:textSize="15sp"
-                    android:inputType="textEmailAddress"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif-light"
+                        android:text="Department"
+                        android:textAllCaps="true"
+                        android:textColor="@color/white"
+                        android:textSize="15sp"
+                        android:layout_marginTop="20dp"/>
 
-                <TextView
-                    android:id="@+id/tpass"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif-light"
-                    android:text="Password (At least 6 characters)"
-                    android:textAllCaps="true"
-                    android:layout_marginTop="20dp"
-                    android:textColor="@color/white"
-                    android:textSize="15sp" />
+                    <Spinner
+                        android:id="@+id/dept"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:background="@drawable/et_bg"
+                        android:layout_marginTop="5dp"
+                        android:textAlignment="center"
+                        android:paddingLeft="15dp"
+                        android:paddingRight="15dp" />
 
-                <EditText
-                    android:id="@+id/pass"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:layout_marginTop="5dp"
-                    android:background="@drawable/et_bg"
-                    android:fontFamily="sans-serif-light"
-                    android:hint="Password"
-                    android:textAlignment="center"
-                    android:paddingLeft="15dp"
-                    android:paddingRight="15dp"
-                    android:textColor="@color/white"
-                    android:textSize="15sp"
-                    android:inputType="textPassword"/>
+                    <TextView
+                        android:id="@+id/temail"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif-light"
+                        android:text="Email Address"
+                        android:textAllCaps="true"
+                        android:textColor="@color/white"
+                        android:textSize="15sp"
+                        android:layout_marginTop="20dp"/>
 
-                <TextView
-                    android:id="@+id/tpass1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif-light"
-                    android:text="Confirm Password"
-                    android:textAllCaps="true"
-                    android:layout_marginTop="20dp"
-                    android:textColor="@color/white"
-                    android:textSize="15sp" />
+                    <EditText
+                        android:id="@+id/new_email"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_marginTop="5dp"
+                        android:background="@drawable/et_bg"
+                        android:fontFamily="sans-serif-light"
+                        android:hint="Email"
+                        android:textAlignment="center"
+                        android:paddingLeft="15dp"
+                        android:paddingRight="15dp"
+                        android:textColor="@color/white"
+                        android:textSize="15sp"
+                        android:inputType="textEmailAddress"/>
 
-                <EditText
-                    android:id="@+id/pass1"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:layout_marginTop="5dp"
-                    android:background="@drawable/et_bg"
-                    android:fontFamily="sans-serif-light"
-                    android:hint="Password"
-                    android:textAlignment="center"
-                    android:paddingLeft="15dp"
-                    android:paddingRight="15dp"
-                    android:textColor="@color/white"
-                    android:textSize="15sp"
-                    android:inputType="textPassword"/>
-            </LinearLayout>
+                    <TextView
+                        android:id="@+id/tnum"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif-light"
+                        android:text="Contact#"
+                        android:textAllCaps="true"
+                        android:textColor="@color/white"
+                        android:textSize="15sp"
+                        android:layout_marginTop="20dp"/>
+
+                    <EditText
+                        android:id="@+id/new_num"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_marginTop="5dp"
+                        android:background="@drawable/et_bg"
+                        android:fontFamily="sans-serif-light"
+                        android:hint="Number"
+                        android:textAlignment="center"
+                        android:paddingLeft="15dp"
+                        android:paddingRight="15dp"
+                        android:textColor="@color/white"
+                        android:textSize="15sp"
+                        android:inputType="phone"/>
+
+                    <TextView
+                        android:id="@+id/tpass"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif-light"
+                        android:text="Password (At least 6 characters)"
+                        android:textAllCaps="true"
+                        android:layout_marginTop="20dp"
+                        android:textColor="@color/white"
+                        android:textSize="15sp" />
+
+                    <EditText
+                        android:id="@+id/pass"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_marginTop="5dp"
+                        android:background="@drawable/et_bg"
+                        android:fontFamily="sans-serif-light"
+                        android:hint="Password"
+                        android:textAlignment="center"
+                        android:paddingLeft="15dp"
+                        android:paddingRight="15dp"
+                        android:textColor="@color/white"
+                        android:textSize="15sp"
+                        android:inputType="textPassword"/>
+
+                    <TextView
+                        android:id="@+id/tpass1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif-light"
+                        android:text="Confirm Password"
+                        android:textAllCaps="true"
+                        android:layout_marginTop="20dp"
+                        android:textColor="@color/white"
+                        android:textSize="15sp" />
+
+                    <EditText
+                        android:id="@+id/pass1"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="20dp"
+                        android:background="@drawable/et_bg"
+                        android:fontFamily="sans-serif-light"
+                        android:hint="Password"
+                        android:textAlignment="center"
+                        android:paddingLeft="15dp"
+                        android:paddingRight="15dp"
+                        android:textColor="@color/white"
+                        android:textSize="15sp"
+                        android:inputType="textPassword"/>
+                </LinearLayout>
+
+            </ScrollView>
 
             <Button
                 android:id="@+id/reg"
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
-                android:layout_below="@id/l1"
+                android:layout_below="@id/scrollView1"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="25dp"
                 android:background="@drawable/btn"

@@ -59,7 +59,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-light"
-            android:text="OnSpot Registration"
+            android:text="Select Winner's"
             android:textAlignment="center"
             android:textAllCaps="true"
             android:textColor="@color/black"
