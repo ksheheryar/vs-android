@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -22,6 +23,7 @@ import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -41,13 +43,14 @@ import retrofit2.Response;
 public class LoginActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    RelativeLayout r,r1;
+    RelativeLayout r,r1,r2;
     LinearLayout l1,l2,l3;
     Button b;
     String name,token,Sevent,eventId,userId;
     int mTeam;
-    TextView userName,t,t1;
+    TextView userName,t,t1,details;
     EditText t1m1,t1m2,t1m3,t2m1,t2m2,t3m1;
+    ToggleButton toggleButton;
     ListView listView;
     Spinner s,s1;
     ArrayList<String> list,event;
@@ -68,9 +71,12 @@ public class LoginActivity extends AppCompatActivity
         t1 = findViewById(R.id.t_list);
         list = new ArrayList<String>();
         event = new ArrayList<String>();
+        details = findViewById(R.id.eventdetail);
         listView = findViewById(R.id.list);
         r = findViewById(R.id.register);
         r1 = findViewById(R.id.r_even);
+        r2 = findViewById(R.id.acco);
+        toggleButton = findViewById(R.id.toggle_acco);
         s = findViewById(R.id.events);
         s1 = findViewById(R.id.R_event);
         l1 = findViewById(R.id.l1);
@@ -186,6 +192,22 @@ public class LoginActivity extends AppCompatActivity
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
+            }
+        });
+
+        toggleButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+//                    textViewUser.setText("Registration is unlocked");
+//                    textViewUser.setTextColor(getResources().getColor(R.color.green));
+//                    set_status("users","false");
+                }
+                else {
+//                    textViewUser.setText("Registration is locked");
+//                    textViewUser.setTextColor(getResources().getColor(R.color.red));
+//                    set_status("users","true");
+                }
             }
         });
 
@@ -481,7 +503,9 @@ public class LoginActivity extends AppCompatActivity
         if (id == R.id.nav_detail) {
             r.setVisibility(View.GONE);
             r1.setVisibility(View.GONE);
+            r2.setVisibility(View.GONE);
             t.setVisibility(View.GONE);
+            details.setVisibility(View.VISIBLE);
             listView.setVisibility(View.VISIBLE);
             ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(LoginActivity.this,R.layout.listview,R.id.listText,list);
             listView.setAdapter(arrayAdapter);
@@ -489,6 +513,8 @@ public class LoginActivity extends AppCompatActivity
         else if (id == R.id.nav_register) {
             t.setVisibility(View.GONE);
             r1.setVisibility(View.GONE);
+            r2.setVisibility(View.GONE);
+            details.setVisibility(View.GONE);
             listView.setVisibility(View.GONE);
             r.setVisibility(View.VISIBLE);
             s.setAdapter(new ArrayAdapter<String>(LoginActivity.this,android.R.layout.simple_spinner_dropdown_item,event));
@@ -496,13 +522,25 @@ public class LoginActivity extends AppCompatActivity
         else if (id == R.id.nav_reg) {
             t.setVisibility(View.GONE);
             r.setVisibility(View.GONE);
+            r2.setVisibility(View.GONE);
+            details.setVisibility(View.GONE);
             listView.setVisibility(View.GONE);
             r1.setVisibility(View.VISIBLE);
             s1.setAdapter(new ArrayAdapter<String>(LoginActivity.this,android.R.layout.simple_spinner_dropdown_item,event));
         }
+        else if (id == R.id.nav_accommodation) {
+            t.setVisibility(View.GONE);
+            r1.setVisibility(View.GONE);
+            r2.setVisibility(View.VISIBLE);
+            details.setVisibility(View.GONE);
+            listView.setVisibility(View.GONE);
+            r.setVisibility(View.GONE);
+        }
         else if (id == R.id.nav_send) {
             r1.setVisibility(View.GONE);
             r.setVisibility(View.GONE);
+            r2.setVisibility(View.GONE);
+            details.setVisibility(View.GONE);
             listView.setVisibility(View.GONE);
             t.setVisibility(View.VISIBLE);
             t.setText(R.string.contact);

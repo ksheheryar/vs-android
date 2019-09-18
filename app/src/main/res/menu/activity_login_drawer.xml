@@ -11,6 +11,9 @@
             android:id="@+id/nav_register"
             android:title="Register Event's" />
         <item
+            android:id="@+id/nav_accommodation"
+            android:title="Hotel Accommodation" />
+        <item
             android:id="@+id/nav_reg"
             android:title="Registered Event's" />
     </group>

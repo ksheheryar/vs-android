@@ -19,11 +19,25 @@
         android:textSize="30sp"
         android:visibility="gone"/>
 
-    <ListView
-        android:id="@+id/list"
+    <TextView
+        android:background="@color/grey"
+        android:id="@+id/eventdetail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="30dp"
+        android:fontFamily="sans-serif-medium"
+        android:text="Event Detail's"
+        android:textColor="@color/white"
+        android:textAlignment="center"
+        android:textSize="30sp"
+        android:visibility="gone"/>
+
+    <ListView
+        android:id="@+id/list"
+        android:layout_below="@id/eventdetail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
         android:textAlignment="center"
         android:visibility="gone" />
 
@@ -34,6 +48,7 @@
         android:visibility="gone">
 
         <TextView
+            android:background="@color/grey"
             android:id="@+id/t1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -249,6 +264,7 @@
         android:visibility="gone">
 
         <TextView
+            android:background="@color/grey"
             android:id="@+id/t2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -304,6 +320,79 @@
             </ScrollView>
 
         </LinearLayout>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/acco"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone">
+
+        <TextView
+            android:background="@color/grey"
+            android:id="@+id/t_acco"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:fontFamily="sans-serif-medium"
+            android:text="Hotel Facilitation"
+            android:textColor="@color/white"
+            android:textAlignment="center"
+            android:textSize="30sp" />
+
+        <ToggleButton
+            android:id="@+id/toggle_acco"
+            android:layout_width="43dp"
+            android:layout_height="40dp"
+            android:background="@drawable/toggle_btn"
+            android:text=""
+            android:textOn=""
+            android:textOff=""
+            android:layout_below="@id/t_acco"
+            android:layout_marginTop="60dp"
+            android:layout_marginLeft="15dp"/>
+
+        <TextView
+            android:id="@+id/t_acco1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/toggle_acco"
+            android:layout_marginLeft="20dp"
+            android:layout_below="@id/t_acco"
+            android:textAlignment="center"
+            android:textAllCaps="true"
+            android:textSize="15sp"
+            android:fontFamily="sans-serif-light"
+            android:text="@string/hotel"
+            android:layout_marginTop="60dp" />
+
+        <TextView
+            android:background="@color/grey"
+            android:id="@+id/t_acco2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:layout_below="@id/toggle_acco"
+            android:fontFamily="sans-serif-medium"
+            android:text="Link's of Hotels :"
+            android:textColor="@color/white"
+            android:textAlignment="center"
+            android:textSize="30sp" />
+
+        <TextView
+            android:id="@+id/t_acco3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_below="@id/t_acco2"
+            android:textAllCaps="true"
+            android:autoLink="web"
+            android:clickable="true"
+            android:textSize="15sp"
+            android:fontFamily="sans-serif-light"
+            android:text="@string/linkHotel"
+            android:layout_marginTop="50dp" />
+
     </RelativeLayout>
 
 </RelativeLayout>
