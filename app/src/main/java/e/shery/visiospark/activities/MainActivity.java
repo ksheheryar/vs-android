@@ -109,8 +109,7 @@ public class MainActivity extends AppCompatActivity {
         credit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent intent = new Intent(MainActivity.this,Credits.class);
-                Intent intent = new Intent(MainActivity.this,EventHead.class);
+                Intent intent = new Intent(MainActivity.this,Credits.class);
                 MainActivity.this.startActivity(intent);
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
             }
@@ -187,7 +186,7 @@ public class MainActivity extends AppCompatActivity {
                                     PreferenceData.saveID(userId, MainActivity.this);
                                     PreferenceData.saveUSERTYPE(r_name, MainActivity.this);
 
-                                    if (r_name.equals("superadministrator")){
+                                    if (r_name.equals("hod")){
                                         Intent intent = new Intent(MainActivity.this,SuperAdmin.class);
 
                                         Bundle user = new Bundle();
@@ -202,6 +201,19 @@ public class MainActivity extends AppCompatActivity {
                                     }
                                     else if (r_name.equals("user")){
                                         Intent intent = new Intent(MainActivity.this,LoginActivity.class);
+
+                                        Bundle user = new Bundle();
+                                        user.putString("name",name);
+                                        user.putString("token",j);
+                                        user.putString("id",userId);
+                                        intent.putExtras(user);
+
+                                        MainActivity.this.startActivity(intent);
+                                        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                                        finish();
+                                    }
+                                    else if (r_name.equals("food_incharge")){
+                                        Intent intent = new Intent(MainActivity.this,QrReader.class);
 
                                         Bundle user = new Bundle();
                                         user.putString("name",name);

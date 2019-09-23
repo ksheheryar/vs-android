@@ -138,7 +138,7 @@ public class Signup extends AppCompatActivity {
         Call<ResponseBody> call = RetrofitClient
                 .getInstance()
                 .getApi()
-                .Register(uniName,email.getText().toString().trim(),pass.getText().toString().trim(),pass1.getText().toString().trim(),dep);
+                .Register(uniName,email.getText().toString().trim(),pass.getText().toString().trim(),pass1.getText().toString().trim(),dep,num.getText().toString().trim());
 
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -149,7 +149,7 @@ public class Signup extends AppCompatActivity {
                         s = response.body().string();
                     }
                     else{
-                        Toast.makeText(getApplicationContext(),"Email Already Registered",Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(),response.body().string(),Toast.LENGTH_LONG).show();
                     }
                 } catch (IOException e1) {
                     e1.printStackTrace();

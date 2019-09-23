@@ -90,14 +90,6 @@ public class SuperAdmin extends AppCompatActivity
         t = findViewById(R.id.welcomeText);
         data = new PreferenceData();
 
-        t.setVisibility(View.VISIBLE);
-        t.setText("Welcome...!!!");
-        participantData();
-        status();
-        arrayAdapter = new ArrayAdapter<>(SuperAdmin.this,R.layout.listview1,R.id.listText1,plist);
-        l.setAdapter(arrayAdapter);
-        createNotificationChannel();
-
         NavigationView navigationView = findViewById(R.id.nav_view);
         View headview = navigationView.getHeaderView(0);
         userName = headview.findViewById(R.id.user_Name);
@@ -107,6 +99,14 @@ public class SuperAdmin extends AppCompatActivity
         token = bundle.getString("token");
         userId = bundle.getString("id");
         userName.setText(name);
+
+        t.setVisibility(View.VISIBLE);
+        t.setText("Welcome...!!!");
+        participantData();
+        status();
+        arrayAdapter = new ArrayAdapter<>(SuperAdmin.this,R.layout.listview1,R.id.listText1,plist);
+        l.setAdapter(arrayAdapter);
+        createNotificationChannel();
 
         toggleButton_user.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override

@@ -12,17 +12,27 @@ import android.widget.Toast;
 
 import com.google.zxing.Result;
 
+import e.shery.visiospark.api.RetrofitClient;
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
 
 public class QrReader extends AppCompatActivity implements ZXingScannerView.ResultHandler{
 
     private ZXingScannerView mScannerView;
+    String name,token,userId;
 
     @Override
     public void onCreate(Bundle state) {
         super.onCreate(state);
         mScannerView = new ZXingScannerView(this);   // Programmatically initialize the scanner view
         setContentView(mScannerView);                // Set the scanner view as the content view
+
+        Bundle bundle = getIntent().getExtras();
+        name = bundle.getString("name");
+        token = bundle.getString("token");
+        userId = bundle.getString("id");
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
                 == PackageManager.PERMISSION_DENIED){
@@ -44,13 +54,32 @@ public class QrReader extends AppCompatActivity implements ZXingScannerView.Resu
     }
 
     @Override
-    public void handleResult(Result rawResult) {
+    public void handleResult(final Result rawResult) {
         // Do something with the result here
 //         Log.v("tag", rawResult.getText()); // Prints scan results
 //         Log.v("tag", rawResult.getBarcodeFormat().toString()); // Prints the scan format (qrcode, pdf417 etc.)
 
-        showMessage("VisioSpark",rawResult.getText());
+//        showMessage("VisioSpark",rawResult.getText());
 //        onBackPressed();
+        String result = rawResult.getText().toString().trim();
+
+        Call<ResponseBody> call = RetrofitClient
+                .getInstance()
+                .getApi()
+                .food_token(result,"application/json","Bearer "+token);
+
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
+
+//                    showMessage("VisioSpark",response.toString());
+                Toast.makeText(QrReader.this,response.toString(), Toast.LENGTH_LONG).show();
+            }
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Toast.makeText(QrReader.this,t.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
 
         // If you would like to resume scanning, call this method below:
         mScannerView.resumeCameraPreview(this);

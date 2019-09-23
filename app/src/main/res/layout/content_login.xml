@@ -24,10 +24,10 @@
         android:id="@+id/eventdetail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="75dp"
         android:fontFamily="sans-serif-medium"
         android:text="Event Detail's"
-        android:textColor="@color/white"
+        android:textColor="@color/black"
         android:textAlignment="center"
         android:textSize="30sp"
         android:visibility="gone"/>
@@ -38,6 +38,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
+        android:layout_marginBottom="50dp"
         android:textAlignment="center"
         android:visibility="gone" />
 
@@ -52,10 +53,10 @@
             android:id="@+id/t1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="75dp"
             android:fontFamily="sans-serif-medium"
             android:text="Event Registration"
-            android:textColor="@color/white"
+            android:textColor="@color/black"
             android:textAlignment="center"
             android:textSize="30sp" />
 
@@ -268,10 +269,10 @@
             android:id="@+id/t2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="75dp"
             android:fontFamily="sans-serif-medium"
             android:text="Registered Events"
-            android:textColor="@color/white"
+            android:textColor="@color/black"
             android:textAlignment="center"
             android:textSize="30sp" />
 
@@ -333,10 +334,10 @@
             android:id="@+id/t_acco"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="75dp"
             android:fontFamily="sans-serif-medium"
             android:text="Hotel Facilitation"
-            android:textColor="@color/white"
+            android:textColor="@color/black"
             android:textAlignment="center"
             android:textSize="30sp" />
 
@@ -375,7 +376,7 @@
             android:layout_below="@id/toggle_acco"
             android:fontFamily="sans-serif-medium"
             android:text="Link's of Hotels :"
-            android:textColor="@color/white"
+            android:textColor="@color/black"
             android:textAlignment="center"
             android:textSize="30sp" />
 

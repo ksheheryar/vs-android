@@ -27,7 +27,8 @@ public interface Api {
             @Field("email") String email,
             @Field("password") String password,
             @Field("c_password") String password1,
-            @Field("department_id") String id
+            @Field("department_id") String id,
+            @Field("contact") String contact
     );
 
 //    @FormUrlEncoded
@@ -101,6 +102,14 @@ public interface Api {
     Call<ResponseBody> admin_setStatus(
             @Field("type") String type,
             @Field("value") String value,
+            @Header("Active") String Active,
+            @Header("Authorization") String Auth
+    );
+
+    @FormUrlEncoded
+    @POST("foodToken")
+    Call<ResponseBody> food_token(
+            @Field("qr_code") String qrCode,
             @Header("Active") String Active,
             @Header("Authorization") String Auth
     );
