@@ -25,6 +25,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -177,6 +178,8 @@ public class SuperAdmin extends AppCompatActivity
                 String s = l.getItemAtPosition(position).toString().trim();
                 String[] s1 = s.split(":");
 
+                email_detail(s1[2].trim());
+
                 Toast.makeText(getApplicationContext(),s1[2].trim(),Toast.LENGTH_LONG).show();
             }
         });
@@ -253,6 +256,9 @@ public class SuperAdmin extends AppCompatActivity
     public void pass_reset(){
         LayoutInflater mDialogView = this.getLayoutInflater();
         View dialog_view = mDialogView.inflate(R.layout.passreset_dialog,null);
+        final EditText cpass = dialog_view.findViewById(R.id.c_pass);
+        final EditText npass = dialog_view.findViewById(R.id.n_pass);
+        final EditText cnpass = dialog_view.findViewById(R.id.cn_pass);
 
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(this)
                 .setView(dialog_view)
@@ -263,7 +269,18 @@ public class SuperAdmin extends AppCompatActivity
         mBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Toast.makeText(getApplicationContext(),"Clicked.!!!",Toast.LENGTH_LONG).show();
+
+                String cpassword,npassword,cnfpassword;
+                cpassword = cpass.getText().toString().trim();
+                npassword = npass.getText().toString().trim();
+                cnfpassword = cnpass.getText().toString().trim();
+
+                if (npassword.equals(cnfpassword)){
+                    passReset(cpassword,npassword,cnfpassword);
+                }
+                else {
+                    Toast.makeText(getApplicationContext(),"Password Not Matched",Toast.LENGTH_LONG).show();
+                }
             }
         });
         mBuilder.show();
@@ -278,7 +295,42 @@ public class SuperAdmin extends AppCompatActivity
 //            val password = mDialogView.dialogPasswEt.text.toString()
 //            //set the input text in TextView
 //            mainInfoTv.setText("Name:"+ name +"\nEmail: "+ email +"\nPassword: "+ password)
+    }
 
+    private void passReset(String cp,String np,String cnp){
+
+        Call<ResponseBody> call = RetrofitClient
+                .getInstance()
+                .getApi()
+                .pass_reset(userId,cp,np,cnp,"application/json","Bearer "+token);
+
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
+                String s = null;
+                try {
+                    s = response.body().string();
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+
+                if (s!=null){
+                    try {
+                        JSONObject jsonObject = new JSONObject(s);
+                        String passResult = jsonObject.getString("message");
+
+                        Toast.makeText(getApplicationContext(),passResult,Toast.LENGTH_LONG).show();
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+            }
+        });
     }
 
     private void check_dataChange(){
@@ -453,6 +505,67 @@ public class SuperAdmin extends AppCompatActivity
         });
     }
 
+    private void email_detail(String emailAddress){
+
+        Call<ResponseBody> call = RetrofitClient
+                .getInstance()
+                .getApi()
+                .admin_emailDetail(emailAddress,"application/json","Bearer "+token);
+
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
+                String s = null;
+                try {
+                    s = response.body().string();
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+
+                if (s!=null){
+                    try {
+                        JSONObject jsonObject = new JSONObject(s);
+                        JSONObject jsonObject1 = jsonObject.getJSONObject("contactPerson");
+                        int event_data = jsonObject.getInt("teamsCount");
+                        int member_data = jsonObject.getInt("membersCount");
+
+                        String personName,personEmail,personContact,hostel=null,pay,fee=null;
+                        Integer hotel;
+
+                        personName = jsonObject1.getString("name");
+                        personEmail = jsonObject1.getString("email");
+                        personContact = jsonObject1.getString("contact");
+                        hotel = jsonObject1.getInt("book_hostel");
+//                        pay = jsonObject1.getString("payment");
+//
+//                        if (pay.equals(null)){
+//                            fee = "Not Paid.!!";
+//                        }
+//                        else {
+//                            fee = "Paid.!!";
+//                        }
+
+                        if (hotel == 0){
+                            hostel = "Not Required.!!!";
+                        }
+                        else if (hotel == 1){
+                            hostel = "Required.!!!";
+                        }
+
+                        showMessage("VisioSpark","\nName : "+personName+"\nContact : "+personContact+"\nEmail : "+personEmail+"\n\nRegistered Team's : "+event_data+"\nRegistered Participant's : "+member_data+"\nHotel : "+hostel);
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+            }
+        });
+    }
+
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -552,5 +665,14 @@ public class SuperAdmin extends AppCompatActivity
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    public void showMessage(String title,String message){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setCancelable(false);
+        builder.setTitle(title);
+        builder.setMessage(message);
+        builder.setPositiveButton("OK",null);
+        builder.show();
     }
 }

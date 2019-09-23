@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
         PreferenceData data = new PreferenceData();
 
         if (data.getEmail(MainActivity.this) != null ){
-            if (data.getUSERTYPE(MainActivity.this).equals("superadministrator")){
+            if (data.getUSERTYPE(MainActivity.this).equals("hod")){
                 Intent intent = new Intent(MainActivity.this, SuperAdmin.class);
 
                 Bundle user = new Bundle();

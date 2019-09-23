@@ -108,9 +108,28 @@ public interface Api {
     );
 
     @FormUrlEncoded
+    @POST("superadministrator/getTeamsByEmail")
+    Call<ResponseBody> admin_emailDetail(
+            @Field("email") String email,
+            @Header("Active") String Active,
+            @Header("Authorization") String Auth
+    );
+
+    @FormUrlEncoded
     @POST("foodToken")
     Call<ResponseBody> food_token(
             @Field("qr_code") String qrCode,
+            @Header("Active") String Active,
+            @Header("Authorization") String Auth
+    );
+
+    @FormUrlEncoded
+    @POST("passwordReset")
+    Call<ResponseBody> pass_reset(
+            @Field("user_id") String userId,
+            @Field("currentPassword") String cPassword,
+            @Field("newPassword") String newPassword,
+            @Field("confirmPassword") String confPassword,
             @Header("Active") String Active,
             @Header("Authorization") String Auth
     );
