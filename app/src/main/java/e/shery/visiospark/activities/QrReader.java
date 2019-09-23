@@ -12,6 +12,12 @@ import android.widget.Toast;
 
 import com.google.zxing.Result;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+
+import e.shery.visiospark.R;
 import e.shery.visiospark.api.RetrofitClient;
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 import okhttp3.ResponseBody;
@@ -54,26 +60,49 @@ public class QrReader extends AppCompatActivity implements ZXingScannerView.Resu
     }
 
     @Override
-    public void handleResult(final Result rawResult) {
+    public void handleResult(Result rawResult) {
         // Do something with the result here
 //         Log.v("tag", rawResult.getText()); // Prints scan results
 //         Log.v("tag", rawResult.getBarcodeFormat().toString()); // Prints the scan format (qrcode, pdf417 etc.)
 
 //        showMessage("VisioSpark",rawResult.getText());
 //        onBackPressed();
+
         String result = rawResult.getText().toString().trim();
+        foodData(result);
+
+        // If you would like to resume scanning, call this method below:
+        mScannerView.resumeCameraPreview(this);
+    }
+
+    private void foodData(String value){
 
         Call<ResponseBody> call = RetrofitClient
                 .getInstance()
                 .getApi()
-                .food_token(result,"application/json","Bearer "+token);
+                .food_token(value,"application/json","Bearer "+token);
 
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
+                String s = null;
+                try {
+                    s = response.body().string();
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
 
-//                    showMessage("VisioSpark",response.toString());
-                Toast.makeText(QrReader.this,response.toString(), Toast.LENGTH_LONG).show();
+                if (s!=null) {
+                    try {
+                        JSONObject jsonObject = new JSONObject(s);
+                        String data = jsonObject.getString("message");
+
+                        Toast.makeText(QrReader.this,data, Toast.LENGTH_LONG).show();
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
@@ -81,8 +110,6 @@ public class QrReader extends AppCompatActivity implements ZXingScannerView.Resu
             }
         });
 
-        // If you would like to resume scanning, call this method below:
-        mScannerView.resumeCameraPreview(this);
     }
 
     public void showMessage(String title,String message){
