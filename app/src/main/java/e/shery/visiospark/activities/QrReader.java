@@ -97,7 +97,7 @@ public class QrReader extends AppCompatActivity implements ZXingScannerView.Resu
                         JSONObject jsonObject = new JSONObject(s);
                         String data = jsonObject.getString("message");
 
-                        Toast.makeText(QrReader.this,data, Toast.LENGTH_LONG).show();
+                        showMessage("VisioSpark",data);
 
                     } catch (JSONException e) {
                         e.printStackTrace();

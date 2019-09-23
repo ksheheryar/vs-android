@@ -28,7 +28,8 @@ public interface Api {
             @Field("password") String password,
             @Field("c_password") String password1,
             @Field("department_id") String id,
-            @Field("contact") String contact
+            @Field("contact") String contact,
+            @Field("contact_person") String personName
     );
 
 //    @FormUrlEncoded

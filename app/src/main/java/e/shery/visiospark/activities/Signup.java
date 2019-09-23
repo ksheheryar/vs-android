@@ -35,7 +35,7 @@ public class Signup extends AppCompatActivity {
     Spinner s1,s2;
     Button reg;
     TextView t;
-    EditText email,num,pass,pass1;
+    EditText email,num,pass,pass1,personName;
     ArrayList<String> departments,universities;
 
     @Override
@@ -51,6 +51,7 @@ public class Signup extends AppCompatActivity {
         num = findViewById(R.id.new_num);
         pass = findViewById(R.id.pass);
         pass1 = findViewById(R.id.pass1);
+        personName = findViewById(R.id.new_name);
         departments = new ArrayList<>();
         universities = new ArrayList<>();
 
@@ -62,12 +63,18 @@ public class Signup extends AppCompatActivity {
                 String p = pass.getText().toString().trim();
                 String p1 = pass1.getText().toString().trim();
                 String phone = num.getText().toString().trim();
+                String person = personName.getText().toString().trim();
 
                 if (Email.isEmpty()) {
                     email.setError("Email is required");
 //                    pass.setError("Password required");
 //                    pass1.setError("Password required");
                     email.requestFocus();
+                    return;
+                }
+                else if (person.isEmpty()) {
+                    personName.setError("Phone Number is required");
+                    personName.requestFocus();
                     return;
                 }
                 else if (phone.isEmpty()) {
@@ -138,7 +145,7 @@ public class Signup extends AppCompatActivity {
         Call<ResponseBody> call = RetrofitClient
                 .getInstance()
                 .getApi()
-                .Register(uniName,email.getText().toString().trim(),pass.getText().toString().trim(),pass1.getText().toString().trim(),dep,num.getText().toString().trim());
+                .Register(uniName,email.getText().toString().trim(),pass.getText().toString().trim(),pass1.getText().toString().trim(),dep,num.getText().toString().trim(),personName.getText().toString().trim());
 
         call.enqueue(new Callback<ResponseBody>() {
             @Override

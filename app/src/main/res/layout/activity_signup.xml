@@ -101,24 +101,24 @@
                         android:paddingRight="15dp" />
 
                     <TextView
-                        android:id="@+id/temail"
+                        android:id="@+id/tname"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="sans-serif-light"
-                        android:text="Email Address"
+                        android:text="Contact Person"
                         android:textAllCaps="true"
                         android:textColor="@color/white"
                         android:textSize="15sp"
                         android:layout_marginTop="20dp"/>
 
                     <EditText
-                        android:id="@+id/new_email"
+                        android:id="@+id/new_name"
                         android:layout_width="match_parent"
                         android:layout_height="40dp"
                         android:layout_marginTop="5dp"
                         android:background="@drawable/et_bg"
                         android:fontFamily="sans-serif-light"
-                        android:hint="Email"
+                        android:hint="Name"
                         android:textAlignment="center"
                         android:paddingLeft="15dp"
                         android:paddingRight="15dp"
@@ -151,6 +151,32 @@
                         android:textColor="@color/white"
                         android:textSize="15sp"
                         android:inputType="phone"/>
+
+                    <TextView
+                        android:id="@+id/temail"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif-light"
+                        android:text="Email Address"
+                        android:textAllCaps="true"
+                        android:textColor="@color/white"
+                        android:textSize="15sp"
+                        android:layout_marginTop="20dp"/>
+
+                    <EditText
+                        android:id="@+id/new_email"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_marginTop="5dp"
+                        android:background="@drawable/et_bg"
+                        android:fontFamily="sans-serif-light"
+                        android:hint="Email"
+                        android:textAlignment="center"
+                        android:paddingLeft="15dp"
+                        android:paddingRight="15dp"
+                        android:textColor="@color/white"
+                        android:textSize="15sp"
+                        android:inputType="textEmailAddress"/>
 
                     <TextView
                         android:id="@+id/tpass"
