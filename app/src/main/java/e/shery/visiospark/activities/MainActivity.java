@@ -75,6 +75,18 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
                 finish();
             }
+            else if (data.getUSERTYPE(MainActivity.this).equals("event_head")){
+                Intent intent = new Intent(MainActivity.this, EventHead.class);
+
+                Bundle user = new Bundle();
+                user.putString("name",data.getNAME(MainActivity.this));
+                user.putString("token",data.getTOKEN(MainActivity.this));
+                user.putString("id",data.getID(MainActivity.this));
+                intent.putExtras(user);
+
+                startActivity(intent);
+                finish();
+            }
             else if (data.getUSERTYPE(MainActivity.this).equals("user")){
                 Intent intent = new Intent(MainActivity.this, LoginActivity.class);
 
@@ -214,6 +226,19 @@ public class MainActivity extends AppCompatActivity {
                                     }
                                     else if (r_name.equals("food_incharge")){
                                         Intent intent = new Intent(MainActivity.this,QrReader.class);
+
+                                        Bundle user = new Bundle();
+                                        user.putString("name",name);
+                                        user.putString("token",j);
+                                        user.putString("id",userId);
+                                        intent.putExtras(user);
+
+                                        MainActivity.this.startActivity(intent);
+                                        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                                        finish();
+                                    }
+                                    else if (r_name.equals("event_head")){
+                                        Intent intent = new Intent(MainActivity.this,EventHead.class);
 
                                         Bundle user = new Bundle();
                                         user.putString("name",name);

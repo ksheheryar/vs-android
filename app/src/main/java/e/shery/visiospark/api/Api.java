@@ -134,4 +134,12 @@ public interface Api {
             @Header("Authorization") String Auth
     );
 
+    @FormUrlEncoded
+    @POST("eventHead")
+    Call<ResponseBody> eventHead_data(
+            @Field("eventHeadId") String userId,
+            @Header("Active") String Active,
+            @Header("Authorization") String Auth
+    );
+
 }

@@ -1,5 +1,6 @@
 package e.shery.visiospark.activities;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -7,6 +8,8 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
+import android.support.v7.app.AlertDialog;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -18,24 +21,32 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import e.shery.visiospark.R;
+import e.shery.visiospark.api.RetrofitClient;
 import e.shery.visiospark.utilities.PreferenceData;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
 
 public class EventHead extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     boolean doubleBackToExitPressedOnce = false;
-    int count1=0;
     String name,token,userId;
     RelativeLayout r1,r2,r3,r4;
     Button b,logout;
@@ -63,11 +74,11 @@ public class EventHead extends AppCompatActivity
             @Override
             public void onClick(View v) {
 
-//                PreferenceData.saveEmail(null, SuperAdmin.this);
-//                PreferenceData.savePassword(null, SuperAdmin.this);
-//                PreferenceData.saveName(null, SuperAdmin.this);
-//                PreferenceData.saveTOKEN(null, SuperAdmin.this);
-//                PreferenceData.saveID(null, SuperAdmin.this);
+                PreferenceData.saveEmail(null, EventHead.this);
+                PreferenceData.savePassword(null, EventHead.this);
+                PreferenceData.saveName(null, EventHead.this);
+                PreferenceData.saveTOKEN(null, EventHead.this);
+                PreferenceData.saveID(null, EventHead.this);
 
                 Intent intent = new Intent(EventHead.this,MainActivity.class);
                 startActivity(intent);
@@ -81,6 +92,19 @@ public class EventHead extends AppCompatActivity
         View headview = navigationView.getHeaderView(0);
         userName = headview.findViewById(R.id.e_user_Name);
 
+        Bundle bundle = getIntent().getExtras();
+        name = bundle.getString("name");
+        token = bundle.getString("token");
+        userId = bundle.getString("id");
+        userName.setText(name);
+
+        b.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pass_reset();
+            }
+        });
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -92,6 +116,75 @@ public class EventHead extends AppCompatActivity
         toggle.syncState();
 
         navigationView.setNavigationItemSelectedListener(this);
+    }
+
+    public void pass_reset(){
+        LayoutInflater mDialogView = this.getLayoutInflater();
+        View dialog_view = mDialogView.inflate(R.layout.passreset_dialog,null);
+        final EditText cpass = dialog_view.findViewById(R.id.c_pass);
+        final EditText npass = dialog_view.findViewById(R.id.n_pass);
+        final EditText cnpass = dialog_view.findViewById(R.id.cn_pass);
+
+        AlertDialog.Builder mBuilder = new AlertDialog.Builder(this)
+                .setView(dialog_view)
+                .setTitle("Change Password");
+
+        mBuilder.setCancelable(false);
+        mBuilder.setNegativeButton("Cancel",null);
+        mBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                String cpassword,npassword,cnfpassword;
+                cpassword = cpass.getText().toString().trim();
+                npassword = npass.getText().toString().trim();
+                cnfpassword = cnpass.getText().toString().trim();
+
+                if (npassword.equals(cnfpassword)){
+                    passReset(cpassword,npassword,cnfpassword);
+                }
+                else {
+                    Toast.makeText(getApplicationContext(),"Password Not Matched",Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+        mBuilder.show();
+    }
+
+    private void passReset(String cp,String np,String cnp){
+
+        Call<ResponseBody> call = RetrofitClient
+                .getInstance()
+                .getApi()
+                .pass_reset(userId,cp,np,cnp,"application/json","Bearer "+token);
+
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
+                String s = null;
+                try {
+                    s = response.body().string();
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+
+                if (s!=null){
+                    try {
+                        JSONObject jsonObject = new JSONObject(s);
+                        String passResult = jsonObject.getString("message");
+
+                        Toast.makeText(getApplicationContext(),passResult,Toast.LENGTH_LONG).show();
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+            }
+        });
     }
 
     @Override
@@ -135,11 +228,11 @@ public class EventHead extends AppCompatActivity
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
 
-//            PreferenceData.saveEmail(null, SuperAdmin.this);
-//            PreferenceData.savePassword(null, SuperAdmin.this);
-//            PreferenceData.saveName(null, SuperAdmin.this);
-//            PreferenceData.saveTOKEN(null, SuperAdmin.this);
-//            PreferenceData.saveID(null, SuperAdmin.this);
+            PreferenceData.saveEmail(null, EventHead.this);
+            PreferenceData.savePassword(null, EventHead.this);
+            PreferenceData.saveName(null, EventHead.this);
+            PreferenceData.saveTOKEN(null, EventHead.this);
+            PreferenceData.saveID(null, EventHead.this);
 
             Intent intent = new Intent(EventHead.this,MainActivity.class);
             startActivity(intent);
