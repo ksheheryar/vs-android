@@ -25,6 +25,58 @@
         android:layout_height="wrap_content"
         android:visibility="gone">
 
+        <RelativeLayout
+            android:id="@+id/e_rl11"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:background="@drawable/grad_bg">
+
+            <ImageView
+                android:layout_marginTop="48dp"
+                android:layout_marginLeft="15dp"
+                android:id="@+id/e_u_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/university"/>
+
+            <TextView
+                android:id="@+id/e_u_detail"
+                android:layout_marginTop="56dp"
+                android:layout_marginLeft="15dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:textAllCaps="true"
+                android:textSize="18sp"
+                android:fontFamily="sans-serif-light"
+                android:textColor="@color/black"
+                android:layout_toRightOf="@id/e_u_image"/>
+
+            <ImageView
+                android:id="@+id/e_vu_image"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="15dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/verfied_user"
+                android:layout_below="@id/e_u_image"/>
+
+            <TextView
+                android:id="@+id/e_vu_detail"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="23dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:textAllCaps="true"
+                android:textSize="18sp"
+                android:textColor="@color/black"
+                android:fontFamily="sans-serif-light"
+                android:layout_toRightOf="@id/e_vu_image"
+                android:layout_below="@id/e_u_image"/>
+
+        </RelativeLayout>
+
     </RelativeLayout>
 
     <RelativeLayout

@@ -9,6 +9,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -31,6 +32,7 @@ import android.widget.ToggleButton;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Console;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Timer;
@@ -47,10 +49,10 @@ public class EventHead extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     boolean doubleBackToExitPressedOnce = false;
-    String name,token,userId;
+    String name,token,userId=null;
     RelativeLayout r1,r2,r3,r4;
     Button b,logout;
-    TextView userName,t;
+    TextView userName,t,ruDetail,vuDetail;
     PreferenceData data;
 
     @Override
@@ -62,11 +64,24 @@ public class EventHead extends AppCompatActivity
         r2 = findViewById(R.id.e_rl2);
         r3 = findViewById(R.id.e_rl3);
         r4 = findViewById(R.id.e_rl4);
+        ruDetail = findViewById(R.id.e_u_detail);
+        vuDetail = findViewById(R.id.e_vu_detail);
         b = findViewById(R.id.e_passreset);
         logout = findViewById(R.id.e_logout);
         t = findViewById(R.id.e_welcomeText);
         data = new PreferenceData();
 
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        View headview = navigationView.getHeaderView(0);
+        userName = headview.findViewById(R.id.e_user_Name);
+
+        Bundle bundle = getIntent().getExtras();
+        name = bundle.getString("name");
+        token = bundle.getString("token");
+        userId = bundle.getString("id");
+        userName.setText(name);
+
+        status();
         t.setVisibility(View.VISIBLE);
         t.setText("Welcome...!!!");
 
@@ -88,16 +103,6 @@ public class EventHead extends AppCompatActivity
             }
         });
 
-        NavigationView navigationView = findViewById(R.id.nav_view);
-        View headview = navigationView.getHeaderView(0);
-        userName = headview.findViewById(R.id.e_user_Name);
-
-        Bundle bundle = getIntent().getExtras();
-        name = bundle.getString("name");
-        token = bundle.getString("token");
-        userId = bundle.getString("id");
-        userName.setText(name);
-
         b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -116,6 +121,53 @@ public class EventHead extends AppCompatActivity
         toggle.syncState();
 
         navigationView.setNavigationItemSelectedListener(this);
+    }
+
+    private void status(){
+        Call<ResponseBody> call = RetrofitClient
+                .getInstance()
+                .getApi()
+                .eventHead_data(userId,"application/json","Bearer "+token);
+
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
+                String s = null;
+                try {
+                    s = response.body().string();
+//                    Toast.makeText(getApplicationContext(),s,Toast.LENGTH_LONG).show();
+//                    showMessage("VisioSpark",s);
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+
+                if (s!=null){
+                    try {
+                        JSONObject jsonObject = new JSONObject(s);
+                        JSONObject jsonObject1 = jsonObject.getJSONObject("event");
+//                        JSONObject jsonObject2 = jsonObject.getJSONObject("registrationOnSpot");
+                        int uni_data = jsonObject.getInt("verifiedUsersCount");
+                        int vuni_data = jsonObject.getInt("notVerifiedUsersCount");
+                        String eventName = jsonObject1.getString("display_name");
+
+                        ruDetail.setText("Registered Universities  :  "+vuni_data);
+                        vuDetail.setText("Verified Universities  :  "+uni_data);
+
+//                        int state_user,state_onspot;
+//
+//                        state_user = jsonObject1.getInt("value");
+//                        state_onspot = jsonObject2.getInt("value");
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+            }
+        });
     }
 
     public void pass_reset(){
@@ -279,5 +331,14 @@ public class EventHead extends AppCompatActivity
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    public void showMessage(String title,String message){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setCancelable(false);
+        builder.setTitle(title);
+        builder.setMessage(message);
+        builder.setPositiveButton("OK",null);
+        builder.show();
     }
 }
