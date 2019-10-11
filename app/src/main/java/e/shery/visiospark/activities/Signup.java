@@ -65,21 +65,22 @@ public class Signup extends AppCompatActivity {
                 String phone = num.getText().toString().trim();
                 String person = personName.getText().toString().trim();
 
-                if (Email.isEmpty()) {
-                    email.setError("Email is required");
-//                    pass.setError("Password required");
-//                    pass1.setError("Password required");
-                    email.requestFocus();
-                    return;
-                }
-                else if (person.isEmpty()) {
-                    personName.setError("Phone Number is required");
+
+                if (person.isEmpty()) {
+                    personName.setError("Person Name is required");
                     personName.requestFocus();
                     return;
                 }
                 else if (phone.isEmpty()) {
                     num.setError("Phone Number is required");
                     num.requestFocus();
+                    return;
+                }
+                else if (Email.isEmpty()) {
+                    email.setError("Email is required");
+//                    pass.setError("Password required");
+//                    pass1.setError("Password required");
+                    email.requestFocus();
                     return;
                 }
                 else if (!Patterns.EMAIL_ADDRESS.matcher(Email).matches()) {

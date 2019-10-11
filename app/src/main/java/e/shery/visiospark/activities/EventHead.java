@@ -25,10 +25,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -50,10 +52,12 @@ public class EventHead extends AppCompatActivity
 
     boolean doubleBackToExitPressedOnce = false;
     String name,token,userId=null;
-    RelativeLayout r1,r2,r3,r4;
+    RelativeLayout r1,r2,r3;
     Button b,logout;
-    TextView userName,t,ruDetail,vuDetail;
+    TextView userName,t,ruDetail,vuDetail,detailData;
     PreferenceData data;
+    ArrayList<String> winner;
+    Spinner first;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,14 +65,16 @@ public class EventHead extends AppCompatActivity
         setContentView(R.layout.activity_event_head);
 
         r1 = findViewById(R.id.e_rl1);
-        r2 = findViewById(R.id.e_rl2);
-        r3 = findViewById(R.id.e_rl3);
-        r4 = findViewById(R.id.e_rl4);
+        r2 = findViewById(R.id.e_rl3);
+        r3 = findViewById(R.id.e_rl4);
         ruDetail = findViewById(R.id.e_u_detail);
         vuDetail = findViewById(R.id.e_vu_detail);
         b = findViewById(R.id.e_passreset);
         logout = findViewById(R.id.e_logout);
         t = findViewById(R.id.e_welcomeText);
+        detailData = findViewById(R.id.textdata);
+        winner = new ArrayList<>();
+        first = findViewById(R.id.fHolder);
         data = new PreferenceData();
 
         NavigationView navigationView = findViewById(R.id.nav_view);
@@ -145,7 +151,7 @@ public class EventHead extends AppCompatActivity
                     try {
                         JSONObject jsonObject = new JSONObject(s);
                         JSONObject jsonObject1 = jsonObject.getJSONObject("event");
-//                        JSONObject jsonObject2 = jsonObject.getJSONObject("registrationOnSpot");
+                        JSONArray jsonArray = jsonObject.getJSONArray("verifiedUsers");
                         int uni_data = jsonObject.getInt("verifiedUsersCount");
                         int vuni_data = jsonObject.getInt("notVerifiedUsersCount");
                         String eventName = jsonObject1.getString("display_name");
@@ -153,10 +159,19 @@ public class EventHead extends AppCompatActivity
                         ruDetail.setText("Registered Universities  :  "+vuni_data);
                         vuDetail.setText("Verified Universities  :  "+uni_data);
 
-//                        int state_user,state_onspot;
-//
-//                        state_user = jsonObject1.getInt("value");
-//                        state_onspot = jsonObject2.getInt("value");
+                        for (int i=0;i<jsonArray.length();i++){
+                            JSONObject member = jsonArray.getJSONObject(i);
+                            String name1 = member.getString("mem1");
+                            String name2 = member.getString("mem2");
+                            String name3 = member.getString("mem3");
+                            JSONObject jsonObject2 = member.getJSONObject("user");
+                            String nameUni = jsonObject2.getString("name");
+
+                            detailData.append(nameUni+"\n\nMem 1 : "+name1+"\nMem 2 : "+name2+"\nMem 3 : "+name3+"\n\n\n");
+                            winner.add(nameUni+"\n\nMem 1 : "+name1+"\nMem 2 : "+name2+"\nMem 3 : "+name3);
+                        }
+                        first.setAdapter(new ArrayAdapter<String>(EventHead.this,android.R.layout.simple_spinner_dropdown_item,winner));
+
 
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -306,25 +321,16 @@ public class EventHead extends AppCompatActivity
             r1.setVisibility(View.VISIBLE);
             r2.setVisibility(View.GONE);
             r3.setVisibility(View.GONE);
-            r4.setVisibility(View.GONE);
-            t.setVisibility(View.GONE);
-        } else if (id == R.id.nav_e_participant) {
-            r1.setVisibility(View.GONE);
-            r2.setVisibility(View.VISIBLE);
-            r3.setVisibility(View.GONE);
-            r4.setVisibility(View.GONE);
             t.setVisibility(View.GONE);
         } else if (id == R.id.nav_e_winner) {
             r1.setVisibility(View.GONE);
-            r2.setVisibility(View.GONE);
-            r3.setVisibility(View.VISIBLE);
-            r4.setVisibility(View.GONE);
+            r2.setVisibility(View.VISIBLE);
+            r3.setVisibility(View.GONE);
             t.setVisibility(View.GONE);
         } else if (id == R.id.nav_e_profile) {
             r1.setVisibility(View.GONE);
             r2.setVisibility(View.GONE);
-            r3.setVisibility(View.GONE);
-            r4.setVisibility(View.VISIBLE);
+            r3.setVisibility(View.VISIBLE);
             t.setVisibility(View.GONE);
         }
 

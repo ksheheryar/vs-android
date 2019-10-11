@@ -9,10 +9,6 @@
             android:icon="@drawable/ic_dashboard_black_24dp"
             android:title="Dashboard" />
         <item
-            android:id="@+id/nav_e_participant"
-            android:icon="@drawable/university"
-            android:title="Registered Participant's" />
-        <item
             android:id="@+id/nav_e_winner"
             android:icon="@drawable/ic_onspot"
             android:title="Winner" />

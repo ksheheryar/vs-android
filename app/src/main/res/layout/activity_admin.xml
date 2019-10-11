@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activities.Admin">
+
+    <TextView
+        android:id="@+id/dashText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-light"
+        android:text="Dash Board"
+        android:textAlignment="center"
+        android:textAllCaps="true"
+        android:textColor="@color/black"
+        android:textSize="25sp"
+        android:layout_marginTop="75dp"
+        android:background="@color/grey"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/dashText"
+        android:layout_marginTop="50dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btn1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="80dp"
+                    android:text="HEllo"
+                    android:layout_weight="1"/>
+
+                <Button
+                    android:id="@+id/btn2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="80dp"
+                    android:layout_weight="1"
+                    android:text="bsb"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btn3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="80dp"
+                    android:layout_weight="1"
+                    android:text="HEllo"/>
+
+                <Button
+                    android:id="@+id/btn4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="80dp"
+                    android:layout_weight="1"
+                    android:text="bsb"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btn5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="80dp"
+                    android:layout_weight="1"
+                    android:text="HEllo"/>
+
+                <Button
+                    android:id="@+id/btn6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="80dp"
+                    android:layout_weight="1"
+                    android:text="bsb"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ToggleButton
+                    android:id="@+id/toggle_user"
+                    android:layout_width="43dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/toggle_btn"
+                    android:text=""
+                    android:textOn=""
+                    android:textOff=""
+                    android:layout_marginTop="17dp"
+                    android:layout_marginLeft="15dp"/>
+
+                <TextView
+                    android:id="@+id/buser"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@id/toggle_user"
+                    android:layout_marginLeft="20dp"
+                    android:textAlignment="center"
+                    android:textAllCaps="true"
+                    android:textSize="15sp"
+                    android:fontFamily="sans-serif-light"
+                    android:layout_marginTop="25dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ToggleButton
+                    android:id="@+id/toggle_onspot"
+                    android:layout_width="43dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/toggle_btn"
+                    android:text=""
+                    android:textOn=""
+                    android:textOff=""
+                    android:layout_marginTop="17dp"
+                    android:layout_marginLeft="15dp"/>
+
+                <TextView
+                    android:id="@+id/bonspot"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@id/toggle_user"
+                    android:layout_marginLeft="20dp"
+                    android:textAlignment="center"
+                    android:textAllCaps="true"
+                    android:textSize="15sp"
+                    android:fontFamily="sans-serif-light"
+                    android:layout_marginTop="25dp"/>
+            </LinearLayout>
+        </LinearLayout>
+
+    </ScrollView>
+
+</RelativeLayout>

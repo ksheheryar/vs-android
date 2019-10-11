@@ -31,7 +31,7 @@
     <string name="title_activity_event_head">VisioSpark</string>
     <string name="title_activity_qr_reader">VisioSpark</string>
 
-    <string name="hotel">NOTE : Cost for 1 room is 1000/night\n       (4 Person/room)</string>
-    <string name="linkHotel">->     http://wah.comsats.edu.pk/\n\n->     https://cuonline.ciitwah.edu.pk:8089/</string>
+    <string name="hotel">NOTE : Cost for 1 room is 2500/night\n       (4 Person/room)</string>
+    <string name="linkHotel">->     http://wahpalace.com/</string>
 
 </resources>

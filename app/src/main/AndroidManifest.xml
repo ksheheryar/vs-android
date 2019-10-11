@@ -7,8 +7,9 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
 
-
-    <uses-feature android:name="android.hardware.camera" android:required="false" />
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
 
     <application
         android:allowBackup="true"
@@ -48,7 +49,8 @@
             android:label="@string/title_activity_event_head"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
-        <activity android:name=".activities.QrReader"></activity>
+        <activity android:name=".activities.QrReader" />
+        <activity android:name=".activities.Admin"></activity>
     </application>
 
 </manifest>
