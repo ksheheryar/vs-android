@@ -251,7 +251,7 @@
             android:textAllCaps="true"
             android:textColor="@color/black"
             android:textSize="25sp"
-            android:layout_marginTop="75dp"
+            android:layout_marginTop="0dp"
             android:background="@color/grey"
             android:textStyle="bold"/>
 
@@ -261,7 +261,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Change Password"
-            android:layout_marginTop="80dp"
+            android:layout_marginTop="50dp"
             android:textAlignment="center"
             android:background="@drawable/btn_black"
             android:fontFamily="sans-serif"
@@ -312,6 +312,34 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="50dp"
             android:layout_below="@+id/admin_rp_list_text" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/admin_finance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/admin_finance_list_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-light"
+            android:text="Finance"
+            android:textAlignment="center"
+            android:textAllCaps="true"
+            android:textColor="@color/black"
+            android:textSize="25sp"
+            android:layout_marginTop="0dp"
+            android:background="@color/grey"/>
+
+        <ListView
+            android:id="@+id/admin_finance_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:layout_below="@+id/admin_finance_list_text" />
 
     </RelativeLayout>
 

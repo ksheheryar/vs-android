@@ -40,13 +40,13 @@ public class Admin extends AppCompatActivity {
     int count1 = 0;
     boolean doubleBackToExitPressedOnce = false;
     Button b1,b2,b3,b4,b5,b6,b7,passReset,logout;
-    TextView regToggleText,onSpotToggleText,onlineHeadText;
+    TextView regToggleText,onSpotToggleText,onlineHeadText,financeHeadText;
     ToggleButton regToggle,onSpotToggle;
     String name,token,userId;
-    RelativeLayout r1,r2,r3;
-    ArrayList plist;
-    ListView l;
-    ArrayAdapter<String> arrayAdapter;
+    RelativeLayout r1,r2,r3,r4;
+    ArrayList plist,unilist,paylist;
+    ListView l,l1;
+    ArrayAdapter<String> arrayAdapter,a1,a2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,8 +61,12 @@ public class Admin extends AppCompatActivity {
         b6 = findViewById(R.id.btn6);
         b7 = findViewById(R.id.btn7);
         l = findViewById(R.id.admin_rp_list);
+        l1 = findViewById(R.id.admin_finance_list);
         onlineHeadText = findViewById(R.id.admin_rp_list_text);
+        financeHeadText = findViewById(R.id.admin_finance_list_text);
         plist = new ArrayList<String>();
+        unilist = new ArrayList<String>();
+        paylist= new ArrayList<String>();
         regToggleText = findViewById(R.id.buser);
         onSpotToggleText = findViewById(R.id.bonspot);
         regToggle = findViewById(R.id.toggle_user);
@@ -72,6 +76,7 @@ public class Admin extends AppCompatActivity {
         r1 = findViewById(R.id.admin_dashboard);
         r2 = findViewById(R.id.admin_profile);
         r3 = findViewById(R.id.admin_onlineParticipant);
+        r4 = findViewById(R.id.admin_finance);
 
         Bundle bundle = getIntent().getExtras();
         name = bundle.getString("name");
@@ -81,6 +86,11 @@ public class Admin extends AppCompatActivity {
         participantData();
         arrayAdapter = new ArrayAdapter<>(Admin.this,R.layout.listview1,R.id.listText1,plist);
         l.setAdapter(arrayAdapter);
+        financeData();
+        a1 = new ArrayAdapter<>(Admin.this,R.layout.listview2,R.id.listText2_1,unilist);
+        a2 = new ArrayAdapter<>(Admin.this,R.layout.listview2,R.id.listText2_2,paylist);
+        l1.setAdapter(a1);
+        l1.setAdapter(a2);
 
         b1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,6 +98,17 @@ public class Admin extends AppCompatActivity {
                 r1.setVisibility(View.GONE);
                 r2.setVisibility(View.GONE);
                 r3.setVisibility(View.VISIBLE);
+                r4.setVisibility(View.GONE);
+            }
+        });
+
+        b3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                r1.setVisibility(View.GONE);
+                r2.setVisibility(View.GONE);
+                r3.setVisibility(View.GONE);
+                r4.setVisibility(View.VISIBLE);
             }
         });
 
@@ -97,6 +118,7 @@ public class Admin extends AppCompatActivity {
                 r1.setVisibility(View.GONE);
                 r2.setVisibility(View.VISIBLE);
                 r3.setVisibility(View.GONE);
+                r4.setVisibility(View.GONE);
             }
         });
 
@@ -183,6 +205,7 @@ public class Admin extends AppCompatActivity {
             r1.setVisibility(View.VISIBLE);
             r2.setVisibility(View.GONE);
             r3.setVisibility(View.GONE);
+            r4.setVisibility(View.GONE);
         }
         else {
             if (doubleBackToExitPressedOnce) {
@@ -236,7 +259,52 @@ public class Admin extends AppCompatActivity {
 
                             count1 = count1 + 1;
 
-                            plist.add("Name : "+name1+"\n"+"Email : "+email+"\n");
+                            plist.add(i+1+" : "+"Name : "+name1+"\n"+"Email : "+email+"\n");
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+            }
+        });
+    }
+
+    private void financeData(){
+
+        Call<ResponseBody> call = RetrofitClient
+                .getInstance()
+                .getApi()
+                .admin_finance("application/json","Bearer "+token);
+
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
+                String s = null;
+                try {
+                    s = response.body().string();
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+
+                if (s!=null){
+                    try {
+                        JSONObject jsonObject = new JSONObject(s);
+                        JSONArray jsonArray = jsonObject.getJSONArray("users");
+
+                        String name1,fee;
+
+                        for (int i=0;i<jsonArray.length();i++){
+                            JSONObject e = jsonArray.getJSONObject(i);
+
+                            name1 = e.getString("name");
+                            fee = e.getString("payment");
+
+                            unilist.add(i+1+name1);
+                            paylist.add(fee);
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -387,6 +455,7 @@ public class Admin extends AppCompatActivity {
                         b4.setText("Concluded Event's\n("+eventConcluded+")");
                         b5.setText("Meal ("+mealObtain+"/"+mealTotal+")");
                         onlineHeadText.setText("Online/Onspot User's  ("+uni_data+")");
+                        financeHeadText.setText("Finance  ("+pay+")");
 
                         int state_user,state_onspot;
 

@@ -98,6 +98,12 @@ public interface Api {
             @Header("Authorization") String Auth
     );
 
+    @POST("superadministrator/finance")
+    Call<ResponseBody> admin_finance(
+            @Header("Active") String Active,
+            @Header("Authorization") String Auth
+    );
+
     @FormUrlEncoded
     @POST("superadministrator/setStatus")
     Call<ResponseBody> admin_setStatus(
