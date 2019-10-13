@@ -53,7 +53,7 @@
                         android:textAllCaps="true"
                         android:textColor="@color/black"
                         android:textStyle="bold"
-                        android:background="@color/purple"
+                        android:background="@drawable/btngreen"
                         android:layout_marginBottom="5dp"
                         android:layout_marginLeft="5dp" />
 
@@ -68,7 +68,7 @@
                         android:textAllCaps="true"
                         android:textColor="@color/black"
                         android:textStyle="bold"
-                        android:background="@color/colorPrimaryDark"
+                        android:background="@drawable/btnblue"
                         android:layout_marginBottom="5dp"
                         android:layout_marginLeft="5dp"
                         android:layout_marginRight="5dp"/>
@@ -91,7 +91,7 @@
                         android:textAllCaps="true"
                         android:textColor="@color/black"
                         android:textStyle="bold"
-                        android:background="@color/colorPrimaryDark"
+                        android:background="@drawable/btnblue"
                         android:layout_marginBottom="5dp"
                         android:layout_marginLeft="5dp" />
 
@@ -106,7 +106,7 @@
                         android:textAllCaps="true"
                         android:textColor="@color/black"
                         android:textStyle="bold"
-                        android:background="@color/purple"
+                        android:background="@drawable/btngreen"
                         android:layout_marginBottom="5dp"
                         android:layout_marginLeft="5dp"
                         android:layout_marginRight="5dp"/>
@@ -125,7 +125,7 @@
                         android:layout_marginBottom="5dp"
                         android:layout_marginLeft="5dp"
                         android:layout_weight="1"
-                        android:background="@color/purple"
+                        android:background="@drawable/btngreen"
                         android:fontFamily="sans-serif"
                         android:text="Meal (0\0)"
                         android:textAlignment="center"
@@ -144,7 +144,7 @@
                         android:textAllCaps="true"
                         android:textColor="@color/black"
                         android:textStyle="bold"
-                        android:background="@color/colorPrimaryDark"
+                        android:background="@drawable/btnblue"
                         android:layout_marginBottom="5dp"
                         android:layout_marginLeft="5dp"
                         android:layout_marginRight="5dp"/>
@@ -167,7 +167,7 @@
                         android:fontFamily="sans-serif"
                         android:textAllCaps="true"
                         android:textColor="@color/black"
-                        android:background="@color/purple"
+                        android:background="@drawable/btngreen"
                         android:layout_marginBottom="5dp"
                         android:layout_marginLeft="5dp"
                         android:layout_marginRight="5dp"/>
@@ -300,6 +300,7 @@
             android:fontFamily="sans-serif-light"
             android:text="Online/OnSpot User's"
             android:textAlignment="center"
+            android:textStyle="bold"
             android:textAllCaps="true"
             android:textColor="@color/black"
             android:textSize="25sp"
@@ -311,7 +312,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="50dp"
-            android:layout_below="@+id/admin_rp_list_text" />
+            android:layout_marginLeft="5dp"
+            android:layout_below="@+id/admin_rp_list_text"
+            android:divider="@color/colorPrimaryDark"
+            android:dividerHeight="4px"/>
 
     </RelativeLayout>
 
@@ -327,6 +331,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-light"
             android:text="Finance"
+            android:textStyle="bold"
             android:textAlignment="center"
             android:textAllCaps="true"
             android:textColor="@color/black"
@@ -334,12 +339,54 @@
             android:layout_marginTop="0dp"
             android:background="@color/grey"/>
 
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="50dp">
+
+            <TextView
+                android:id="@+id/admin_finance_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="50dp"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:layout_marginLeft="5dp"
+                android:layout_below="@+id/admin_finance_list_text" />
+
+        </ScrollView>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/admin_verifiedData"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/admin_verified_list_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-light"
+            android:text="Registered User's"
+            android:textAlignment="center"
+            android:textAllCaps="true"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:textSize="25sp"
+            android:layout_marginTop="0dp"
+            android:background="@color/grey"/>
+
         <ListView
-            android:id="@+id/admin_finance_list"
+            android:id="@+id/admin_Verified_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="50dp"
-            android:layout_below="@+id/admin_finance_list_text" />
+            android:layout_marginLeft="5dp"
+            android:layout_below="@+id/admin_verified_list_text"
+            android:divider="@color/purple"
+            android:dividerHeight="4px"/>
 
     </RelativeLayout>
 

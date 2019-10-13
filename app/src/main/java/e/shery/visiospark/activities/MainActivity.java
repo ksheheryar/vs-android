@@ -103,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
 
         handler.postDelayed(runnable,2000);
 
-        int images[] = {R.drawable.logo1,R.drawable.logo2,R.drawable.logo3,R.drawable.logo4};
+        int images[] = {R.drawable.askaribank,R.drawable.logo4,R.drawable.oppo,R.drawable.pchouse};
 
         for (int image: images){
             flipImages(image);

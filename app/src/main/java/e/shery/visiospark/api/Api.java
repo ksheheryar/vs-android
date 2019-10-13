@@ -92,6 +92,12 @@ public interface Api {
             @Header("Authorization") String Auth
     );
 
+    @POST("superadministrator/verifiedUsers")
+    Call<ResponseBody> Verified_participant(
+            @Header("Active") String Active,
+            @Header("Authorization") String Auth
+    );
+
     @POST("superadministrator/status")
     Call<ResponseBody> admin_status(
             @Header("Active") String Active,

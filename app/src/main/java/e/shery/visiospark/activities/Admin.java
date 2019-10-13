@@ -1,10 +1,14 @@
 package e.shery.visiospark.activities;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Handler;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -27,6 +31,8 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import e.shery.visiospark.R;
 import e.shery.visiospark.api.RetrofitClient;
@@ -35,18 +41,25 @@ import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 
+import static android.app.Notification.VISIBILITY_PUBLIC;
+
 public class Admin extends AppCompatActivity {
 
     int count1 = 0;
     boolean doubleBackToExitPressedOnce = false;
     Button b1,b2,b3,b4,b5,b6,b7,passReset,logout;
-    TextView regToggleText,onSpotToggleText,onlineHeadText,financeHeadText;
+    TextView regToggleText,onSpotToggleText,onlineHeadText,financeHeadText,finance,registerHeadText;
     ToggleButton regToggle,onSpotToggle;
     String name,token,userId;
-    RelativeLayout r1,r2,r3,r4;
-    ArrayList plist,unilist,paylist;
-    ListView l,l1;
+    RelativeLayout r1,r2,r3,r4,r5;
+    ArrayList plist,vplist;
+    ListView l,l1,l2;
     ArrayAdapter<String> arrayAdapter,a1,a2;
+    PreferenceData data;
+    NotificationManagerCompat notificationManager;
+    NotificationCompat.Builder builder;
+    Timer timerObj;
+    TimerTask timerTaskObj;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,22 +74,28 @@ public class Admin extends AppCompatActivity {
         b6 = findViewById(R.id.btn6);
         b7 = findViewById(R.id.btn7);
         l = findViewById(R.id.admin_rp_list);
-        l1 = findViewById(R.id.admin_finance_list);
+        l1 = findViewById(R.id.admin_Verified_list);
+//        l2 = findViewById(R.id.admin_finance_list);
+        registerHeadText = findViewById(R.id.admin_verified_list_text);
         onlineHeadText = findViewById(R.id.admin_rp_list_text);
         financeHeadText = findViewById(R.id.admin_finance_list_text);
         plist = new ArrayList<String>();
-        unilist = new ArrayList<String>();
-        paylist= new ArrayList<String>();
+        vplist = new ArrayList<String>();
+//        paylist= new ArrayList<String>();
+//        vuniName = new ArrayList<String>();
         regToggleText = findViewById(R.id.buser);
         onSpotToggleText = findViewById(R.id.bonspot);
         regToggle = findViewById(R.id.toggle_user);
         onSpotToggle = findViewById(R.id.toggle_onspot);
         passReset = findViewById(R.id.admin_passreset);
         logout = findViewById(R.id.admin_logout);
+        finance = findViewById(R.id.admin_finance_list);
         r1 = findViewById(R.id.admin_dashboard);
         r2 = findViewById(R.id.admin_profile);
         r3 = findViewById(R.id.admin_onlineParticipant);
         r4 = findViewById(R.id.admin_finance);
+        r5 = findViewById(R.id.admin_verifiedData);
+        data = new PreferenceData();
 
         Bundle bundle = getIntent().getExtras();
         name = bundle.getString("name");
@@ -87,10 +106,17 @@ public class Admin extends AppCompatActivity {
         arrayAdapter = new ArrayAdapter<>(Admin.this,R.layout.listview1,R.id.listText1,plist);
         l.setAdapter(arrayAdapter);
         financeData();
-        a1 = new ArrayAdapter<>(Admin.this,R.layout.listview2,R.id.listText2_1,unilist);
-        a2 = new ArrayAdapter<>(Admin.this,R.layout.listview2,R.id.listText2_2,paylist);
+//        a1 = new ArrayAdapter<>(Admin.this,R.layout.listview2,R.id.listText2_1,unilist);
+//        a2 = new ArrayAdapter<>(Admin.this,R.layout.listview2,R.id.listText2_2,paylist);
+//        l1.setAdapter(a1);
+//        l1.setAdapter(a2);
+        VerifiedParticipantData();
+        a1 = new ArrayAdapter<>(Admin.this,R.layout.listview2,R.id.listText2,vplist);
         l1.setAdapter(a1);
-        l1.setAdapter(a2);
+//        listview lView= new listview(Admin.this,vuniName,paylist);
+//        l2.setAdapter(lView);
+
+        createNotificationChannel();
 
         b1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -99,6 +125,18 @@ public class Admin extends AppCompatActivity {
                 r2.setVisibility(View.GONE);
                 r3.setVisibility(View.VISIBLE);
                 r4.setVisibility(View.GONE);
+                r5.setVisibility(View.GONE);
+            }
+        });
+
+        b2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                r1.setVisibility(View.GONE);
+                r2.setVisibility(View.GONE);
+                r3.setVisibility(View.GONE);
+                r4.setVisibility(View.GONE);
+                r5.setVisibility(View.VISIBLE);
             }
         });
 
@@ -109,6 +147,7 @@ public class Admin extends AppCompatActivity {
                 r2.setVisibility(View.GONE);
                 r3.setVisibility(View.GONE);
                 r4.setVisibility(View.VISIBLE);
+                r5.setVisibility(View.GONE);
             }
         });
 
@@ -119,8 +158,39 @@ public class Admin extends AppCompatActivity {
                 r2.setVisibility(View.VISIBLE);
                 r3.setVisibility(View.GONE);
                 r4.setVisibility(View.GONE);
+                r5.setVisibility(View.GONE);
             }
         });
+
+        notificationManager = NotificationManagerCompat.from(this);
+
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
+
+        builder = new NotificationCompat.Builder(this, "CHANNEL_ID")
+                .setSmallIcon(R.mipmap.ic_launcher3)
+                .setContentTitle("VisioSpark")
+                .setContentText("New Registration..!!")
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setCategory(NotificationCompat.CATEGORY_MESSAGE)
+                .setContentIntent(pendingIntent)
+                .setAutoCancel(true)
+                .setVisibility(VISIBILITY_PUBLIC)
+                .setBadgeIconType(NotificationCompat.BADGE_ICON_SMALL);
+
+        timerObj = new Timer();
+        timerTaskObj = new TimerTask() {
+            public void run() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        check_notification();
+                    }
+                });
+            }
+        };
+        timerObj.schedule(timerTaskObj, 0, 5000);
 
         regToggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -164,11 +234,11 @@ public class Admin extends AppCompatActivity {
                 PreferenceData.saveTOKEN(null, Admin.this);
                 PreferenceData.saveID(null, Admin.this);
 
-//                if(timerObj != null) {
-//                    timerObj.cancel();
-//                    timerObj.purge();
-////                    timerObj = null;
-//                }
+                if(timerObj != null) {
+                    timerObj.cancel();
+                    timerObj.purge();
+//                    timerObj = null;
+                }
 
                 Intent intent = new Intent(Admin.this,MainActivity.class);
                 startActivity(intent);
@@ -188,12 +258,75 @@ public class Admin extends AppCompatActivity {
         l.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
                 String s = l.getItemAtPosition(position).toString().trim();
                 String[] s1 = s.split(":");
 
 //                email_detail(s1[2].trim());
 
                 Toast.makeText(getApplicationContext(),s1[2].trim(),Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    private void createNotificationChannel() {
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = "VisioSpark";
+//            String description = "this channel 1";
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel("CHANNEL_ID", name, importance);
+//            channel.setDescription(description);
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+    }
+
+    private void check_notification(){
+        check_dataChange();
+
+        if (data.getCOUNT(Admin.this) < count1){
+            notificationManager.notify(1, builder.build());
+            PreferenceData.saveCOUNT(count1, Admin.this);
+//            Toast.makeText(getApplicationContext(),Integer.toString(data.getCOUNT(SuperAdmin.this)),Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private void check_dataChange(){
+
+        Call<ResponseBody> call = RetrofitClient
+                .getInstance()
+                .getApi()
+                .Registered_participant("application/json","Bearer "+token);
+
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
+                String s = null;
+                try {
+                    s = response.body().string();
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+
+                if (s!=null){
+                    try {
+                        JSONObject jsonObject = new JSONObject(s);
+                        JSONArray jsonArray = jsonObject.getJSONArray("users");
+
+                        count1 = jsonArray.length();
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+
             }
         });
     }
@@ -206,6 +339,7 @@ public class Admin extends AppCompatActivity {
             r2.setVisibility(View.GONE);
             r3.setVisibility(View.GONE);
             r4.setVisibility(View.GONE);
+            r5.setVisibility(View.GONE);
         }
         else {
             if (doubleBackToExitPressedOnce) {
@@ -259,7 +393,51 @@ public class Admin extends AppCompatActivity {
 
                             count1 = count1 + 1;
 
-                            plist.add(i+1+" : "+"Name : "+name1+"\n"+"Email : "+email+"\n");
+                            plist.add(i+1+" : "+name1+"\n"+"Email : "+email);
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+            }
+        });
+    }
+
+    private void VerifiedParticipantData(){
+
+        Call<ResponseBody> call = RetrofitClient
+                .getInstance()
+                .getApi()
+                .Verified_participant("application/json","Bearer "+token);
+
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
+                String s = null;
+                try {
+                    s = response.body().string();
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+
+                if (s!=null){
+                    try {
+                        JSONObject jsonObject = new JSONObject(s);
+                        JSONArray jsonArray = jsonObject.getJSONArray("users");
+
+                        String name1,email;
+
+                        for (int i=0;i<jsonArray.length();i++){
+                            JSONObject e = jsonArray.getJSONObject(i);
+
+                            name1 = e.getString("name");
+                            email = e.getString("email");
+
+                            vplist.add(i+1+" : "+name1+"\n"+"Email : "+email);
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -303,8 +481,11 @@ public class Admin extends AppCompatActivity {
                             name1 = e.getString("name");
                             fee = e.getString("payment");
 
-                            unilist.add(i+1+name1);
-                            paylist.add(fee);
+//                            vuniName[i] = name1;
+//                            paylist[i] = fee;
+//                            vuniName.add(i+1+name1);
+//                            paylist.add(fee);
+                            finance.append(i+1+" : "+name1+"    Rs."+fee+"\n");
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -451,11 +632,12 @@ public class Admin extends AppCompatActivity {
 
                         b1.setText("Online/Onspot User's\n("+uni_data+")");
                         b2.setText("Registered User's\n("+vuni_data+")");
-                        b3.setText("Finance\n("+pay+")");
+                        b3.setText("Finance\n(Rs."+pay+")");
                         b4.setText("Concluded Event's\n("+eventConcluded+")");
                         b5.setText("Meal ("+mealObtain+"/"+mealTotal+")");
                         onlineHeadText.setText("Online/Onspot User's  ("+uni_data+")");
-                        financeHeadText.setText("Finance  ("+pay+")");
+                        financeHeadText.setText("Finance  (Rs."+pay+")");
+                        registerHeadText.setText("Registered User's  ("+vuni_data+")");
 
                         int state_user,state_onspot;
 
