@@ -49,8 +49,12 @@
             android:label="@string/title_activity_event_head"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
-        <activity android:name=".activities.QrReader" />
-        <activity android:name=".activities.Admin"></activity>
+        <activity
+            android:name=".activities.QrReader"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".activities.Admin"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

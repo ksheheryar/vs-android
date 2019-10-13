@@ -10,16 +10,23 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import e.shery.visiospark.R;
 import e.shery.visiospark.api.RetrofitClient;
@@ -30,11 +37,16 @@ import retrofit2.Callback;
 
 public class Admin extends AppCompatActivity {
 
+    int count1 = 0;
     boolean doubleBackToExitPressedOnce = false;
     Button b1,b2,b3,b4,b5,b6,b7,passReset,logout;
+    TextView regToggleText,onSpotToggleText,onlineHeadText;
     ToggleButton regToggle,onSpotToggle;
     String name,token,userId;
-    RelativeLayout r1,r2;
+    RelativeLayout r1,r2,r3;
+    ArrayList plist;
+    ListView l;
+    ArrayAdapter<String> arrayAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,21 +60,75 @@ public class Admin extends AppCompatActivity {
         b5 = findViewById(R.id.btn5);
         b6 = findViewById(R.id.btn6);
         b7 = findViewById(R.id.btn7);
+        l = findViewById(R.id.admin_rp_list);
+        onlineHeadText = findViewById(R.id.admin_rp_list_text);
+        plist = new ArrayList<String>();
+        regToggleText = findViewById(R.id.buser);
+        onSpotToggleText = findViewById(R.id.bonspot);
+        regToggle = findViewById(R.id.toggle_user);
+        onSpotToggle = findViewById(R.id.toggle_onspot);
         passReset = findViewById(R.id.admin_passreset);
         logout = findViewById(R.id.admin_logout);
         r1 = findViewById(R.id.admin_dashboard);
         r2 = findViewById(R.id.admin_profile);
+        r3 = findViewById(R.id.admin_onlineParticipant);
 
         Bundle bundle = getIntent().getExtras();
         name = bundle.getString("name");
         token = bundle.getString("token");
         userId = bundle.getString("id");
+        status();
+        participantData();
+        arrayAdapter = new ArrayAdapter<>(Admin.this,R.layout.listview1,R.id.listText1,plist);
+        l.setAdapter(arrayAdapter);
+
+        b1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                r1.setVisibility(View.GONE);
+                r2.setVisibility(View.GONE);
+                r3.setVisibility(View.VISIBLE);
+            }
+        });
 
         b7.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 r1.setVisibility(View.GONE);
                 r2.setVisibility(View.VISIBLE);
+                r3.setVisibility(View.GONE);
+            }
+        });
+
+        regToggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    regToggleText.setText("Registration is unlocked");
+                    regToggleText.setTextColor(getResources().getColor(R.color.green));
+                    set_status("users","false");
+                }
+                else {
+                    regToggleText.setText("Registration is locked");
+                    regToggleText.setTextColor(getResources().getColor(R.color.red));
+                    set_status("users","true");
+                }
+            }
+        });
+
+        onSpotToggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    onSpotToggleText.setText("Registration is unlocked");
+                    onSpotToggleText.setTextColor(getResources().getColor(R.color.green));
+                    set_status("onspot","false");
+                }
+                else {
+                    set_status("onspot","true");
+                    onSpotToggleText.setText("Registration is locked");
+                    onSpotToggleText.setTextColor(getResources().getColor(R.color.red));
+                }
             }
         });
 
@@ -96,6 +162,18 @@ public class Admin extends AppCompatActivity {
                 pass_reset();
             }
         });
+
+        l.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String s = l.getItemAtPosition(position).toString().trim();
+                String[] s1 = s.split(":");
+
+//                email_detail(s1[2].trim());
+
+                Toast.makeText(getApplicationContext(),s1[2].trim(),Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     @Override
@@ -104,6 +182,7 @@ public class Admin extends AppCompatActivity {
         if (r1.getVisibility() != View.VISIBLE) {
             r1.setVisibility(View.VISIBLE);
             r2.setVisibility(View.GONE);
+            r3.setVisibility(View.GONE);
         }
         else {
             if (doubleBackToExitPressedOnce) {
@@ -122,6 +201,75 @@ public class Admin extends AppCompatActivity {
                 }
             }, 3000);
         }
+    }
+
+    private void participantData(){
+        count1 = 0;
+
+        Call<ResponseBody> call = RetrofitClient
+                .getInstance()
+                .getApi()
+                .Registered_participant("application/json","Bearer "+token);
+
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
+                String s = null;
+                try {
+                    s = response.body().string();
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+
+                if (s!=null){
+                    try {
+                        JSONObject jsonObject = new JSONObject(s);
+                        JSONArray jsonArray = jsonObject.getJSONArray("users");
+
+                        String name1,email;
+
+                        for (int i=0;i<jsonArray.length();i++){
+                            JSONObject e = jsonArray.getJSONObject(i);
+
+                            name1 = e.getString("name");
+                            email = e.getString("email");
+
+                            count1 = count1 + 1;
+
+                            plist.add("Name : "+name1+"\n"+"Email : "+email+"\n");
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+            }
+        });
+    }
+
+    private void set_status(String type,String value){
+
+        Call<ResponseBody> call = RetrofitClient
+                .getInstance()
+                .getApi()
+                .admin_setStatus(type,value,"application/json","Bearer "+token);
+
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
+
+                if (response.code() != 200)
+                    Toast.makeText(getApplicationContext(),"Network Error",Toast.LENGTH_LONG).show();
+            }
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Toast.makeText(Admin.this,t.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
+
     }
 
     public void pass_reset(){
@@ -191,6 +339,81 @@ public class Admin extends AppCompatActivity {
                         String passResult = jsonObject.getString("message");
 
                         Toast.makeText(getApplicationContext(),passResult,Toast.LENGTH_LONG).show();
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+            }
+        });
+    }
+
+    private void status(){
+
+        Call<ResponseBody> call = RetrofitClient
+                .getInstance()
+                .getApi()
+                .admin_status("application/json","Bearer "+token);
+
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
+                String s = null;
+                try {
+                    s = response.body().string();
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+
+                if (s!=null){
+                    try {
+                        JSONObject jsonObject = new JSONObject(s);
+                        JSONObject jsonObject1 = jsonObject.getJSONObject("registrationForUsers");
+                        JSONObject jsonObject2 = jsonObject.getJSONObject("registrationOnSpot");
+                        int uni_data = jsonObject.getInt("users");
+                        int vuni_data = jsonObject.getInt("vfdUsers");
+                        int pay = jsonObject.getInt("payments");
+                        int mealObtain = jsonObject.getInt("foodProvidedCount");
+                        int mealTotal = jsonObject.getInt("foodTotalCount");
+                        int eventConcluded = jsonObject.getInt("concludedEvents");
+
+                        b1.setText("Online/Onspot User's\n("+uni_data+")");
+                        b2.setText("Registered User's\n("+vuni_data+")");
+                        b3.setText("Finance\n("+pay+")");
+                        b4.setText("Concluded Event's\n("+eventConcluded+")");
+                        b5.setText("Meal ("+mealObtain+"/"+mealTotal+")");
+                        onlineHeadText.setText("Online/Onspot User's  ("+uni_data+")");
+
+                        int state_user,state_onspot;
+
+                        state_user = jsonObject1.getInt("value");
+                        state_onspot = jsonObject2.getInt("value");
+
+                        if (state_user == 0){
+                            regToggle.setChecked(true);
+                            regToggleText.setText("Registration is unlocked");
+                            regToggleText.setTextColor(getResources().getColor(R.color.green));
+                        }
+                        else if (state_user == 1){
+                            regToggle.setChecked(false);
+                            regToggleText.setText("Registration is locked");
+                            regToggleText.setTextColor(getResources().getColor(R.color.red));
+                        }
+
+                        if (state_onspot == 0){
+                            onSpotToggle.setChecked(true);
+                            onSpotToggleText.setText("Registration is unlocked");
+                            onSpotToggleText.setTextColor(getResources().getColor(R.color.green));
+                        }
+                        else if (state_onspot == 1){
+                            onSpotToggle.setChecked(false);
+                            onSpotToggleText.setText("Registration is locked");
+                            onSpotToggleText.setTextColor(getResources().getColor(R.color.red));
+                        }
 
                     } catch (JSONException e) {
                         e.printStackTrace();
