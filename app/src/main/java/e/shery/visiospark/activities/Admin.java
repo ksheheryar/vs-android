@@ -5,6 +5,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Handler;
 import android.support.v4.app.NotificationCompat;
@@ -12,6 +13,7 @@ import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -21,6 +23,8 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
@@ -48,11 +52,12 @@ public class Admin extends AppCompatActivity {
     int count1 = 0;
     boolean doubleBackToExitPressedOnce = false;
     Button b1,b2,b3,b4,b5,b6,b7,passReset,logout;
-    TextView regToggleText,onSpotToggleText,onlineHeadText,financeHeadText,finance,registerHeadText;
+    TextView regToggleText,onSpotToggleText,onlineHeadText,financeHeadText,registerHeadText;
     ToggleButton regToggle,onSpotToggle;
     String name,token,userId;
     RelativeLayout r1,r2,r3,r4,r5;
     ArrayList plist,vplist;
+    String paylist[],vuniName[];
     ListView l,l1,l2;
     ArrayAdapter<String> arrayAdapter,a1,a2;
     PreferenceData data;
@@ -75,21 +80,21 @@ public class Admin extends AppCompatActivity {
         b7 = findViewById(R.id.btn7);
         l = findViewById(R.id.admin_rp_list);
         l1 = findViewById(R.id.admin_Verified_list);
-//        l2 = findViewById(R.id.admin_finance_list);
+        l2 = findViewById(R.id.admin_finance_list);
         registerHeadText = findViewById(R.id.admin_verified_list_text);
         onlineHeadText = findViewById(R.id.admin_rp_list_text);
         financeHeadText = findViewById(R.id.admin_finance_list_text);
         plist = new ArrayList<String>();
         vplist = new ArrayList<String>();
-//        paylist= new ArrayList<String>();
-//        vuniName = new ArrayList<String>();
+        paylist = new String[100];
+        vuniName = new String[100];
         regToggleText = findViewById(R.id.buser);
         onSpotToggleText = findViewById(R.id.bonspot);
         regToggle = findViewById(R.id.toggle_user);
         onSpotToggle = findViewById(R.id.toggle_onspot);
         passReset = findViewById(R.id.admin_passreset);
         logout = findViewById(R.id.admin_logout);
-        finance = findViewById(R.id.admin_finance_list);
+
         r1 = findViewById(R.id.admin_dashboard);
         r2 = findViewById(R.id.admin_profile);
         r3 = findViewById(R.id.admin_onlineParticipant);
@@ -102,21 +107,11 @@ public class Admin extends AppCompatActivity {
         token = bundle.getString("token");
         userId = bundle.getString("id");
         status();
-        participantData();
-        arrayAdapter = new ArrayAdapter<>(Admin.this,R.layout.listview1,R.id.listText1,plist);
-        l.setAdapter(arrayAdapter);
         financeData();
-//        a1 = new ArrayAdapter<>(Admin.this,R.layout.listview2,R.id.listText2_1,unilist);
-//        a2 = new ArrayAdapter<>(Admin.this,R.layout.listview2,R.id.listText2_2,paylist);
-//        l1.setAdapter(a1);
-//        l1.setAdapter(a2);
+        participantData();
         VerifiedParticipantData();
-        a1 = new ArrayAdapter<>(Admin.this,R.layout.listview2,R.id.listText2,vplist);
-        l1.setAdapter(a1);
-//        listview lView= new listview(Admin.this,vuniName,paylist);
-//        l2.setAdapter(lView);
-
         createNotificationChannel();
+
 
         b1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -126,6 +121,8 @@ public class Admin extends AppCompatActivity {
                 r3.setVisibility(View.VISIBLE);
                 r4.setVisibility(View.GONE);
                 r5.setVisibility(View.GONE);
+                arrayAdapter = new ArrayAdapter<>(Admin.this,R.layout.listview1,R.id.listText1,plist);
+                l.setAdapter(arrayAdapter);
             }
         });
 
@@ -137,6 +134,8 @@ public class Admin extends AppCompatActivity {
                 r3.setVisibility(View.GONE);
                 r4.setVisibility(View.GONE);
                 r5.setVisibility(View.VISIBLE);
+                a1 = new ArrayAdapter<>(Admin.this,R.layout.listview2,R.id.listText2,vplist);
+                l1.setAdapter(a1);
             }
         });
 
@@ -148,6 +147,22 @@ public class Admin extends AppCompatActivity {
                 r3.setVisibility(View.GONE);
                 r4.setVisibility(View.VISIBLE);
                 r5.setVisibility(View.GONE);
+                listview lView= new listview(Admin.this,vuniName,paylist);
+                l2.setAdapter(lView);
+
+            }
+        });
+
+        b6.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(Admin.this,QrReader.class);
+                Bundle user = new Bundle();
+                user.putString("name",name);
+                user.putString("token",token);
+                user.putString("id",userId);
+                intent.putExtras(user);
+                Admin.this.startActivity(intent);
             }
         });
 
@@ -481,11 +496,39 @@ public class Admin extends AppCompatActivity {
                             name1 = e.getString("name");
                             fee = e.getString("payment");
 
-//                            vuniName[i] = name1;
-//                            paylist[i] = fee;
+                            vuniName[i] = i+1+" : "+name1;
+                            paylist[i] = " Rs. "+fee+"/.";
+
+
 //                            vuniName.add(i+1+name1);
 //                            paylist.add(fee);
-                            finance.append(i+1+" : "+name1+"\n     Rs."+fee+"/.\n\n");
+//                            finance.append(i+1+" : "+name1+"\n     Rs. "+fee+"/.\n\n");
+
+//                            TableRow row = new TableRow(Admin.this);
+//                            TableRow.LayoutParams layoutParams = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT,TableRow.LayoutParams.WRAP_CONTENT);
+//                            row.setLayoutParams(layoutParams);
+//                            TextView textView = new TextView(Admin.this);
+//                            TextView textView1 = new TextView(Admin.this);
+//                            textView.setText(i+1+" : "+name1);
+//                            textView1.setText("Rs. "+fee+"/.");
+//
+//                            textView.setGravity(Gravity.LEFT);
+//                            textView.setTextColor(getResources().getColor(R.color.black));
+//                            textView.setTypeface(null, Typeface.BOLD);
+//                            textView.setTextSize(15);
+//                            textView.setPadding(5,0,0,15);
+//                            textView1.setGravity(Gravity.RIGHT);
+//                            textView1.setTextColor(getResources().getColor(R.color.black));
+//                            textView1.setTypeface(null, Typeface.BOLD);
+//                            textView1.setTextSize(15);
+//                            textView1.setPadding(5,0,0,5);
+//
+//                            row.addView(textView);
+//                            row.addView(textView1);
+//
+//                            finance.addView(row,i);
+
+
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();

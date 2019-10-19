@@ -315,14 +315,14 @@
             android:layout_marginLeft="5dp"
             android:layout_below="@+id/admin_rp_list_text"
             android:divider="@color/colorPrimaryDark"
-            android:dividerHeight="4px"/>
+            android:dividerHeight="2px"/>
 
     </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/admin_finance"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:visibility="gone">
 
         <TextView
@@ -339,23 +339,15 @@
             android:layout_marginTop="0dp"
             android:background="@color/grey"/>
 
-        <ScrollView
+        <ListView
+            android:id="@+id/admin_finance_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="50dp">
-
-            <TextView
-                android:id="@+id/admin_finance_list"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="50dp"
-                android:textColor="@color/black"
-                android:textStyle="bold"
-                android:layout_marginLeft="5dp"
-                android:textSize="21dp"
-                android:layout_below="@+id/admin_finance_list_text" />
-
-        </ScrollView>
+            android:layout_marginTop="50dp"
+            android:layout_marginLeft="5dp"
+            android:divider="@color/black"
+            android:dividerHeight="2px"
+            android:layout_below="@+id/admin_finance_list_text" />
 
     </RelativeLayout>
 
@@ -387,7 +379,7 @@
             android:layout_marginLeft="5dp"
             android:layout_below="@+id/admin_verified_list_text"
             android:divider="@color/purple"
-            android:dividerHeight="4px"/>
+            android:dividerHeight="2px"/>
 
     </RelativeLayout>
 
