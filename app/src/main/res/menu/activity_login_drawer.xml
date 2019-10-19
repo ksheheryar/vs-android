@@ -6,24 +6,20 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_detail"
-            android:title="Event's Detail" />
+            android:title="Competitions Detail" />
         <item
             android:id="@+id/nav_register"
-            android:title="Register Event's" />
+            android:title="Register Competitions" />
         <item
             android:id="@+id/nav_accommodation"
             android:title="Hotel Accommodation" />
         <item
             android:id="@+id/nav_reg"
-            android:title="Registered Event's" />
+            android:title="Your Registration Summary" />
+        <item
+            android:id="@+id/nav_send"
+            android:title="Contact Us" />
     </group>
 
-    <item android:title="Communicate">
-        <menu>
-            <item
-                android:id="@+id/nav_send"
-                android:title="Contact Information" />
-        </menu>
-    </item>
 
 </menu>

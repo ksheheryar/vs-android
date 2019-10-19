@@ -66,7 +66,7 @@ public class LoginActivity extends AppCompatActivity
         jsonData();
 
         particpant = new String[3][3];
-        EventArray = new String[15][2];
+        EventArray = new String[25][2];
         t = findViewById(R.id.dat);
         t1 = findViewById(R.id.t_list);
         list = new ArrayList<String>();
@@ -146,7 +146,7 @@ public class LoginActivity extends AppCompatActivity
         b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                for (int i=0;i<15;i++){
+                for (int i=0;i<25;i++){
                     if (Sevent.equals(EventArray[i][0])){
                         eventId = EventArray[i][1];
                         if (mTeam == 3){
@@ -179,7 +179,7 @@ public class LoginActivity extends AppCompatActivity
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String S_event = String.valueOf(s1.getSelectedItem());
-                for (int i=0;i<15;i++){
+                for (int i=0;i<25;i++){
                     if (S_event.equals(EventArray[i][0])){
                         String i1 = EventArray[i][1];
                         t1.setText(" ");
@@ -248,6 +248,7 @@ public class LoginActivity extends AppCompatActivity
                         JSONArray jsonArray1 = jsonObject.getJSONArray("myTeams");
 
                         String e_id,m1,m2,m3,m4,m5;
+                        int j=1;
 
                         for (int i=0;i<jsonArray1.length();i++){
                             JSONObject ev = jsonArray1.getJSONObject(i);
@@ -256,12 +257,30 @@ public class LoginActivity extends AppCompatActivity
 
                             if (iid.equals(e_id)){
 
+                                t1.append("Team : "+j+"\n");
+                                j++;
+
                                 m1 = ev.getString("mem1");
                                 m2 = ev.getString("mem2");
                                 m3 = ev.getString("mem3");
                                 m4 = ev.getString("mem4");
                                 m5 = ev.getString("mem5");
-                                t1.append("Member 1 : "+m1+"\n"+"  Member 2 : "+m2+"\n"+"  Member 3 : "+m3+"\n"+"  Member 4 : "+m4+"\n"+"  Member 5 : "+m5+"\n\n");
+
+                                if (m1 != null && m2 == null && m3 == null && m4 == null && m5 == null){
+                                    t1.append("Member 1 : "+m1+"\n\n");
+                                }
+                                else if (m1 != null && m2 != null && m3 == null && m4 == null && m5 == null){
+                                    t1.append("Member 1 : "+m1+"\n"+"  Member 2 : "+m2+"\n\n");
+                                }
+                                else if (m1 != null && m2 != null && m3 != null && m4 == null && m5 == null){
+                                    t1.append("Member 1 : "+m1+"\n"+"  Member 2 : "+m2+"\n"+"  Member 3 : "+m3+"\n\n");
+                                }
+                                else if (m1 != null && m2 != null && m3 != null && m4 != null && m5 == null){
+                                    t1.append("Member 1 : "+m1+"\n"+"  Member 2 : "+m2+"\n"+"  Member 3 : "+m3+"\n"+"  Member 4 : "+m4+"\n\n");
+                                }
+                                else{
+                                    t1.append("Member 1 : "+m1+"\n"+"  Member 2 : "+m2+"\n"+"  Member 3 : "+m3+"\n"+"  Member 4 : "+m4+"\n"+"  Member 5 : "+m5+"\n\n");
+                                }
                             }
                         }
                     } catch (JSONException e) {
@@ -405,6 +424,7 @@ public class LoginActivity extends AppCompatActivity
 
                         int maxTeam,maxMem,fee;
                         String eid,name1 = null;
+                        int must = 0;
 
                         for (int i=0;i<jsonArray.length();i++){
                             JSONObject e = jsonArray.getJSONObject(i);
@@ -414,12 +434,30 @@ public class LoginActivity extends AppCompatActivity
                             maxTeam = e.getInt("max_teams");
                             maxMem = e.getInt("max_members");
                             fee = e.getInt("fees");
+                            must = e.getInt("is_must");
 
                             EventArray[i][0] = name1;
                             EventArray[i][1] = eid;
 
+                            if (must == 0)
+                            {
+                                if (maxMem == 1){
+                                    list.add(name1+"\n"+"Max Teams : "+maxTeam+"\n"+"  Max Member : "+maxMem+"\n"+"Fee : Rs. "+fee+"/participant");
+                                }
+                                else {
+                                    list.add(name1+"\n"+"Max Teams : "+maxTeam+"\n"+"  Max Members : "+maxMem+"\n"+"Fee : Rs. "+fee+"/participant");
+                                }
+                            }
+                            else
+                            {
+                                if (maxMem == 1){
+                                    list.add(name1+"\n"+"Max Teams : "+maxTeam+"\n"+"  Must Member : "+maxMem+"\n"+"Fee : Rs. "+fee+"/Team");
+                                }
+                                else{
+                                    list.add(name1+"\n"+"Max Teams : "+maxTeam+"\n"+"  Must Members : "+maxMem+"\n"+"Fee : Rs. "+fee+"/Team");
+                                }
+                            }
 
-                            list.add(name1+"\n"+"Max Team : "+maxTeam+"  Max Member : "+maxMem+"\n"+"Fees : "+fee);
                             event.add(name1);
                         }
                     } catch (JSONException e) {

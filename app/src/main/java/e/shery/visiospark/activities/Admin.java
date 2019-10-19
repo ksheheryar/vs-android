@@ -485,7 +485,7 @@ public class Admin extends AppCompatActivity {
 //                            paylist[i] = fee;
 //                            vuniName.add(i+1+name1);
 //                            paylist.add(fee);
-                            finance.append(i+1+" : "+name1+"    Rs."+fee+"\n");
+                            finance.append(i+1+" : "+name1+"\n     Rs."+fee+"/.\n\n");
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();

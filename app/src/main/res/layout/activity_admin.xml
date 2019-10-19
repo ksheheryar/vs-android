@@ -352,6 +352,7 @@
                 android:textColor="@color/black"
                 android:textStyle="bold"
                 android:layout_marginLeft="5dp"
+                android:textSize="21dp"
                 android:layout_below="@+id/admin_finance_list_text" />
 
         </ScrollView>
