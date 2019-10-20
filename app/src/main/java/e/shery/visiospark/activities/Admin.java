@@ -5,6 +5,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Handler;
@@ -35,12 +36,16 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import e.shery.visiospark.R;
 import e.shery.visiospark.api.RetrofitClient;
 import e.shery.visiospark.utilities.PreferenceData;
+import lecho.lib.hellocharts.model.PieChartData;
+import lecho.lib.hellocharts.model.SliceValue;
+import lecho.lib.hellocharts.view.PieChartView;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -61,6 +66,7 @@ public class Admin extends AppCompatActivity {
     ListView l,l1,l2;
     ArrayAdapter<String> arrayAdapter,a1,a2;
     PreferenceData data;
+    PieChartView pieChartView;
     NotificationManagerCompat notificationManager;
     NotificationCompat.Builder builder;
     Timer timerObj;
@@ -89,6 +95,7 @@ public class Admin extends AppCompatActivity {
         teamDetail = new ArrayList<String>();
         paylist = new String[100];
         vuniName = new String[100];
+        pieChartView = findViewById(R.id.pieChart);
         regToggleText = findViewById(R.id.buser);
         onSpotToggleText = findViewById(R.id.bonspot);
         regToggle = findViewById(R.id.toggle_user);
@@ -112,6 +119,19 @@ public class Admin extends AppCompatActivity {
         participantData();
         VerifiedParticipantData();
         createNotificationChannel();
+
+        List pieData = new ArrayList<>();
+        pieData.add(new SliceValue(18, getResources().getColor(R.color.green2)).setLabel("Speed Programming : 18"));
+        pieData.add(new SliceValue(10, getResources().getColor(R.color.blue2)).setLabel("IT Mushira : 10"));
+        pieData.add(new SliceValue(25, getResources().getColor(R.color.green1)).setLabel("Web Designing : 25"));
+        pieData.add(new SliceValue(20, getResources().getColor(R.color.design_default_color_primary)).setLabel("E Gaming : 20"));
+        pieData.add(new SliceValue(5, getResources().getColor(R.color.grey)).setLabel("ROBO Race : 5"));
+        pieData.add(new SliceValue(22, getResources().getColor(R.color.blue1)).setLabel("Logo Designing : 22"));
+
+        PieChartData pieChartData = new PieChartData(pieData);
+        pieChartData.setHasLabels(true).setValueLabelTextSize(10);
+//        pieChartData.setHasCenterCircle(true).setCenterText1("Competition Registration").setCenterText1FontSize(20).setCenterText1Color(Color.parseColor("#000000"));
+        pieChartView.setPieChartData(pieChartData);
 
 
         b1.setOnClickListener(new View.OnClickListener() {
@@ -298,7 +318,7 @@ public class Admin extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                String s = l.getItemAtPosition(position).toString().trim();
+                String s = l1.getItemAtPosition(position).toString().trim();
                 String[] s1 = s.split(":");
                 String email,uniName;
 

@@ -55,7 +55,9 @@
         <activity
             android:name=".activities.Admin"
             android:screenOrientation="portrait" />
-        <activity android:name=".activities.UserDetail"></activity>
+        <activity
+            android:name=".activities.UserDetail"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>
