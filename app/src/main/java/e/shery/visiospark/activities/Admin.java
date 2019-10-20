@@ -56,7 +56,7 @@ public class Admin extends AppCompatActivity {
     ToggleButton regToggle,onSpotToggle;
     String name,token,userId;
     RelativeLayout r1,r2,r3,r4,r5;
-    ArrayList plist,vplist;
+    ArrayList plist,vplist,teamDetail;
     String paylist[],vuniName[];
     ListView l,l1,l2;
     ArrayAdapter<String> arrayAdapter,a1,a2;
@@ -86,6 +86,7 @@ public class Admin extends AppCompatActivity {
         financeHeadText = findViewById(R.id.admin_finance_list_text);
         plist = new ArrayList<String>();
         vplist = new ArrayList<String>();
+        teamDetail = new ArrayList<String>();
         paylist = new String[100];
         vuniName = new String[100];
         regToggleText = findViewById(R.id.buser);
@@ -276,10 +277,43 @@ public class Admin extends AppCompatActivity {
 
                 String s = l.getItemAtPosition(position).toString().trim();
                 String[] s1 = s.split(":");
+                String email,uniName;
 
-//                email_detail(s1[2].trim());
+                email = s1[3].trim();
+                uniName = s1[1].trim();
 
-                Toast.makeText(getApplicationContext(),s1[2].trim(),Toast.LENGTH_LONG).show();
+                Intent intent=new Intent(Admin.this,UserDetail.class);
+                Bundle user = new Bundle();
+                user.putString("name",name);
+                user.putString("token",token);
+                user.putString("id",userId);
+                user.putString("email",email);
+                user.putString("uniName",uniName);
+                intent.putExtras(user);
+                Admin.this.startActivity(intent);
+            }
+        });
+
+        l1.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                String s = l.getItemAtPosition(position).toString().trim();
+                String[] s1 = s.split(":");
+                String email,uniName;
+
+                email = s1[3].trim();
+                uniName = s1[1].trim();
+
+                Intent intent=new Intent(Admin.this,UserDetail.class);
+                Bundle user = new Bundle();
+                user.putString("name",name);
+                user.putString("token",token);
+                user.putString("id",userId);
+                user.putString("email",email);
+                user.putString("uniName",uniName);
+                intent.putExtras(user);
+                Admin.this.startActivity(intent);
             }
         });
     }
@@ -408,7 +442,7 @@ public class Admin extends AppCompatActivity {
 
                             count1 = count1 + 1;
 
-                            plist.add(i+1+" : "+name1+"\n"+"Email : "+email);
+                            plist.add(i+1+" : "+name1+"\n"+"  : Email : "+email);
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -452,7 +486,7 @@ public class Admin extends AppCompatActivity {
                             name1 = e.getString("name");
                             email = e.getString("email");
 
-                            vplist.add(i+1+" : "+name1+"\n"+"Email : "+email);
+                            vplist.add(i+1+" : "+name1+"\n"+"  : Email : "+email);
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();

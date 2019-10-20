@@ -51,10 +51,11 @@
             android:theme="@style/AppTheme" />
         <activity
             android:name=".activities.QrReader"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activities.Admin"
             android:screenOrientation="portrait" />
+        <activity android:name=".activities.UserDetail"></activity>
     </application>
 
 </manifest>

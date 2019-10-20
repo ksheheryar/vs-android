@@ -65,7 +65,7 @@ public class LoginActivity extends AppCompatActivity
 
         jsonData();
 
-        particpant = new String[3][3];
+        particpant = new String[5][5];
         EventArray = new String[25][2];
         t = findViewById(R.id.dat);
         t1 = findViewById(R.id.t_list);
