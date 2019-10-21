@@ -266,20 +266,20 @@ public class LoginActivity extends AppCompatActivity
                                 m4 = ev.getString("mem4");
                                 m5 = ev.getString("mem5");
 
-                                if (m1 != null && m2 == null && m3 == null && m4 == null && m5 == null){
-                                    t1.append("Member 1 : "+m1+"\n\n");
+                                if (m1 != "null" && m2 == "null" && m3 == "null" && m4 == "null" && m5 == "null"){
+                                    t1.append("  Member 1 : "+m1+"\n\n");
                                 }
-                                else if (m1 != null && m2 != null && m3 == null && m4 == null && m5 == null){
-                                    t1.append("Member 1 : "+m1+"\n"+"  Member 2 : "+m2+"\n\n");
+                                else if (m1 != "null" && m2 != "null" && m3 == "null" && m4 == "null" && m5 == "null"){
+                                    t1.append("  Member 1 : "+m1+"\n"+"  Member 2 : "+m2+"\n\n");
                                 }
-                                else if (m1 != null && m2 != null && m3 != null && m4 == null && m5 == null){
-                                    t1.append("Member 1 : "+m1+"\n"+"  Member 2 : "+m2+"\n"+"  Member 3 : "+m3+"\n\n");
+                                else if (m1 != "null" && m2 != "null" && m3 != "null" && m4 == "null" && m5 == "null"){
+                                    t1.append("  Member 1 : "+m1+"\n"+"  Member 2 : "+m2+"\n"+"  Member 3 : "+m3+"\n\n");
                                 }
-                                else if (m1 != null && m2 != null && m3 != null && m4 != null && m5 == null){
-                                    t1.append("Member 1 : "+m1+"\n"+"  Member 2 : "+m2+"\n"+"  Member 3 : "+m3+"\n"+"  Member 4 : "+m4+"\n\n");
+                                else if (m1 != "null" && m2 != "null" && m3 != "null" && m4 != "null" && m5 == "null"){
+                                    t1.append("  Member 1 : "+m1+"\n"+"  Member 2 : "+m2+"\n"+"  Member 3 : "+m3+"\n"+"  Member 4 : "+m4+"\n\n");
                                 }
                                 else{
-                                    t1.append("Member 1 : "+m1+"\n"+"  Member 2 : "+m2+"\n"+"  Member 3 : "+m3+"\n"+"  Member 4 : "+m4+"\n"+"  Member 5 : "+m5+"\n\n");
+                                    t1.append("  Member 1 : "+m1+"\n"+"  Member 2 : "+m2+"\n"+"  Member 3 : "+m3+"\n"+"  Member 4 : "+m4+"\n"+"  Member 5 : "+m5+"\n\n");
                                 }
                             }
                         }

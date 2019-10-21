@@ -232,12 +232,12 @@ public class Admin extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                    regToggleText.setText("Registration is unlocked");
+                    regToggleText.setText("Online Registration is unlocked");
                     regToggleText.setTextColor(getResources().getColor(R.color.green));
                     set_status("users","false");
                 }
                 else {
-                    regToggleText.setText("Registration is locked");
+                    regToggleText.setText("Online Registration is locked");
                     regToggleText.setTextColor(getResources().getColor(R.color.red));
                     set_status("users","true");
                 }
@@ -248,13 +248,13 @@ public class Admin extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                    onSpotToggleText.setText("Registration is unlocked");
+                    onSpotToggleText.setText("OnSpot Registration is unlocked");
                     onSpotToggleText.setTextColor(getResources().getColor(R.color.green));
                     set_status("onspot","false");
                 }
                 else {
                     set_status("onspot","true");
-                    onSpotToggleText.setText("Registration is locked");
+                    onSpotToggleText.setText("OnSpot Registration is locked");
                     onSpotToggleText.setTextColor(getResources().getColor(R.color.red));
                 }
             }
@@ -742,23 +742,23 @@ public class Admin extends AppCompatActivity {
 
                         if (state_user == 0){
                             regToggle.setChecked(true);
-                            regToggleText.setText("Registration is unlocked");
+                            regToggleText.setText("Online Registration is unlocked");
                             regToggleText.setTextColor(getResources().getColor(R.color.green));
                         }
                         else if (state_user == 1){
                             regToggle.setChecked(false);
-                            regToggleText.setText("Registration is locked");
+                            regToggleText.setText("Online Registration is locked");
                             regToggleText.setTextColor(getResources().getColor(R.color.red));
                         }
 
                         if (state_onspot == 0){
                             onSpotToggle.setChecked(true);
-                            onSpotToggleText.setText("Registration is unlocked");
+                            onSpotToggleText.setText("OnSpot Registration is unlocked");
                             onSpotToggleText.setTextColor(getResources().getColor(R.color.green));
                         }
                         else if (state_onspot == 1){
                             onSpotToggle.setChecked(false);
-                            onSpotToggleText.setText("Registration is locked");
+                            onSpotToggleText.setText("OnSpot Registration is locked");
                             onSpotToggleText.setTextColor(getResources().getColor(R.color.red));
                         }
 

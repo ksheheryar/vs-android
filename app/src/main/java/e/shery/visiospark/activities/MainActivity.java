@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
                 finish();
             }
             else if (data.getUSERTYPE(MainActivity.this).equals("event_head")){
-                Intent intent = new Intent(MainActivity.this, EventHead.class);
+                Intent intent = new Intent(MainActivity.this, Event_head.class);
 
                 Bundle user = new Bundle();
                 user.putString("name",data.getNAME(MainActivity.this));
@@ -238,7 +238,7 @@ public class MainActivity extends AppCompatActivity {
                                         finish();
                                     }
                                     else if (r_name.equals("event_head")){
-                                        Intent intent = new Intent(MainActivity.this,EventHead.class);
+                                        Intent intent = new Intent(MainActivity.this,Event_head.class);
 
                                         Bundle user = new Bundle();
                                         user.putString("name",name);
