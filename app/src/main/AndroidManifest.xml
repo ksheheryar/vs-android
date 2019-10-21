@@ -40,11 +40,6 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".activities.SuperAdmin"
-            android:label="@string/title_activity_super_admin"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme" />
-        <activity
             android:name=".activities.EventHead"
             android:label="@string/title_activity_event_head"
             android:screenOrientation="portrait"

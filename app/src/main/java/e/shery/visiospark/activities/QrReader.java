@@ -1,6 +1,7 @@
 package e.shery.visiospark.activities;
 
 import android.Manifest;
+import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -67,12 +68,13 @@ public class QrReader extends AppCompatActivity implements ZXingScannerView.Resu
 
 //        showMessage("VisioSpark",rawResult.getText());
 //        onBackPressed();
+        mScannerView.stopCamera();
 
         String result = rawResult.getText().toString().trim();
         foodData(result);
 
         // If you would like to resume scanning, call this method below:
-        mScannerView.resumeCameraPreview(this);
+//        mScannerView.resumeCameraPreview(this);
     }
 
     private void foodData(String value){
@@ -117,7 +119,26 @@ public class QrReader extends AppCompatActivity implements ZXingScannerView.Resu
         builder.setCancelable(false);
         builder.setTitle(title);
         builder.setMessage(message);
-        builder.setPositiveButton("OK",null);
-        builder.show();
+        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch(which){
+                    case DialogInterface.BUTTON_POSITIVE:
+                        // User clicked the Yes button
+                        mScannerView.setResultHandler(QrReader.this); // Register ourselves as a handler for scan results.
+                        mScannerView.startCamera();          // Start camera on resume
+                        break;
+
+                    case DialogInterface.BUTTON_NEGATIVE:
+                        // User clicked the No button
+                        break;
+                }
+            }
+        };
+        builder.setPositiveButton("OK",dialogClickListener);
+        AlertDialog dialog = builder.create();
+        // Display the alert dialog on interface
+        dialog.show();
+//        builder.show();
     }
 }

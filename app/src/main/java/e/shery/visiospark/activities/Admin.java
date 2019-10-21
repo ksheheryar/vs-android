@@ -360,7 +360,6 @@ public class Admin extends AppCompatActivity {
         if (data.getCOUNT(Admin.this) < count1){
             notificationManager.notify(1, builder.build());
             PreferenceData.saveCOUNT(count1, Admin.this);
-//            Toast.makeText(getApplicationContext(),Integer.toString(data.getCOUNT(SuperAdmin.this)),Toast.LENGTH_LONG).show();
         }
     }
 

@@ -5,8 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".activities.SuperAdmin"
-    tools:showIn="@layout/app_bar_super_admin"
+    tools:context=".activities.EventHead"
     android:background="@color/white">
 
     <TextView
