@@ -144,6 +144,34 @@
                     android:textSize="15sp"
                     android:inputType="text"/>
 
+                <EditText
+                    android:id="@+id/t1m4"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/et_bg"
+                    android:hint="Member 4"
+                    android:textAlignment="center"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:textColor="@color/white"
+                    android:textSize="15sp"
+                    android:inputType="text"/>
+
+                <EditText
+                    android:id="@+id/t1m5"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/et_bg"
+                    android:hint="Member 5"
+                    android:textAlignment="center"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:textColor="@color/white"
+                    android:textSize="15sp"
+                    android:inputType="text"/>
+
             </LinearLayout>
 
             <LinearLayout
@@ -191,6 +219,33 @@
                     android:textSize="15sp"
                     android:inputType="text"/>
 
+                <EditText
+                    android:id="@+id/t2m3"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/et_bg"
+                    android:hint="Member 3"
+                    android:textAlignment="center"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:textColor="@color/white"
+                    android:textSize="15sp"
+                    android:inputType="text"/>
+
+                <EditText
+                    android:id="@+id/t2m4"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/et_bg"
+                    android:hint="Member 4"
+                    android:textAlignment="center"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:textColor="@color/white"
+                    android:textSize="15sp"
+                    android:inputType="text"/>
             </LinearLayout>
 
             <LinearLayout
@@ -212,6 +267,114 @@
 
                 <EditText
                     android:id="@+id/t3m1"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/et_bg"
+                    android:hint="Member 1"
+                    android:textAlignment="center"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:textColor="@color/white"
+                    android:textSize="15sp"
+                    android:inputType="text"/>
+
+                <EditText
+                    android:id="@+id/t3m2"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/et_bg"
+                    android:hint="Member 2"
+                    android:textAlignment="center"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:textColor="@color/white"
+                    android:textSize="15sp"
+                    android:inputType="text"/>
+
+                <EditText
+                    android:id="@+id/t3m3"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/et_bg"
+                    android:hint="Member 3"
+                    android:textAlignment="center"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:textColor="@color/white"
+                    android:textSize="15sp"
+                    android:inputType="text"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/l3_1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Team Member"
+                    android:textAlignment="center"
+                    android:textAllCaps="true"
+                    android:textColor="@color/white"
+                    android:textSize="15sp"
+                    android:layout_marginTop="20dp"/>
+
+                <EditText
+                    android:id="@+id/t3m1_1"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/et_bg"
+                    android:hint="Member 1"
+                    android:textAlignment="center"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:textColor="@color/white"
+                    android:textSize="15sp"
+                    android:inputType="text"/>
+
+                <EditText
+                    android:id="@+id/t3m2_1"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/et_bg"
+                    android:hint="Member 2"
+                    android:textAlignment="center"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:textColor="@color/white"
+                    android:textSize="15sp"
+                    android:inputType="text"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/l3_2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Team Member"
+                    android:textAlignment="center"
+                    android:textAllCaps="true"
+                    android:textColor="@color/white"
+                    android:textSize="15sp"
+                    android:layout_marginTop="20dp"/>
+
+                <EditText
+                    android:id="@+id/t3m1_2"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:layout_marginTop="5dp"

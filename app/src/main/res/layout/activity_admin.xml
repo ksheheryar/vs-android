@@ -307,14 +307,14 @@
             android:layout_marginTop="0dp"
             android:background="@color/grey"/>
 
-        <ListView
+        <ExpandableListView
             android:id="@+id/admin_rp_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="50dp"
             android:layout_marginLeft="5dp"
             android:layout_below="@+id/admin_rp_list_text"
-            android:divider="@color/colorPrimaryDark"
+            android:divider="@color/black"
             android:dividerHeight="2px"/>
 
     </RelativeLayout>
@@ -338,12 +338,14 @@
             android:layout_marginTop="0dp"
             android:background="@color/grey"/>
 
-        <ExpandableListView
+        <ListView
             android:id="@+id/admin_finance_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="50dp"
             android:layout_marginLeft="5dp"
+            android:divider="@color/black"
+            android:dividerHeight="2px"
             android:layout_below="@+id/admin_finance_list_text" />
 
     </RelativeLayout>
@@ -367,14 +369,14 @@
             android:layout_marginTop="0dp"
             android:background="@color/grey"/>
 
-        <ListView
+        <ExpandableListView
             android:id="@+id/admin_Verified_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="50dp"
             android:layout_marginLeft="5dp"
             android:layout_below="@+id/admin_verified_list_text"
-            android:divider="@color/purple"
+            android:divider="@color/black"
             android:dividerHeight="2px"/>
 
     </RelativeLayout>

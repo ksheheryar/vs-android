@@ -48,6 +48,8 @@ public interface Api {
             @Field("particpant[0][0]") String particpant,
             @Field("particpant[0][1]") String particpant1,
             @Field("particpant[0][2]") String particpant2,
+            @Field("particpant[0][3]") String particpant3,
+            @Field("particpant[0][4]") String particpant4,
             @Header("Active") String Active,
             @Header("Authorization") String Auth
     );
@@ -60,6 +62,8 @@ public interface Api {
             @Field("user_id") String userId,
             @Field("particpant[0][0]") String particpant,
             @Field("particpant[0][1]") String particpant1,
+            @Field("particpant[0][2]") String particpant2,
+            @Field("particpant[0][3]") String particpant3,
             @Header("Active") String Active,
             @Header("Authorization") String Auth
     );
@@ -67,6 +71,31 @@ public interface Api {
     @FormUrlEncoded
     @POST("event_register/submit")
     Call<ResponseBody> Event_Registeration2(
+            @Field("eventId") String eventId,
+            @Field("_token") String token,
+            @Field("user_id") String userId,
+            @Field("particpant[0][0]") String particpant,
+            @Field("particpant[0][1]") String particpant1,
+            @Field("particpant[0][2]") String particpant2,
+            @Header("Active") String Active,
+            @Header("Authorization") String Auth
+    );
+
+    @FormUrlEncoded
+    @POST("event_register/submit")
+    Call<ResponseBody> Event_Registeration3(
+            @Field("eventId") String eventId,
+            @Field("_token") String token,
+            @Field("user_id") String userId,
+            @Field("particpant[0][0]") String particpant,
+            @Field("particpant[0][1]") String particpant1,
+            @Header("Active") String Active,
+            @Header("Authorization") String Auth
+    );
+
+    @FormUrlEncoded
+    @POST("event_register/submit")
+    Call<ResponseBody> Event_Registeration4(
             @Field("eventId") String eventId,
             @Field("_token") String token,
             @Field("user_id") String userId,

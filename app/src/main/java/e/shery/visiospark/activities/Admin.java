@@ -22,6 +22,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ExpandableListView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TableLayout;
@@ -36,6 +37,8 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -61,16 +64,19 @@ public class Admin extends AppCompatActivity {
     ToggleButton regToggle,onSpotToggle;
     String name,token,userId;
     RelativeLayout r1,r2,r3,r4,r5;
-    ArrayList plist,vplist,teamDetail;
+    ArrayList<String> plist,vplist,teamDetail;
     String paylist[],vuniName[];
-    ListView l,l1,l2;
-    ArrayAdapter<String> arrayAdapter,a1,a2;
+    ListView l2;
+    ArrayAdapter<String> arrayAdapter,a2;
     PreferenceData data;
     PieChartView pieChartView;
     NotificationManagerCompat notificationManager;
     NotificationCompat.Builder builder;
     Timer timerObj;
     TimerTask timerTaskObj;
+    private static ExpandableListView l,l1;
+    private static ExpandableListAdapter adapter,a1;
+    HashMap<String, List<String>> hashMap,hashMap1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,6 +108,7 @@ public class Admin extends AppCompatActivity {
         onSpotToggle = findViewById(R.id.toggle_onspot);
         passReset = findViewById(R.id.admin_passreset);
         logout = findViewById(R.id.admin_logout);
+//        expandableListView.setGroupIndicator(null);
 
         r1 = findViewById(R.id.admin_dashboard);
         r2 = findViewById(R.id.admin_profile);
@@ -137,26 +144,30 @@ public class Admin extends AppCompatActivity {
         b1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                adapter = new ExpandableListAdapter(Admin.this, plist, hashMap);
+                l.setAdapter(adapter);
                 r1.setVisibility(View.GONE);
                 r2.setVisibility(View.GONE);
                 r3.setVisibility(View.VISIBLE);
                 r4.setVisibility(View.GONE);
                 r5.setVisibility(View.GONE);
-                arrayAdapter = new ArrayAdapter<>(Admin.this,R.layout.listview1,R.id.listText1,plist);
-                l.setAdapter(arrayAdapter);
+//                arrayAdapter = new ArrayAdapter<>(Admin.this,R.layout.listview1,R.id.listText1,plist);
+//                l.setAdapter(arrayAdapter);
             }
         });
 
         b2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                a1 = new ExpandableListAdapter(Admin.this, vplist, hashMap1);
+                l1.setAdapter(a1);
                 r1.setVisibility(View.GONE);
                 r2.setVisibility(View.GONE);
                 r3.setVisibility(View.GONE);
                 r4.setVisibility(View.GONE);
                 r5.setVisibility(View.VISIBLE);
-                a1 = new ArrayAdapter<>(Admin.this,R.layout.listview2,R.id.listText2,vplist);
-                l1.setAdapter(a1);
+//                a1 = new ArrayAdapter<>(Admin.this,R.layout.listview2,R.id.listText2,vplist);
+//                l1.setAdapter(a1);
             }
         });
 
@@ -291,16 +302,41 @@ public class Admin extends AppCompatActivity {
             }
         });
 
-        l.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//        l.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//
+//                String s = l.getItemAtPosition(position).toString().trim();
+//                String[] s1 = s.split(":");
+//                String email,uniName;
+//
+//                email = s1[3].trim();
+//                uniName = s1[1].trim();
+//
+//                Intent intent=new Intent(Admin.this,UserDetail.class);
+//                Bundle user = new Bundle();
+//                user.putString("name",name);
+//                user.putString("token",token);
+//                user.putString("id",userId);
+//                user.putString("email",email);
+//                user.putString("uniName",uniName);
+//                intent.putExtras(user);
+//                Admin.this.startActivity(intent);
+//            }
+//        });
+
+        l.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public boolean onChildClick(ExpandableListView parent, View v,
+                                        int groupPosition, int childPosition, long id) {
 
-                String s = l.getItemAtPosition(position).toString().trim();
-                String[] s1 = s.split(":");
-                String email,uniName;
+                String uniName = plist.get(groupPosition);
+                String email = hashMap.get(plist.get(groupPosition)).get(childPosition);
+                String[] s2 = email.split(":");
+                email = s2[1].trim();
+//                Toast.makeText(getApplicationContext(),uniName, Toast.LENGTH_SHORT).show();
 
-                email = s1[3].trim();
-                uniName = s1[1].trim();
 
                 Intent intent=new Intent(Admin.this,UserDetail.class);
                 Bundle user = new Bundle();
@@ -311,19 +347,28 @@ public class Admin extends AppCompatActivity {
                 user.putString("uniName",uniName);
                 intent.putExtras(user);
                 Admin.this.startActivity(intent);
+
+                return false;
             }
         });
 
-        l1.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        l1.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public boolean onChildClick(ExpandableListView parent, View v,
+                                        int groupPosition, int childPosition, long id) {
 
-                String s = l1.getItemAtPosition(position).toString().trim();
-                String[] s1 = s.split(":");
-                String email,uniName;
+//                String s = l1.getItemAtPosition(position).toString().trim();
+//                String[] s1 = s.split(":");
+//                String email,uniName;
+//
+//                email = s1[3].trim();
+//                uniName = s1[1].trim();
 
-                email = s1[3].trim();
-                uniName = s1[1].trim();
+                String uniName = vplist.get(groupPosition);
+                String email = hashMap1.get(vplist.get(groupPosition)).get(childPosition);
+                String[] s2 = email.split(":");
+                email = s2[1].trim();
 
                 Intent intent=new Intent(Admin.this,UserDetail.class);
                 Bundle user = new Bundle();
@@ -334,6 +379,8 @@ public class Admin extends AppCompatActivity {
                 user.putString("uniName",uniName);
                 intent.putExtras(user);
                 Admin.this.startActivity(intent);
+
+                return false;
             }
         });
     }
@@ -448,20 +495,51 @@ public class Admin extends AppCompatActivity {
 
                 if (s!=null){
                     try {
+                        ArrayList<ArrayList<String>> list = new ArrayList<ArrayList<String>>();
+                        hashMap = new HashMap<String, List<String>>();
+
                         JSONObject jsonObject = new JSONObject(s);
                         JSONArray jsonArray = jsonObject.getJSONArray("users");
 
-                        String name1,email;
+                        String name,name1,email;
+                        String match[] = new String[jsonArray.length()];
+                        boolean matched;
+                        int z=0;
 
                         for (int i=0;i<jsonArray.length();i++){
                             JSONObject e = jsonArray.getJSONObject(i);
 
-                            name1 = e.getString("name");
-                            email = e.getString("email");
+                            matched = false;
+                            name = e.getString("name");
 
                             count1 = count1 + 1;
 
-                            plist.add(i+1+" : "+name1+"\n"+"  : Email : "+email);
+                            for (int j=0;j<plist.size();j++){
+                                if (name.equals(plist.get(j)))
+                                    matched=true;
+                            }
+                            if (matched == false){
+                                plist.add(name);
+                                match[z] = name;
+                                z++;
+                            }
+                        }
+                        for (int k=0;k<z;k++){
+                            ArrayList list1 = new ArrayList();
+                            int k2=1;
+                            for (int k1=0;k1<jsonArray.length();k1++){
+                                JSONObject e = jsonArray.getJSONObject(k1);
+                                name1 = e.getString("name");
+                                email = e.getString("email");
+                                if (name1.equals(match[k])){
+                                    list1.add(k2+" : "+email);
+                                    k2++;
+                                }
+                            }
+                            list.add(k,list1);
+                        }
+                        for (int z1=0;z1<z;z1++){
+                            hashMap.put(match[z1],list.get(z1));
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -494,18 +572,51 @@ public class Admin extends AppCompatActivity {
 
                 if (s!=null){
                     try {
+                        ArrayList<ArrayList<String>> list = new ArrayList<ArrayList<String>>();
+                        hashMap1 = new HashMap<String, List<String>>();
+
                         JSONObject jsonObject = new JSONObject(s);
                         JSONArray jsonArray = jsonObject.getJSONArray("users");
 
-                        String name1,email;
+                        String name,name1,email;
+                        String m[] = new String[jsonArray.length()];
+                        boolean matched;
+                        int z=0;
 
                         for (int i=0;i<jsonArray.length();i++){
                             JSONObject e = jsonArray.getJSONObject(i);
 
-                            name1 = e.getString("name");
-                            email = e.getString("email");
+                            matched = false;
+                            name = e.getString("name");
 
-                            vplist.add(i+1+" : "+name1+"\n"+"  : Email : "+email);
+                            count1 = count1 + 1;
+
+                            for (int j=0;j<vplist.size();j++){
+                                if (name.equals(vplist.get(j)))
+                                    matched=true;
+                            }
+                            if (matched == false){
+                                vplist.add(name);
+                                m[z] = name;
+                                z++;
+                            }
+                        }
+                        for (int k=0;k<z;k++){
+                            ArrayList list1 = new ArrayList();
+                            int k2=1;
+                            for (int k1=0;k1<jsonArray.length();k1++){
+                                JSONObject e = jsonArray.getJSONObject(k1);
+                                name1 = e.getString("name");
+                                email = e.getString("email");
+                                if (name1.equals(m[k])){
+                                    list1.add(k2+" : "+email);
+                                    k2++;
+                                }
+                            }
+                            list.add(k,list1);
+                        }
+                        for (int z1=0;z1<z;z1++){
+                            hashMap1.put(m[z1],list.get(z1));
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();

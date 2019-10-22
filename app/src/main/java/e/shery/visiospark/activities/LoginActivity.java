@@ -44,12 +44,12 @@ public class LoginActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     RelativeLayout r,r1,r2;
-    LinearLayout l1,l2,l3;
+    LinearLayout l1,l2,l3,l4,l5;
     Button b;
     String name,token,Sevent,eventId,userId;
     int mTeam;
     TextView userName,t,t1,details;
-    EditText t1m1,t1m2,t1m3,t2m1,t2m2,t3m1;
+    EditText t1m1,t1m2,t1m3,t1m4,t1m5,t2m1,t2m2,t2m3,t2m4,t3m1,t3m2,t3m3,t4m1,t4m2,t5m1;
     ToggleButton toggleButton;
     ListView listView;
     Spinner s,s1;
@@ -65,7 +65,7 @@ public class LoginActivity extends AppCompatActivity
 
         jsonData();
 
-        particpant = new String[5][5];
+        particpant = new String[6][6];
         EventArray = new String[25][2];
         t = findViewById(R.id.dat);
         t1 = findViewById(R.id.t_list);
@@ -82,13 +82,28 @@ public class LoginActivity extends AppCompatActivity
         l1 = findViewById(R.id.l1);
         l2 = findViewById(R.id.l2);
         l3 = findViewById(R.id.l3);
+        l4 = findViewById(R.id.l3_1);
+        l5 = findViewById(R.id.l3_2);
         b = findViewById(R.id.Ereg);
         t1m1 = findViewById(R.id.t1m1);
         t1m2 = findViewById(R.id.t1m2);
         t1m3 = findViewById(R.id.t1m3);
+        t1m4 = findViewById(R.id.t1m4);
+        t1m5 = findViewById(R.id.t1m5);
+
         t2m1 = findViewById(R.id.t2m1);
         t2m2 = findViewById(R.id.t2m2);
+        t2m3 = findViewById(R.id.t2m3);
+        t2m4 = findViewById(R.id.t2m4);
+
         t3m1 = findViewById(R.id.t3m1);
+        t3m2 = findViewById(R.id.t3m2);
+        t3m3 = findViewById(R.id.t3m3);
+
+        t4m1 = findViewById(R.id.t3m1_1);
+        t4m2 = findViewById(R.id.t3m2_1);
+
+        t5m1 = findViewById(R.id.t3m1_2);
 
         NavigationView navigationView = findViewById(R.id.nav_view);
         View headview = navigationView.getHeaderView(0);
@@ -113,22 +128,44 @@ public class LoginActivity extends AppCompatActivity
                         int mem = e.getInt("max_members");
                         if (n.equals(Sevent)){
                             mTeam = mem;
-                            if (mem == 3){
+                            if (mem == 5){
                                 l1.setVisibility(View.VISIBLE);
                                 l2.setVisibility(View.GONE);
                                 l3.setVisibility(View.GONE);
+                                l4.setVisibility(View.GONE);
+                                l5.setVisibility(View.GONE);
                                 b.setVisibility(View.VISIBLE);
                             }
-                            else if (mem == 2){
+                            else if (mem == 4){
                                 l2.setVisibility(View.VISIBLE);
                                 l1.setVisibility(View.GONE);
                                 l3.setVisibility(View.GONE);
+                                l4.setVisibility(View.GONE);
+                                l5.setVisibility(View.GONE);
                                 b.setVisibility(View.VISIBLE);
                             }
-                            else if (mem == 1){
+                            else if (mem == 3){
                                 l3.setVisibility(View.VISIBLE);
                                 l1.setVisibility(View.GONE);
                                 l2.setVisibility(View.GONE);
+                                l4.setVisibility(View.GONE);
+                                l5.setVisibility(View.GONE);
+                                b.setVisibility(View.VISIBLE);
+                            }
+                            else if (mem == 2){
+                                l3.setVisibility(View.GONE);
+                                l1.setVisibility(View.GONE);
+                                l2.setVisibility(View.GONE);
+                                l4.setVisibility(View.VISIBLE);
+                                l5.setVisibility(View.GONE);
+                                b.setVisibility(View.VISIBLE);
+                            }
+                            else if (mem == 1){
+                                l3.setVisibility(View.GONE);
+                                l1.setVisibility(View.GONE);
+                                l2.setVisibility(View.GONE);
+                                l4.setVisibility(View.GONE);
+                                l5.setVisibility(View.VISIBLE);
                                 b.setVisibility(View.VISIBLE);
                             }
                         }
@@ -149,26 +186,50 @@ public class LoginActivity extends AppCompatActivity
                 for (int i=0;i<25;i++){
                     if (Sevent.equals(EventArray[i][0])){
                         eventId = EventArray[i][1];
-                        if (mTeam == 3){
+                        if (mTeam == 5){
                             particpant[0][0] = t1m1.getText().toString().trim();
                             particpant[0][1] = t1m2.getText().toString().trim();
                             particpant[0][2] = t1m3.getText().toString().trim();
+                            particpant[0][3] = t1m4.getText().toString().trim();
+                            particpant[0][4] = t1m5.getText().toString().trim();
                             register();
                             t1m1.setText("");
                             t1m2.setText("");
                             t1m3.setText("");
+                            t1m4.setText("");
+                            t1m5.setText("");
                         }
-                        else if (mTeam == 2){
+                        else if (mTeam == 4){
                             particpant[0][0] = t2m1.getText().toString().trim();
                             particpant[0][1] = t2m2.getText().toString().trim();
+                            particpant[0][2] = t2m3.getText().toString().trim();
+                            particpant[0][3] = t2m4.getText().toString().trim();
                             register1();
                             t2m1.setText("");
                             t2m2.setText("");
+                            t2m3.setText("");
+                            t2m4.setText("");
                         }
-                        else if (mTeam == 1){
+                        else if (mTeam == 3){
                             particpant[0][0] = t3m1.getText().toString().trim();
+                            particpant[0][1] = t3m2.getText().toString().trim();
+                            particpant[0][2] = t3m3.getText().toString().trim();
                             register2();
                             t3m1.setText("");
+                            t3m2.setText("");
+                            t3m3.setText("");
+                        }
+                        else if (mTeam == 2){
+                            particpant[0][0] = t4m1.getText().toString().trim();
+                            particpant[0][1] = t4m2.getText().toString().trim();
+                            register3();
+                            t4m1.setText("");
+                            t4m2.setText("");
+                        }
+                        else if (mTeam == 1){
+                            particpant[0][0] = t5m1.getText().toString().trim();
+                            register4();
+                            t5m1.setText("");
                         }
                     }
                 }
@@ -288,7 +349,6 @@ public class LoginActivity extends AppCompatActivity
                     }
                 }
             }
-
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
 
@@ -301,7 +361,7 @@ public class LoginActivity extends AppCompatActivity
         Call<ResponseBody> call = RetrofitClient
                 .getInstance()
                 .getApi()
-                .Event_Registeration(eventId,token,userId,particpant[0][0],particpant[0][1],particpant[0][2],"application/json","Bearer "+token);
+                .Event_Registeration(eventId,token,userId,particpant[0][0],particpant[0][1],particpant[0][2],particpant[0][3],particpant[0][4],"application/json","Bearer "+token);
 
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -335,7 +395,7 @@ public class LoginActivity extends AppCompatActivity
         Call<ResponseBody> call = RetrofitClient
                 .getInstance()
                 .getApi()
-                .Event_Registeration1(eventId,token,userId,particpant[0][0],particpant[0][1],"application/json","Bearer "+token);
+                .Event_Registeration1(eventId,token,userId,particpant[0][0],particpant[0][1],particpant[0][2],particpant[0][3],"application/json","Bearer "+token);
 
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -370,7 +430,77 @@ public class LoginActivity extends AppCompatActivity
         Call<ResponseBody> call = RetrofitClient
                 .getInstance()
                 .getApi()
-                .Event_Registeration2(eventId,token,userId,particpant[0][0],"application/json","Bearer "+token);
+                .Event_Registeration2(eventId,token,userId,particpant[0][0],particpant[0][1],particpant[0][2],"application/json","Bearer "+token);
+
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                String s = null;
+                try {
+                    s = response.body().string();
+                    Toast.makeText(getApplicationContext(),s,Toast.LENGTH_LONG).show();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                if (s != null) {
+                    try {
+                        JSONObject jsonObject = new JSONObject(s);
+                        String message = jsonObject.getString("message");
+                        Toast.makeText(getApplicationContext(),message, Toast.LENGTH_LONG).show();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+            }
+        });
+    }
+
+    private void register3(){
+
+        Call<ResponseBody> call = RetrofitClient
+                .getInstance()
+                .getApi()
+                .Event_Registeration3(eventId,token,userId,particpant[0][0],particpant[0][1],"application/json","Bearer "+token);
+
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                String s = null;
+                try {
+                    s = response.body().string();
+                    Toast.makeText(getApplicationContext(),s,Toast.LENGTH_LONG).show();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                if (s != null) {
+                    try {
+                        JSONObject jsonObject = new JSONObject(s);
+                        String message = jsonObject.getString("message");
+                        Toast.makeText(getApplicationContext(),message, Toast.LENGTH_LONG).show();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+            }
+        });
+    }
+
+    private void register4(){
+
+        Call<ResponseBody> call = RetrofitClient
+                .getInstance()
+                .getApi()
+                .Event_Registeration4(eventId,token,userId,particpant[0][0],"application/json","Bearer "+token);
 
         call.enqueue(new Callback<ResponseBody>() {
             @Override
