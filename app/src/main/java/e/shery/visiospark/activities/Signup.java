@@ -10,6 +10,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,7 +32,7 @@ import retrofit2.Callback;
 public class Signup extends AppCompatActivity {
 
     String uniName,dep;
-
+    ProgressBar progressBar;
     Spinner s1,s2;
     Button reg;
     TextView t;
@@ -54,6 +55,7 @@ public class Signup extends AppCompatActivity {
         personName = findViewById(R.id.new_name);
         departments = new ArrayList<>();
         universities = new ArrayList<>();
+        progressBar = findViewById(R.id.progressBar1);
 
         reg.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -102,6 +104,7 @@ public class Signup extends AppCompatActivity {
                 else{
                     if (p.equals(p1)){
                         register();
+                        progressBar.setVisibility(View.VISIBLE);
                     }
                     else {
                         pass.setText("");
@@ -158,10 +161,12 @@ public class Signup extends AppCompatActivity {
                     }
                     else{
                         Toast.makeText(getApplicationContext(),response.body().string(),Toast.LENGTH_LONG).show();
+                        progressBar.setVisibility(View.GONE);
                     }
                 } catch (IOException e1) {
                     e1.printStackTrace();
                     Toast.makeText(getApplicationContext(),"error",Toast.LENGTH_LONG).show();
+                    progressBar.setVisibility(View.GONE);
                 }
 
                 if (s!=null){
@@ -189,19 +194,23 @@ public class Signup extends AppCompatActivity {
                         user.putString("id",userId);
                         intent.putExtras(user);
 
+                        progressBar.setVisibility(View.GONE);
+
                         Signup.this.startActivity(intent);
                         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                         finish();
                     }
                     catch (JSONException e1) {
                         e1.printStackTrace();
+                        progressBar.setVisibility(View.GONE);
                     }
                 }
             }
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-
+                Toast.makeText(Signup.this,t.getMessage(), Toast.LENGTH_LONG).show();
+                progressBar.setVisibility(View.GONE);
             }
         });
     }
@@ -250,7 +259,7 @@ public class Signup extends AppCompatActivity {
             }
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-
+                Toast.makeText(Signup.this,"Connection Error", Toast.LENGTH_LONG).show();
             }
         });
 

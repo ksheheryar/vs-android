@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
     ViewFlipper flip;
     TextView spon;
     EditText email,pass;
+    ProgressBar progressBar;
 
     Handler handler = new Handler();
     Runnable runnable = new Runnable() {
@@ -60,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
         r2 = findViewById(R.id.rellay2);
         email = findViewById(R.id.email);
         pass = findViewById(R.id.pass);
+        progressBar = findViewById(R.id.progressBar);
         PreferenceData data = new PreferenceData();
 
         if (data.getEmail(MainActivity.this) != null ){
@@ -155,6 +158,7 @@ public class MainActivity extends AppCompatActivity {
                     return;
                 }
                 else {
+                    progressBar.setVisibility(View.VISIBLE);
                     Call<ResponseBody> call = RetrofitClient
                             .getInstance()
                             .getApi()
@@ -169,6 +173,7 @@ public class MainActivity extends AppCompatActivity {
                                     s = response.body().string();
                                 else{
                                     Toast.makeText(getApplicationContext(),"Invalid Credentials",Toast.LENGTH_LONG).show();
+                                    progressBar.setVisibility(View.GONE);
                                 }
                             } catch (IOException e1) {
                                 e1.printStackTrace();
@@ -207,6 +212,8 @@ public class MainActivity extends AppCompatActivity {
                                         user.putString("id",userId);
                                         intent.putExtras(user);
 
+                                        progressBar.setVisibility(View.GONE);
+
                                         MainActivity.this.startActivity(intent);
                                         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                                         finish();
@@ -219,6 +226,8 @@ public class MainActivity extends AppCompatActivity {
                                         user.putString("token",j);
                                         user.putString("id",userId);
                                         intent.putExtras(user);
+
+                                        progressBar.setVisibility(View.GONE);
 
                                         MainActivity.this.startActivity(intent);
                                         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
@@ -233,6 +242,8 @@ public class MainActivity extends AppCompatActivity {
                                         user.putString("id",userId);
                                         intent.putExtras(user);
 
+                                        progressBar.setVisibility(View.GONE);
+
                                         MainActivity.this.startActivity(intent);
                                         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                                         finish();
@@ -246,12 +257,15 @@ public class MainActivity extends AppCompatActivity {
                                         user.putString("id",userId);
                                         intent.putExtras(user);
 
+                                        progressBar.setVisibility(View.GONE);
+
                                         MainActivity.this.startActivity(intent);
                                         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                                         finish();
                                     }
                                 } catch (JSONException e1) {
                                     e1.printStackTrace();
+                                    progressBar.setVisibility(View.GONE);
                                 }
                             }
 
@@ -259,6 +273,7 @@ public class MainActivity extends AppCompatActivity {
                         @Override
                         public void onFailure(Call<ResponseBody> call, Throwable t) {
                             Toast.makeText(MainActivity.this,t.getMessage(), Toast.LENGTH_LONG).show();
+                            progressBar.setVisibility(View.GONE);
                         }
                     });
                 }
