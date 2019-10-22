@@ -25,7 +25,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="75dp"
-        android:fontFamily="sans-serif-medium"
         android:text="Competitions Detail"
         android:textColor="@color/black"
         android:textAlignment="center"
@@ -54,7 +53,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="75dp"
-            android:fontFamily="sans-serif-medium"
             android:text="Register Competitions"
             android:textColor="@color/black"
             android:textAlignment="center"
@@ -71,7 +69,6 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="sans-serif-light"
                 android:text="Select Competition : "
                 android:textAlignment="center"
                 android:textAllCaps="true"
@@ -98,7 +95,6 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif-light"
                     android:text="Team Members"
                     android:textAlignment="center"
                     android:textAllCaps="true"
@@ -112,7 +108,6 @@
                     android:layout_height="40dp"
                     android:layout_marginTop="5dp"
                     android:background="@drawable/et_bg"
-                    android:fontFamily="sans-serif-light"
                     android:hint="Member 1"
                     android:textAlignment="center"
                     android:paddingLeft="15dp"
@@ -127,7 +122,6 @@
                     android:layout_height="40dp"
                     android:layout_marginTop="5dp"
                     android:background="@drawable/et_bg"
-                    android:fontFamily="sans-serif-light"
                     android:hint="Member 2"
                     android:textAlignment="center"
                     android:paddingLeft="15dp"
@@ -142,7 +136,6 @@
                     android:layout_height="40dp"
                     android:layout_marginTop="5dp"
                     android:background="@drawable/et_bg"
-                    android:fontFamily="sans-serif-light"
                     android:hint="Member 3"
                     android:textAlignment="center"
                     android:paddingLeft="15dp"
@@ -163,7 +156,6 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif-light"
                     android:text="Team Members"
                     android:textAlignment="center"
                     android:textAllCaps="true"
@@ -177,7 +169,6 @@
                     android:layout_height="40dp"
                     android:layout_marginTop="5dp"
                     android:background="@drawable/et_bg"
-                    android:fontFamily="sans-serif-light"
                     android:hint="Member 1"
                     android:textAlignment="center"
                     android:paddingLeft="15dp"
@@ -192,7 +183,6 @@
                     android:layout_height="40dp"
                     android:layout_marginTop="5dp"
                     android:background="@drawable/et_bg"
-                    android:fontFamily="sans-serif-light"
                     android:hint="Member 2"
                     android:textAlignment="center"
                     android:paddingLeft="15dp"
@@ -213,7 +203,6 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif-light"
                     android:text="Team Member"
                     android:textAlignment="center"
                     android:textAllCaps="true"
@@ -227,7 +216,6 @@
                     android:layout_height="40dp"
                     android:layout_marginTop="5dp"
                     android:background="@drawable/et_bg"
-                    android:fontFamily="sans-serif-light"
                     android:hint="Member 1"
                     android:textAlignment="center"
                     android:paddingLeft="15dp"
@@ -247,7 +235,6 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="25dp"
             android:background="@drawable/btn"
-            android:fontFamily="sans-serif-medium"
             android:paddingLeft="70dp"
             android:paddingRight="70dp"
             android:text="Register"
@@ -270,7 +257,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="75dp"
-            android:fontFamily="sans-serif-medium"
             android:text="Your Registration Summary"
             android:textColor="@color/black"
             android:textAlignment="center"
@@ -287,7 +273,6 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="sans-serif-light"
                 android:text="Select Competition : "
                 android:textAlignment="center"
                 android:textAllCaps="true"
@@ -312,7 +297,6 @@
                     android:id="@+id/t_list"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif-light"
                     android:layout_marginTop="40dp"
                     android:textAlignment="center"
                     android:textSize="23sp"
@@ -335,7 +319,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="75dp"
-            android:fontFamily="sans-serif-medium"
             android:text="Hotel Accommodation"
             android:textColor="@color/black"
             android:textAlignment="center"
@@ -363,7 +346,6 @@
             android:textAlignment="center"
             android:textAllCaps="true"
             android:textSize="15sp"
-            android:fontFamily="sans-serif-light"
             android:text="@string/hotel"
             android:layout_marginTop="60dp" />
 
@@ -374,7 +356,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
             android:layout_below="@id/toggle_acco"
-            android:fontFamily="sans-serif-medium"
             android:text="Link of Hotel :"
             android:textColor="@color/black"
             android:textAlignment="center"
@@ -390,10 +371,8 @@
             android:autoLink="web"
             android:clickable="true"
             android:textSize="15sp"
-            android:fontFamily="sans-serif-light"
             android:text="@string/linkHotel"
             android:layout_marginTop="50dp" />
 
     </RelativeLayout>
-
 </RelativeLayout>

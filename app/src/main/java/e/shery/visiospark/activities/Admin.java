@@ -232,12 +232,12 @@ public class Admin extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                    regToggleText.setText("Online Registration is unlocked");
+                    regToggleText.setText("Online Registration is Open");
                     regToggleText.setTextColor(getResources().getColor(R.color.green));
                     set_status("users","false");
                 }
                 else {
-                    regToggleText.setText("Online Registration is locked");
+                    regToggleText.setText("Online Registration is Closed");
                     regToggleText.setTextColor(getResources().getColor(R.color.red));
                     set_status("users","true");
                 }
@@ -248,13 +248,13 @@ public class Admin extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                    onSpotToggleText.setText("OnSpot Registration is unlocked");
+                    onSpotToggleText.setText("OnSpot Registration is Open");
                     onSpotToggleText.setTextColor(getResources().getColor(R.color.green));
                     set_status("onspot","false");
                 }
                 else {
                     set_status("onspot","true");
-                    onSpotToggleText.setText("OnSpot Registration is locked");
+                    onSpotToggleText.setText("OnSpot Registration is Closed");
                     onSpotToggleText.setTextColor(getResources().getColor(R.color.red));
                 }
             }
@@ -726,14 +726,14 @@ public class Admin extends AppCompatActivity {
                         int mealTotal = jsonObject.getInt("foodTotalCount");
                         int eventConcluded = jsonObject.getInt("concludedEvents");
 
-                        b1.setText("Online/Onspot User's\n("+uni_data+")");
-                        b2.setText("Registered User's\n("+vuni_data+")");
+                        b1.setText("Online/Onspot Users\n("+uni_data+")");
+                        b2.setText("Registered Users\n("+vuni_data+")");
                         b3.setText("Finance\n(Rs."+pay+")");
-                        b4.setText("Concluded Event's\n("+eventConcluded+")");
+                        b4.setText("Concluded Events\n("+eventConcluded+")");
                         b5.setText("Meal ("+mealObtain+"/"+mealTotal+")");
-                        onlineHeadText.setText("Online/Onspot User's  ("+uni_data+")");
+                        onlineHeadText.setText("Online/Onspot Users  ("+uni_data+")");
                         financeHeadText.setText("Finance  (Rs."+pay+")");
-                        registerHeadText.setText("Registered User's  ("+vuni_data+")");
+                        registerHeadText.setText("Registered Users  ("+vuni_data+")");
 
                         int state_user,state_onspot;
 
@@ -742,23 +742,23 @@ public class Admin extends AppCompatActivity {
 
                         if (state_user == 0){
                             regToggle.setChecked(true);
-                            regToggleText.setText("Online Registration is unlocked");
+                            regToggleText.setText("Online Registration is Open");
                             regToggleText.setTextColor(getResources().getColor(R.color.green));
                         }
                         else if (state_user == 1){
                             regToggle.setChecked(false);
-                            regToggleText.setText("Online Registration is locked");
+                            regToggleText.setText("Online Registration is Closed");
                             regToggleText.setTextColor(getResources().getColor(R.color.red));
                         }
 
                         if (state_onspot == 0){
                             onSpotToggle.setChecked(true);
-                            onSpotToggleText.setText("OnSpot Registration is unlocked");
+                            onSpotToggleText.setText("OnSpot Registration is Open");
                             onSpotToggleText.setTextColor(getResources().getColor(R.color.green));
                         }
                         else if (state_onspot == 1){
                             onSpotToggle.setChecked(false);
-                            onSpotToggleText.setText("OnSpot Registration is locked");
+                            onSpotToggleText.setText("OnSpot Registration is Closed");
                             onSpotToggleText.setTextColor(getResources().getColor(R.color.red));
                         }
 
