@@ -1,6 +1,7 @@
 package e.shery.visiospark.activities;
 
 import android.content.Intent;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -33,11 +34,11 @@ public class Signup extends AppCompatActivity {
 
     String uniName,dep;
     ProgressBar progressBar;
+    SwipeRefreshLayout refresh;
     Spinner s1,s2;
     Button reg;
     TextView t;
     EditText email,num,pass,pass1,personName;
-    ArrayList<String> departments,universities;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,9 +54,8 @@ public class Signup extends AppCompatActivity {
         pass = findViewById(R.id.pass);
         pass1 = findViewById(R.id.pass1);
         personName = findViewById(R.id.new_name);
-        departments = new ArrayList<>();
-        universities = new ArrayList<>();
         progressBar = findViewById(R.id.progressBar1);
+        refresh = findViewById(R.id.refresh);
 
         reg.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -119,6 +119,15 @@ public class Signup extends AppCompatActivity {
         });
 
         jsonData();
+
+        refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                Toast.makeText(getApplicationContext(),"Refreshing...", Toast.LENGTH_LONG).show();
+                jsonData();
+                refresh.setRefreshing(false);
+            }
+        });
 
         s1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -238,6 +247,9 @@ public class Signup extends AppCompatActivity {
                         JSONObject jsonObject = new JSONObject(s);
                         JSONArray jsonArray = jsonObject.getJSONArray("departments");
                         JSONArray jsonArray1 = jsonObject.getJSONArray("universities");
+
+                        ArrayList departments = new ArrayList<>();
+                        ArrayList universities = new ArrayList<>();
 
                         for (int i=0;i<jsonArray.length();i++){
                             JSONObject department = jsonArray.getJSONObject(i);
