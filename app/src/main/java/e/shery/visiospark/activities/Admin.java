@@ -18,6 +18,7 @@ import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -76,8 +77,8 @@ public class Admin extends AppCompatActivity {
     NotificationCompat.Builder builder;
     Timer timerObj;
     TimerTask timerTaskObj;
-    private static ExpandableListView l,l1;
-    private static ExpandableListAdapter adapter,a1;
+    ExpandableListView l,l1;
+    ExpandableListAdapter adapter,a1;
     HashMap<String, List<String>> hashMap,hashMap1;
 
     @Override
@@ -138,13 +139,17 @@ public class Admin extends AppCompatActivity {
                 else if (r3.getVisibility() == View.VISIBLE) {
                     participantData();
                     adapter = new ExpandableListAdapter(Admin.this, plist, hashMap);
+                    l.setAdapter(adapter);
                 }
                 else if (r4.getVisibility() == View.VISIBLE) {
                     financeData();
+                    listview lView= new listview(Admin.this,vuniName,paylist);
+                    l2.setAdapter(lView);
                 }
                 else if (r5.getVisibility() == View.VISIBLE) {
                     VerifiedParticipantData();
                     a1 = new ExpandableListAdapter(Admin.this, vplist, hashMap1);
+                    l1.setAdapter(a1);
                 }
                 refresh.setRefreshing(false);
             }
@@ -304,11 +309,11 @@ public class Admin extends AppCompatActivity {
                 PreferenceData.saveTOKEN(null, Admin.this);
                 PreferenceData.saveID(null, Admin.this);
 
-                if(timerObj != null) {
-                    timerObj.cancel();
-                    timerObj.purge();
-//                    timerObj = null;
-                }
+//                if(timerObj != null) {
+//                    timerObj.cancel();
+//                    timerObj.purge();
+////                    timerObj = null;
+//                }
 
                 Intent intent = new Intent(Admin.this,MainActivity.class);
                 startActivity(intent);
@@ -351,6 +356,17 @@ public class Admin extends AppCompatActivity {
                 return false;
             }
         });
+        l.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                refresh.setEnabled(firstVisibleItem == 0);
+            }
+        });
 
         l1.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
 
@@ -374,6 +390,31 @@ public class Admin extends AppCompatActivity {
                 Admin.this.startActivity(intent);
 
                 return false;
+            }
+        });
+        l1.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                refresh.setEnabled(firstVisibleItem == 0);
+            }
+        });
+
+        l2.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+//                int topRowVerticalPosition = (l2== null || l2.getChildCount() == 0) ? 0 : l2.getChildAt(0).getTop();
+//                refresh.setEnabled(firstVisibleItem == 0 && topRowVerticalPosition >= 0);
+                refresh.setEnabled(firstVisibleItem == 0);
             }
         });
     }
