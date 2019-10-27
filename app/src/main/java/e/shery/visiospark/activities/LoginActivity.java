@@ -3,6 +3,7 @@ package e.shery.visiospark.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -19,6 +20,7 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -44,6 +46,7 @@ public class LoginActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     RelativeLayout r,r1,r2;
+    SwipeRefreshLayout refresh;
     LinearLayout l1,l2,l3,l4,l5;
     Button b;
     String name,token,Sevent,eventId,userId;
@@ -69,8 +72,6 @@ public class LoginActivity extends AppCompatActivity
         EventArray = new String[25][2];
         t = findViewById(R.id.dat);
         t1 = findViewById(R.id.t_list);
-        list = new ArrayList<String>();
-        event = new ArrayList<String>();
         details = findViewById(R.id.eventdetail);
         listView = findViewById(R.id.list);
         r = findViewById(R.id.register);
@@ -85,6 +86,7 @@ public class LoginActivity extends AppCompatActivity
         l4 = findViewById(R.id.l3_1);
         l5 = findViewById(R.id.l3_2);
         b = findViewById(R.id.Ereg);
+        refresh = findViewById(R.id.refresh1);
         t1m1 = findViewById(R.id.t1m1);
         t1m2 = findViewById(R.id.t1m2);
         t1m3 = findViewById(R.id.t1m3);
@@ -114,6 +116,15 @@ public class LoginActivity extends AppCompatActivity
         token = bundle.getString("token");
         userId = bundle.getString("id");
         userName.setText(name);
+
+        refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                Toast.makeText(getApplicationContext(),"Refreshing...", Toast.LENGTH_LONG).show();
+                jsonData();
+                refresh.setRefreshing(false);
+            }
+        });
 
         t.setVisibility(View.VISIBLE);
         t.setText("Welcome !!!");
@@ -552,6 +563,8 @@ public class LoginActivity extends AppCompatActivity
                         JSONObject jsonObject = new JSONObject(s);
                         jsonArray = jsonObject.getJSONArray("events");
 
+                        list = new ArrayList<String>();
+                        event = new ArrayList<String>();
                         int maxTeam,maxMem,fee;
                         String eid,name1 = null;
                         int must = 0;

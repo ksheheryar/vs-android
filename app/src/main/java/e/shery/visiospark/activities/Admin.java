@@ -11,6 +11,7 @@ import android.os.Build;
 import android.os.Handler;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -57,6 +58,7 @@ import static android.app.Notification.VISIBILITY_PUBLIC;
 
 public class Admin extends AppCompatActivity {
 
+    SwipeRefreshLayout refresh;
     int count1 = 0;
     boolean doubleBackToExitPressedOnce = false;
     Button b1,b2,b3,b4,b5,b6,b7,passReset,logout;
@@ -64,7 +66,7 @@ public class Admin extends AppCompatActivity {
     ToggleButton regToggle,onSpotToggle;
     String name,token,userId;
     RelativeLayout r1,r2,r3,r4,r5;
-    ArrayList<String> plist,vplist,teamDetail;
+    ArrayList<String> plist,vplist;
     String paylist[],vuniName[];
     ListView l2;
     ArrayAdapter<String> arrayAdapter,a2;
@@ -96,9 +98,6 @@ public class Admin extends AppCompatActivity {
         registerHeadText = findViewById(R.id.admin_verified_list_text);
         onlineHeadText = findViewById(R.id.admin_rp_list_text);
         financeHeadText = findViewById(R.id.admin_finance_list_text);
-        plist = new ArrayList<String>();
-        vplist = new ArrayList<String>();
-        teamDetail = new ArrayList<String>();
         paylist = new String[100];
         vuniName = new String[100];
         pieChartView = findViewById(R.id.pieChart);
@@ -108,6 +107,7 @@ public class Admin extends AppCompatActivity {
         onSpotToggle = findViewById(R.id.toggle_onspot);
         passReset = findViewById(R.id.admin_passreset);
         logout = findViewById(R.id.admin_logout);
+        refresh = findViewById(R.id.refresh3);
 //        expandableListView.setGroupIndicator(null);
 
         r1 = findViewById(R.id.admin_dashboard);
@@ -126,6 +126,29 @@ public class Admin extends AppCompatActivity {
         participantData();
         VerifiedParticipantData();
         createNotificationChannel();
+
+        refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                Toast.makeText(getApplicationContext(),"Refreshing...", Toast.LENGTH_LONG).show();
+
+                if (r1.getVisibility() == View.VISIBLE) {
+                    status();
+                }
+                else if (r3.getVisibility() == View.VISIBLE) {
+                    participantData();
+                    adapter = new ExpandableListAdapter(Admin.this, plist, hashMap);
+                }
+                else if (r4.getVisibility() == View.VISIBLE) {
+                    financeData();
+                }
+                else if (r5.getVisibility() == View.VISIBLE) {
+                    VerifiedParticipantData();
+                    a1 = new ExpandableListAdapter(Admin.this, vplist, hashMap1);
+                }
+                refresh.setRefreshing(false);
+            }
+        });
 
         List pieData = new ArrayList<>();
         pieData.add(new SliceValue(18, getResources().getColor(R.color.green2)).setLabel("Speed Programming : 18"));
@@ -209,35 +232,35 @@ public class Admin extends AppCompatActivity {
             }
         });
 
-        notificationManager = NotificationManagerCompat.from(this);
-
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
-
-        builder = new NotificationCompat.Builder(this, "CHANNEL_ID")
-                .setSmallIcon(R.mipmap.ic_launcher3)
-                .setContentTitle("VisioSpark")
-                .setContentText("New Registration..!!")
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                .setCategory(NotificationCompat.CATEGORY_MESSAGE)
-                .setContentIntent(pendingIntent)
-                .setAutoCancel(true)
-                .setVisibility(VISIBILITY_PUBLIC)
-                .setBadgeIconType(NotificationCompat.BADGE_ICON_SMALL);
-
-        timerObj = new Timer();
-        timerTaskObj = new TimerTask() {
-            public void run() {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        check_notification();
-                    }
-                });
-            }
-        };
-        timerObj.schedule(timerTaskObj, 0, 5000);
+//        notificationManager = NotificationManagerCompat.from(this);
+//
+//        Intent intent = new Intent(this, MainActivity.class);
+//        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
+//
+//        builder = new NotificationCompat.Builder(this, "CHANNEL_ID")
+//                .setSmallIcon(R.mipmap.ic_launcher3)
+//                .setContentTitle("VisioSpark")
+//                .setContentText("New Registration..!!")
+//                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+//                .setCategory(NotificationCompat.CATEGORY_MESSAGE)
+//                .setContentIntent(pendingIntent)
+//                .setAutoCancel(true)
+//                .setVisibility(VISIBILITY_PUBLIC)
+//                .setBadgeIconType(NotificationCompat.BADGE_ICON_SMALL);
+//
+//        timerObj = new Timer();
+//        timerTaskObj = new TimerTask() {
+//            public void run() {
+//                runOnUiThread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        check_notification();
+//                    }
+//                });
+//            }
+//        };
+//        timerObj.schedule(timerTaskObj, 0, 5000);
 
         regToggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -302,29 +325,6 @@ public class Admin extends AppCompatActivity {
             }
         });
 
-//        l.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//
-//                String s = l.getItemAtPosition(position).toString().trim();
-//                String[] s1 = s.split(":");
-//                String email,uniName;
-//
-//                email = s1[3].trim();
-//                uniName = s1[1].trim();
-//
-//                Intent intent=new Intent(Admin.this,UserDetail.class);
-//                Bundle user = new Bundle();
-//                user.putString("name",name);
-//                user.putString("token",token);
-//                user.putString("id",userId);
-//                user.putString("email",email);
-//                user.putString("uniName",uniName);
-//                intent.putExtras(user);
-//                Admin.this.startActivity(intent);
-//            }
-//        });
-
         l.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
 
             @Override
@@ -357,13 +357,6 @@ public class Admin extends AppCompatActivity {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v,
                                         int groupPosition, int childPosition, long id) {
-
-//                String s = l1.getItemAtPosition(position).toString().trim();
-//                String[] s1 = s.split(":");
-//                String email,uniName;
-//
-//                email = s1[3].trim();
-//                uniName = s1[1].trim();
 
                 String uniName = vplist.get(groupPosition);
                 String email = hashMap1.get(vplist.get(groupPosition)).get(childPosition);
@@ -497,6 +490,7 @@ public class Admin extends AppCompatActivity {
                     try {
                         ArrayList<ArrayList<String>> list = new ArrayList<ArrayList<String>>();
                         hashMap = new HashMap<String, List<String>>();
+                        plist = new ArrayList<String>();
 
                         JSONObject jsonObject = new JSONObject(s);
                         JSONArray jsonArray = jsonObject.getJSONArray("users");
@@ -574,6 +568,7 @@ public class Admin extends AppCompatActivity {
                     try {
                         ArrayList<ArrayList<String>> list = new ArrayList<ArrayList<String>>();
                         hashMap1 = new HashMap<String, List<String>>();
+                        vplist = new ArrayList<String>();
 
                         JSONObject jsonObject = new JSONObject(s);
                         JSONArray jsonArray = jsonObject.getJSONArray("users");

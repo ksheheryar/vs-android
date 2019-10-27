@@ -1,5 +1,6 @@
 package e.shery.visiospark.activities;
 
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
@@ -22,8 +23,8 @@ import retrofit2.Callback;
 
 public class UserDetail extends AppCompatActivity {
 
+    SwipeRefreshLayout refresh;
     String name,token,userId,email,uniName;
-    ArrayList teamDetail;
     TextView textView,list,list1;
 
     @Override
@@ -31,11 +32,10 @@ public class UserDetail extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_detail);
 
-        teamDetail = new ArrayList<String>();
         textView = findViewById(R.id.text);
         list = findViewById(R.id.list);
         list1 = findViewById(R.id.list1);
-
+        refresh = findViewById(R.id.refresh2);
 
         Bundle bundle = getIntent().getExtras();
         name = bundle.getString("name");
@@ -43,6 +43,17 @@ public class UserDetail extends AppCompatActivity {
         userId = bundle.getString("id");
         email = bundle.getString("email");
         uniName = bundle.getString("uniName");
+
+        refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                Toast.makeText(getApplicationContext(),"Refreshing...", Toast.LENGTH_LONG).show();
+                list.setText("");
+                list1.setText("");
+                email_detail(email);
+                refresh.setRefreshing(false);
+            }
+        });
 
         textView.setText(uniName);
         email_detail(email);
