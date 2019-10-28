@@ -3,10 +3,12 @@ package e.shery.visiospark.activities;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Handler;
 import android.support.v4.app.NotificationCompat;
@@ -61,7 +63,7 @@ public class Admin extends AppCompatActivity {
 
     SwipeRefreshLayout refresh;
     int count1 = 0;
-    boolean doubleBackToExitPressedOnce = false;
+    boolean doubleBackToExitPressedOnce = false,networkCheck;
     Button b1,b2,b3,b4,b5,b6,b7,passReset,logout;
     TextView regToggleText,onSpotToggleText,onlineHeadText,financeHeadText,registerHeadText;
     ToggleButton regToggle,onSpotToggle;
@@ -122,11 +124,18 @@ public class Admin extends AppCompatActivity {
         name = bundle.getString("name");
         token = bundle.getString("token");
         userId = bundle.getString("id");
-        status();
-        financeData();
-        participantData();
-        VerifiedParticipantData();
-        createNotificationChannel();
+
+        networkCheck = isNetworkConnected();
+        if (networkCheck != true){
+            showMessage("VisioSpark","No Internet...!!!\nConnect to Internet & Refresh App");
+        }
+        else {
+            status();
+            financeData();
+            participantData();
+            VerifiedParticipantData();
+//            createNotificationChannel();
+        }
 
         refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -135,6 +144,9 @@ public class Admin extends AppCompatActivity {
 
                 if (r1.getVisibility() == View.VISIBLE) {
                     status();
+                    financeData();
+                    participantData();
+                    VerifiedParticipantData();
                 }
                 else if (r3.getVisibility() == View.VISIBLE) {
                     participantData();
@@ -583,7 +595,7 @@ public class Admin extends AppCompatActivity {
             }
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-
+                Toast.makeText(Admin.this,t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -661,7 +673,7 @@ public class Admin extends AppCompatActivity {
             }
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-
+                Toast.makeText(Admin.this,t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -737,7 +749,7 @@ public class Admin extends AppCompatActivity {
             }
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-
+                Toast.makeText(Admin.this,t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -839,7 +851,7 @@ public class Admin extends AppCompatActivity {
             }
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-
+                Toast.makeText(Admin.this,t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -916,8 +928,23 @@ public class Admin extends AppCompatActivity {
             }
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-
+                Toast.makeText(Admin.this,t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+    private boolean isNetworkConnected() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnected();
+    }
+
+    public void showMessage(String title,String message){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setCancelable(false);
+        builder.setTitle(title);
+        builder.setMessage(message);
+        builder.setPositiveButton("OK",null);
+        builder.show();
     }
 }

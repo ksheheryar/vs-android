@@ -151,7 +151,7 @@ public class Event_head extends AppCompatActivity {
             }
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-
+                Toast.makeText(Event_head.this,t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
     }

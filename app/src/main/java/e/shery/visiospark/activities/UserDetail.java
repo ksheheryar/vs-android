@@ -1,5 +1,6 @@
 package e.shery.visiospark.activities;
 
+import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -7,6 +8,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.gson.annotations.SerializedName;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -81,23 +84,34 @@ public class UserDetail extends AppCompatActivity {
                 if (s!=null){
                     try {
                         JSONObject jsonObject = new JSONObject(s);
-                        JSONObject jsonObject1 = jsonObject.getJSONObject("contactPerson");
                         JSONArray jsonArray1 = jsonObject.getJSONArray("teams");
 
                         String personName,personEmail,personContact,hostel=null;
                         String m1,m2,m3,m4,m5,eventName;
                         Integer hotel;
 
-                        personName = jsonObject1.getString("name");
-                        personEmail = jsonObject1.getString("email");
-                        personContact = jsonObject1.getString("contact");
-                        hotel = jsonObject1.getInt("book_hostel");
+                        if (jsonObject.isNull("contactPerson")){
+                            personName = "null";
+                            personEmail = "null";
+                            personContact = "null";
+                            hotel = 2;
+                        }
+                        else {
+                            JSONObject jsonObject1 = jsonObject.getJSONObject("contactPerson");
+                            personName = jsonObject1.getString("name");
+                            personEmail = jsonObject1.getString("email");
+                            personContact = jsonObject1.getString("contact");
+                            hotel = jsonObject1.getInt("book_hostel");
+                        }
 
                         if (hotel == 0){
                             hostel = "Not Required.!!!";
                         }
                         else if (hotel == 1){
                             hostel = "Required.!!!";
+                        }
+                        else if (hotel == 2){
+                            hostel = "null";
                         }
 
                         list.append("Contact Person : "+personName+"\nContact : "+personContact+"\nEmail : "+personEmail+"\nHotel : "+hostel);
@@ -139,7 +153,7 @@ public class UserDetail extends AppCompatActivity {
             }
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-
+                Toast.makeText(UserDetail.this,t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
     }

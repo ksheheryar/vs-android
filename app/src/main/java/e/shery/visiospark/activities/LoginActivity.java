@@ -1,9 +1,13 @@
 package e.shery.visiospark.activities;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -13,6 +17,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -59,14 +64,12 @@ public class LoginActivity extends AppCompatActivity
     ArrayList<String> list,event;
     JSONArray jsonArray;
     String EventArray[][],particpant[][];
-    boolean doubleBackToExitPressedOnce = false;
+    boolean doubleBackToExitPressedOnce = false,networkCheck;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
-        jsonData();
 
         particpant = new String[6][6];
         EventArray = new String[25][2];
@@ -117,11 +120,21 @@ public class LoginActivity extends AppCompatActivity
         userId = bundle.getString("id");
         userName.setText(name);
 
+        networkCheck = isNetworkConnected();
+        if (networkCheck != true){
+            showMessage("VisioSpark","No Internet...!!!\nConnect to Internet & Comeback");
+        }
+        else {
+            jsonData();
+        }
+
         refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 Toast.makeText(getApplicationContext(),"Refreshing...", Toast.LENGTH_LONG).show();
                 jsonData();
+                ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(LoginActivity.this,R.layout.listview,R.id.listText,list);
+                listView.setAdapter(arrayAdapter);
                 refresh.setRefreshing(false);
             }
         });
@@ -267,6 +280,18 @@ public class LoginActivity extends AppCompatActivity
             }
         });
 
+        listView.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                refresh.setEnabled(firstVisibleItem == 0);
+            }
+        });
+
         toggleButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -362,7 +387,7 @@ public class LoginActivity extends AppCompatActivity
             }
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-
+                Toast.makeText(LoginActivity.this,t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -396,7 +421,7 @@ public class LoginActivity extends AppCompatActivity
             }
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-
+                Toast.makeText(LoginActivity.this,t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -431,7 +456,7 @@ public class LoginActivity extends AppCompatActivity
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-
+                Toast.makeText(LoginActivity.this,t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -466,7 +491,7 @@ public class LoginActivity extends AppCompatActivity
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-
+                Toast.makeText(LoginActivity.this,t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -501,7 +526,7 @@ public class LoginActivity extends AppCompatActivity
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-
+                Toast.makeText(LoginActivity.this,t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -536,7 +561,7 @@ public class LoginActivity extends AppCompatActivity
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-
+                Toast.makeText(LoginActivity.this,t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -611,7 +636,7 @@ public class LoginActivity extends AppCompatActivity
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-
+                Toast.makeText(LoginActivity.this,t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -673,6 +698,25 @@ public class LoginActivity extends AppCompatActivity
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private boolean isNetworkConnected() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnected();
+    }
+
+    public void showMessage(String title,String message){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setCancelable(false);
+        builder.setTitle(title);
+        builder.setMessage(message);
+        builder.setPositiveButton("OK",new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                LoginActivity.this.finish();
+            }
+        });
+        builder.show();
     }
 
     @SuppressWarnings("StatementWithEmptyBody")

@@ -1,6 +1,9 @@
 package e.shery.visiospark.activities;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
 import android.os.Handler;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -36,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
     TextView spon;
     EditText email,pass;
     ProgressBar progressBar;
+    Boolean networkCheck;
 
     Handler handler = new Handler();
     Runnable runnable = new Runnable() {
@@ -64,6 +68,11 @@ public class MainActivity extends AppCompatActivity {
         pass = findViewById(R.id.pass);
         progressBar = findViewById(R.id.progressBar);
         PreferenceData data = new PreferenceData();
+
+        networkCheck = isNetworkConnected();
+        if (networkCheck != true){
+            showMessage("VisioSpark","No Internet...!!!\nConnect to Internet & Comeback");
+        }
 
         if (data.getEmail(MainActivity.this) != null ){
             if (data.getUSERTYPE(MainActivity.this).equals("hod")){
@@ -281,6 +290,12 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    private boolean isNetworkConnected() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnected();
+    }
+
     public void flipImages(int image){
         ImageView imageView = new ImageView(this);
         imageView.setImageResource(image);
@@ -298,7 +313,11 @@ public class MainActivity extends AppCompatActivity {
         builder.setCancelable(false);
         builder.setTitle(title);
         builder.setMessage(message);
-        builder.setPositiveButton("OK",null);
+        builder.setPositiveButton("OK",new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                MainActivity.this.finish();
+            }
+        });
         builder.show();
     }
 

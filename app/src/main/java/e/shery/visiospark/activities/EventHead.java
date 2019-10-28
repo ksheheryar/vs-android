@@ -180,7 +180,6 @@ public class EventHead extends AppCompatActivity
             }
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-
             }
         });
     }
