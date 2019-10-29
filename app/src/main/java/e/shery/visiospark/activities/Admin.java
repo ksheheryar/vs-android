@@ -184,30 +184,30 @@ public class Admin extends AppCompatActivity {
         b1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                adapter = new ExpandableListAdapter(Admin.this, plist, hashMap);
-                l.setAdapter(adapter);
-                r1.setVisibility(View.GONE);
-                r2.setVisibility(View.GONE);
-                r3.setVisibility(View.VISIBLE);
-                r4.setVisibility(View.GONE);
-                r5.setVisibility(View.GONE);
-//                arrayAdapter = new ArrayAdapter<>(Admin.this,R.layout.listview1,R.id.listText1,plist);
-//                l.setAdapter(arrayAdapter);
+                if (!plist.isEmpty()){
+                    adapter = new ExpandableListAdapter(Admin.this, plist, hashMap);
+                    l.setAdapter(adapter);
+                    r1.setVisibility(View.GONE);
+                    r2.setVisibility(View.GONE);
+                    r3.setVisibility(View.VISIBLE);
+                    r4.setVisibility(View.GONE);
+                    r5.setVisibility(View.GONE);
+                }
             }
         });
 
         b2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                a1 = new ExpandableListAdapter(Admin.this, vplist, hashMap1);
-                l1.setAdapter(a1);
-                r1.setVisibility(View.GONE);
-                r2.setVisibility(View.GONE);
-                r3.setVisibility(View.GONE);
-                r4.setVisibility(View.GONE);
-                r5.setVisibility(View.VISIBLE);
-//                a1 = new ArrayAdapter<>(Admin.this,R.layout.listview2,R.id.listText2,vplist);
-//                l1.setAdapter(a1);
+                if (!vplist.isEmpty()){
+                    a1 = new ExpandableListAdapter(Admin.this, vplist, hashMap1);
+                    l1.setAdapter(a1);
+                    r1.setVisibility(View.GONE);
+                    r2.setVisibility(View.GONE);
+                    r3.setVisibility(View.GONE);
+                    r4.setVisibility(View.GONE);
+                    r5.setVisibility(View.VISIBLE);
+                }
             }
         });
 
@@ -221,7 +221,6 @@ public class Admin extends AppCompatActivity {
                 r5.setVisibility(View.GONE);
                 listview lView= new listview(Admin.this,vuniName,paylist);
                 l2.setAdapter(lView);
-
             }
         });
 
@@ -595,7 +594,7 @@ public class Admin extends AppCompatActivity {
             }
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-                Toast.makeText(Admin.this,t.getMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(Admin.this,"Connection Error", Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -673,7 +672,7 @@ public class Admin extends AppCompatActivity {
             }
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-                Toast.makeText(Admin.this,t.getMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(Admin.this,"Connection Error", Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -749,7 +748,7 @@ public class Admin extends AppCompatActivity {
             }
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-                Toast.makeText(Admin.this,t.getMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(Admin.this,"Connection Error", Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -770,7 +769,7 @@ public class Admin extends AppCompatActivity {
             }
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-                Toast.makeText(Admin.this,t.getMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(Admin.this,"Connection Error", Toast.LENGTH_LONG).show();
             }
         });
 
@@ -851,7 +850,7 @@ public class Admin extends AppCompatActivity {
             }
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-                Toast.makeText(Admin.this,t.getMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(Admin.this,"Connection Error", Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -928,7 +927,7 @@ public class Admin extends AppCompatActivity {
             }
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-                Toast.makeText(Admin.this,t.getMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(Admin.this,"Connection Error", Toast.LENGTH_LONG).show();
             }
         });
     }

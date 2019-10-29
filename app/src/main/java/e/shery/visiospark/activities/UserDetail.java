@@ -153,7 +153,7 @@ public class UserDetail extends AppCompatActivity {
             }
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-                Toast.makeText(UserDetail.this,t.getMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(UserDetail.this,"Connection Error", Toast.LENGTH_LONG).show();
             }
         });
     }

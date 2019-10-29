@@ -387,7 +387,7 @@ public class LoginActivity extends AppCompatActivity
             }
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-                Toast.makeText(LoginActivity.this,t.getMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(LoginActivity.this,"Connection Error", Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -421,7 +421,7 @@ public class LoginActivity extends AppCompatActivity
             }
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-                Toast.makeText(LoginActivity.this,t.getMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(LoginActivity.this,"Connection Error", Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -456,7 +456,7 @@ public class LoginActivity extends AppCompatActivity
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-                Toast.makeText(LoginActivity.this,t.getMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(LoginActivity.this,"Connection Error", Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -491,7 +491,7 @@ public class LoginActivity extends AppCompatActivity
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-                Toast.makeText(LoginActivity.this,t.getMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(LoginActivity.this,"Connection Error", Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -526,7 +526,7 @@ public class LoginActivity extends AppCompatActivity
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-                Toast.makeText(LoginActivity.this,t.getMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(LoginActivity.this,"Connection Error", Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -561,7 +561,7 @@ public class LoginActivity extends AppCompatActivity
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-                Toast.makeText(LoginActivity.this,t.getMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(LoginActivity.this,"Connection Error", Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -636,7 +636,7 @@ public class LoginActivity extends AppCompatActivity
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-                Toast.makeText(LoginActivity.this,t.getMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(LoginActivity.this,"Connection Error", Toast.LENGTH_LONG).show();
             }
         });
     }

@@ -281,7 +281,7 @@ public class MainActivity extends AppCompatActivity {
                         }
                         @Override
                         public void onFailure(Call<ResponseBody> call, Throwable t) {
-                            Toast.makeText(MainActivity.this,t.getMessage(), Toast.LENGTH_LONG).show();
+                            Toast.makeText(MainActivity.this,"Connection Error", Toast.LENGTH_LONG).show();
                             progressBar.setVisibility(View.GONE);
                         }
                     });
