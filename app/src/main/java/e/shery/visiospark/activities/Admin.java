@@ -69,8 +69,7 @@ public class Admin extends AppCompatActivity {
     ToggleButton regToggle,onSpotToggle;
     String name,token,userId;
     RelativeLayout r1,r2,r3,r4,r5;
-    ArrayList<String> plist,vplist;
-    String paylist[],vuniName[];
+    ArrayList<String> plist,vplist,paylist,vuniName;
     ListView l2;
     ArrayAdapter<String> arrayAdapter,a2;
     PreferenceData data;
@@ -101,8 +100,6 @@ public class Admin extends AppCompatActivity {
         registerHeadText = findViewById(R.id.admin_verified_list_text);
         onlineHeadText = findViewById(R.id.admin_rp_list_text);
         financeHeadText = findViewById(R.id.admin_finance_list_text);
-        paylist = new String[100];
-        vuniName = new String[100];
         pieChartView = findViewById(R.id.pieChart);
         regToggleText = findViewById(R.id.buser);
         onSpotToggleText = findViewById(R.id.bonspot);
@@ -170,7 +167,7 @@ public class Admin extends AppCompatActivity {
         List pieData = new ArrayList<>();
         pieData.add(new SliceValue(18, getResources().getColor(R.color.green2)).setLabel("Speed Programming : 18"));
         pieData.add(new SliceValue(10, getResources().getColor(R.color.blue2)).setLabel("IT Mushira : 10"));
-        pieData.add(new SliceValue(25, getResources().getColor(R.color.green1)).setLabel("Web Designing : 25"));
+        pieData.add(new SliceValue(35, getResources().getColor(R.color.green1)).setLabel("Web Designing : 35"));
         pieData.add(new SliceValue(20, getResources().getColor(R.color.design_default_color_primary)).setLabel("E Gaming : 20"));
         pieData.add(new SliceValue(5, getResources().getColor(R.color.grey)).setLabel("ROBO Race : 5"));
         pieData.add(new SliceValue(22, getResources().getColor(R.color.blue1)).setLabel("Logo Designing : 22"));
@@ -214,13 +211,15 @@ public class Admin extends AppCompatActivity {
         b3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                r1.setVisibility(View.GONE);
-                r2.setVisibility(View.GONE);
-                r3.setVisibility(View.GONE);
-                r4.setVisibility(View.VISIBLE);
-                r5.setVisibility(View.GONE);
-                listview lView= new listview(Admin.this,vuniName,paylist);
-                l2.setAdapter(lView);
+                if (!vuniName.isEmpty()){
+                    r1.setVisibility(View.GONE);
+                    r2.setVisibility(View.GONE);
+                    r3.setVisibility(View.GONE);
+                    r4.setVisibility(View.VISIBLE);
+                    r5.setVisibility(View.GONE);
+                    listview lView= new listview(Admin.this,vuniName,paylist);
+                    l2.setAdapter(lView);
+                }
             }
         });
 
@@ -628,7 +627,7 @@ public class Admin extends AppCompatActivity {
                         String name,name1,email;
                         String m[] = new String[jsonArray.length()];
                         boolean matched;
-                        int z=0;
+                        int z = 0;
 
                         for (int i=0;i<jsonArray.length();i++){
                             JSONObject e = jsonArray.getJSONObject(i);
@@ -698,48 +697,40 @@ public class Admin extends AppCompatActivity {
                     try {
                         JSONObject jsonObject = new JSONObject(s);
                         JSONArray jsonArray = jsonObject.getJSONArray("users");
-
-                        String name1,fee;
+                        Boolean m;
+                        String name1;
+                        paylist = new ArrayList();
+                        vuniName = new ArrayList();
+                        String[] al = new String[jsonArray.length()];
+                        int z=0,fee,f;
 
                         for (int i=0;i<jsonArray.length();i++){
                             JSONObject e = jsonArray.getJSONObject(i);
 
                             name1 = e.getString("name");
-                            fee = e.getString("payment");
+                            m=false;
 
-                            vuniName[i] = i+1+" : "+name1;
-                            paylist[i] = " Rs. "+fee+"/.";
-
-
-//                            vuniName.add(i+1+name1);
-//                            paylist.add(fee);
-//                            finance.append(i+1+" : "+name1+"\n     Rs. "+fee+"/.\n\n");
-
-//                            TableRow row = new TableRow(Admin.this);
-//                            TableRow.LayoutParams layoutParams = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT,TableRow.LayoutParams.WRAP_CONTENT);
-//                            row.setLayoutParams(layoutParams);
-//                            TextView textView = new TextView(Admin.this);
-//                            TextView textView1 = new TextView(Admin.this);
-//                            textView.setText(i+1+" : "+name1);
-//                            textView1.setText("Rs. "+fee+"/.");
-//
-//                            textView.setGravity(Gravity.LEFT);
-//                            textView.setTextColor(getResources().getColor(R.color.black));
-//                            textView.setTypeface(null, Typeface.BOLD);
-//                            textView.setTextSize(15);
-//                            textView.setPadding(5,0,0,15);
-//                            textView1.setGravity(Gravity.RIGHT);
-//                            textView1.setTextColor(getResources().getColor(R.color.black));
-//                            textView1.setTypeface(null, Typeface.BOLD);
-//                            textView1.setTextSize(15);
-//                            textView1.setPadding(5,0,0,5);
-//
-//                            row.addView(textView);
-//                            row.addView(textView1);
-//
-//                            finance.addView(row,i);
-
-
+                            for (int j=0;j<vuniName.size();j++){
+                                if (name1.equals(vuniName.get(j)))
+                                    m=true;
+                            }
+                            if (m == false){
+                                vuniName.add(name1);
+                                al[z] = name1;
+                                z++;
+                            }
+                        }
+                        for (int k=0;k<z;k++){
+                            f=0;
+                            for (int k1=0;k1<jsonArray.length();k1++){
+                                JSONObject e = jsonArray.getJSONObject(k1);
+                                name1 = e.getString("name");
+                                fee = e.getInt("payment");
+                                if (name1.equals(al[k])){
+                                    f = f + fee;
+                                    paylist.add("Rs. "+f);
+                                }
+                            }
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();

@@ -1,6 +1,7 @@
 package e.shery.visiospark.activities;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -72,10 +73,15 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         // Getting header title
         String headerTitle = (String) getGroup(groupPosition);
 
+
         // Inflating header layout and setting text
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this._context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = infalInflater.inflate(R.layout.list_group, parent, false);
+        }
+
+        if (groupPosition % 2 == 0) {
+            convertView.setBackgroundColor(Color.parseColor("#b6c0c1"));
         }
 
         //set content for the parent views
