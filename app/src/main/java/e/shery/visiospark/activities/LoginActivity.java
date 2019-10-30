@@ -50,6 +50,7 @@ import retrofit2.Response;
 public class LoginActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    ProgressBar progressBar;
     RelativeLayout r,r1,r2;
     SwipeRefreshLayout refresh;
     LinearLayout l1,l2,l3,l4,l5;
@@ -71,6 +72,7 @@ public class LoginActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        progressBar = findViewById(R.id.progress_bar);
         particpant = new String[6][6];
         EventArray = new String[25][2];
         t = findViewById(R.id.dat);
@@ -216,6 +218,7 @@ public class LoginActivity extends AppCompatActivity
                             particpant[0][2] = t1m3.getText().toString().trim();
                             particpant[0][3] = t1m4.getText().toString().trim();
                             particpant[0][4] = t1m5.getText().toString().trim();
+                            progressBar.setVisibility(View.VISIBLE);
                             register();
                             t1m1.setText("");
                             t1m2.setText("");
@@ -228,6 +231,7 @@ public class LoginActivity extends AppCompatActivity
                             particpant[0][1] = t2m2.getText().toString().trim();
                             particpant[0][2] = t2m3.getText().toString().trim();
                             particpant[0][3] = t2m4.getText().toString().trim();
+                            progressBar.setVisibility(View.VISIBLE);
                             register1();
                             t2m1.setText("");
                             t2m2.setText("");
@@ -238,6 +242,7 @@ public class LoginActivity extends AppCompatActivity
                             particpant[0][0] = t3m1.getText().toString().trim();
                             particpant[0][1] = t3m2.getText().toString().trim();
                             particpant[0][2] = t3m3.getText().toString().trim();
+                            progressBar.setVisibility(View.VISIBLE);
                             register2();
                             t3m1.setText("");
                             t3m2.setText("");
@@ -246,12 +251,14 @@ public class LoginActivity extends AppCompatActivity
                         else if (mTeam == 2){
                             particpant[0][0] = t4m1.getText().toString().trim();
                             particpant[0][1] = t4m2.getText().toString().trim();
+                            progressBar.setVisibility(View.VISIBLE);
                             register3();
                             t4m1.setText("");
                             t4m2.setText("");
                         }
                         else if (mTeam == 1){
                             particpant[0][0] = t5m1.getText().toString().trim();
+                            progressBar.setVisibility(View.VISIBLE);
                             register4();
                             t5m1.setText("");
                         }
@@ -354,7 +361,7 @@ public class LoginActivity extends AppCompatActivity
 
                             if (iid.equals(e_id)){
 
-                                t1.append("Team : "+j+"\n");
+                                t1.append("Team : "+j+"\n\n");
                                 j++;
 
                                 m1 = ev.getString("mem1");
@@ -405,7 +412,6 @@ public class LoginActivity extends AppCompatActivity
                 String s = null;
                 try {
                     s = response.body().string();
-                    Toast.makeText(getApplicationContext(),s,Toast.LENGTH_LONG).show();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -413,6 +419,7 @@ public class LoginActivity extends AppCompatActivity
                     try {
                         JSONObject jsonObject = new JSONObject(s);
                         String message = jsonObject.getString("message");
+                        progressBar.setVisibility(View.GONE);
                         Toast.makeText(getApplicationContext(),message, Toast.LENGTH_LONG).show();
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -421,6 +428,7 @@ public class LoginActivity extends AppCompatActivity
             }
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
+                progressBar.setVisibility(View.GONE);
                 Toast.makeText(LoginActivity.this,"Connection Error", Toast.LENGTH_LONG).show();
             }
         });
@@ -439,13 +447,13 @@ public class LoginActivity extends AppCompatActivity
                 String s = null;
                 try {
                     s = response.body().string();
-                    Toast.makeText(getApplicationContext(),s,Toast.LENGTH_LONG).show();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
                 if (s != null) {
                     try {
                         JSONObject jsonObject = new JSONObject(s);
+                        progressBar.setVisibility(View.GONE);
                         String message = jsonObject.getString("message");
                         Toast.makeText(getApplicationContext(),message, Toast.LENGTH_LONG).show();
                     } catch (JSONException e) {
@@ -456,6 +464,7 @@ public class LoginActivity extends AppCompatActivity
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
+                progressBar.setVisibility(View.GONE);
                 Toast.makeText(LoginActivity.this,"Connection Error", Toast.LENGTH_LONG).show();
             }
         });
@@ -474,13 +483,13 @@ public class LoginActivity extends AppCompatActivity
                 String s = null;
                 try {
                     s = response.body().string();
-                    Toast.makeText(getApplicationContext(),s,Toast.LENGTH_LONG).show();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
                 if (s != null) {
                     try {
                         JSONObject jsonObject = new JSONObject(s);
+                        progressBar.setVisibility(View.GONE);
                         String message = jsonObject.getString("message");
                         Toast.makeText(getApplicationContext(),message, Toast.LENGTH_LONG).show();
                     } catch (JSONException e) {
@@ -491,6 +500,7 @@ public class LoginActivity extends AppCompatActivity
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
+                progressBar.setVisibility(View.GONE);
                 Toast.makeText(LoginActivity.this,"Connection Error", Toast.LENGTH_LONG).show();
             }
         });
@@ -509,13 +519,13 @@ public class LoginActivity extends AppCompatActivity
                 String s = null;
                 try {
                     s = response.body().string();
-                    Toast.makeText(getApplicationContext(),s,Toast.LENGTH_LONG).show();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
                 if (s != null) {
                     try {
                         JSONObject jsonObject = new JSONObject(s);
+                        progressBar.setVisibility(View.GONE);
                         String message = jsonObject.getString("message");
                         Toast.makeText(getApplicationContext(),message, Toast.LENGTH_LONG).show();
                     } catch (JSONException e) {
@@ -526,6 +536,7 @@ public class LoginActivity extends AppCompatActivity
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
+                progressBar.setVisibility(View.GONE);
                 Toast.makeText(LoginActivity.this,"Connection Error", Toast.LENGTH_LONG).show();
             }
         });
@@ -544,13 +555,13 @@ public class LoginActivity extends AppCompatActivity
                 String s = null;
                 try {
                     s = response.body().string();
-                    Toast.makeText(getApplicationContext(),s,Toast.LENGTH_LONG).show();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
                 if (s != null) {
                     try {
                         JSONObject jsonObject = new JSONObject(s);
+                        progressBar.setVisibility(View.GONE);
                         String message = jsonObject.getString("message");
                         Toast.makeText(getApplicationContext(),message, Toast.LENGTH_LONG).show();
                     } catch (JSONException e) {
@@ -561,6 +572,7 @@ public class LoginActivity extends AppCompatActivity
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
+                progressBar.setVisibility(View.GONE);
                 Toast.makeText(LoginActivity.this,"Connection Error", Toast.LENGTH_LONG).show();
             }
         });
