@@ -157,6 +157,20 @@ public interface Api {
     );
 
     @FormUrlEncoded
+    @POST("superadministrator/financeDetail")
+    Call<ResponseBody> admin_UserFinanceDetail(
+            @Field("uniName") String uniName,
+            @Header("Active") String Active,
+            @Header("Authorization") String Auth
+    );
+
+    @POST("superadministrator/concludedEvents")
+    Call<ResponseBody> admin_concludedEvenets(
+            @Header("Active") String Active,
+            @Header("Authorization") String Auth
+    );
+
+    @FormUrlEncoded
     @POST("foodToken")
     Call<ResponseBody> food_token(
             @Field("qr_code") String qrCode,

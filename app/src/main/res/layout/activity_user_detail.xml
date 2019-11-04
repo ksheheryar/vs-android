@@ -25,33 +25,68 @@
             android:layout_marginTop="0dp"
             android:background="@color/grey"/>
 
-        <TextView
-            android:id="@+id/list"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/userDetail_r1"
+            android:visibility="gone"
             android:layout_marginTop="50dp"
-            android:layout_marginLeft="5dp"
-            android:textSize="20dp"
-            android:textColor="@color/black"
-            android:layout_below="@+id/text"
-            android:textStyle="bold"/>
-
-        <android.support.v4.widget.NestedScrollView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/list"
-            android:layout_marginTop="10dp">
+            android:layout_below="@+id/text">
 
             <TextView
-                android:id="@+id/list1"
+                android:id="@+id/list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
+                android:textSize="20dp"
+                android:textColor="@color/black"
+                android:textStyle="bold"/>
+
+            <android.support.v4.widget.NestedScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/list"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:id="@+id/list1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:textSize="18dp"
+                    android:textColor="@color/black" />
+
+            </android.support.v4.widget.NestedScrollView>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/userDetail_r2"
+            android:visibility="gone"
+            android:layout_marginTop="50dp"
+            android:layout_below="@+id/text">
+
+            <ListView
+                android:id="@+id/userFinanceDetail_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:divider="@color/black"
+                android:dividerHeight="2px" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/userDetail_total"
+                android:gravity="right"
+                android:layout_below="@id/userFinanceDetail_list"
+                android:textColor="@color/black"
+                android:textStyle="bold"
                 android:textSize="18dp"
-                android:textColor="@color/black" />
+                android:layout_marginRight="8dp"/>
 
-        </android.support.v4.widget.NestedScrollView>
-
+        </RelativeLayout>
     </RelativeLayout>
 
 </android.support.v4.widget.SwipeRefreshLayout>

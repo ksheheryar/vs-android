@@ -35,6 +35,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import com.google.gson.JsonObject;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -68,9 +70,9 @@ public class Admin extends AppCompatActivity {
     TextView regToggleText,onSpotToggleText,onlineHeadText,financeHeadText,registerHeadText;
     ToggleButton regToggle,onSpotToggle;
     String name,token,userId;
-    RelativeLayout r1,r2,r3,r4,r5;
-    ArrayList<String> plist,vplist,paylist,vuniName;
-    ListView l2;
+    RelativeLayout r1,r2,r3,r4,r5,r6;
+    ArrayList<String> plist,vplist,paylist,vuniName,CE_e,CE_uni,CE_p,CE_t;
+    ListView l2,l3;
     ArrayAdapter<String> arrayAdapter,a2;
     PreferenceData data;
     PieChartView pieChartView;
@@ -97,6 +99,7 @@ public class Admin extends AppCompatActivity {
         l = findViewById(R.id.admin_rp_list);
         l1 = findViewById(R.id.admin_Verified_list);
         l2 = findViewById(R.id.admin_finance_list);
+        l3 = findViewById(R.id.admin_concludedEvents_list);
         registerHeadText = findViewById(R.id.admin_verified_list_text);
         onlineHeadText = findViewById(R.id.admin_rp_list_text);
         financeHeadText = findViewById(R.id.admin_finance_list_text);
@@ -115,6 +118,7 @@ public class Admin extends AppCompatActivity {
         r3 = findViewById(R.id.admin_onlineParticipant);
         r4 = findViewById(R.id.admin_finance);
         r5 = findViewById(R.id.admin_verifiedData);
+        r6 = findViewById(R.id.admin_concludedEvents);
         data = new PreferenceData();
 
         Bundle bundle = getIntent().getExtras();
@@ -131,6 +135,7 @@ public class Admin extends AppCompatActivity {
             financeData();
             participantData();
             VerifiedParticipantData();
+            concludedEvent();
 //            createNotificationChannel();
         }
 
@@ -144,6 +149,7 @@ public class Admin extends AppCompatActivity {
                     financeData();
                     participantData();
                     VerifiedParticipantData();
+                    concludedEvent();
                 }
                 else if (r3.getVisibility() == View.VISIBLE) {
                     participantData();
@@ -159,6 +165,11 @@ public class Admin extends AppCompatActivity {
                     VerifiedParticipantData();
                     a1 = new ExpandableListAdapter(Admin.this, vplist, hashMap1);
                     l1.setAdapter(a1);
+                }
+                else if (r6.getVisibility() == View.VISIBLE) {
+                    concludedEvent();
+                    listview2 lView= new listview2(Admin.this,CE_e,CE_p,CE_uni,CE_t);
+                    l3.setAdapter(lView);
                 }
                 refresh.setRefreshing(false);
             }
@@ -189,6 +200,7 @@ public class Admin extends AppCompatActivity {
                     r3.setVisibility(View.VISIBLE);
                     r4.setVisibility(View.GONE);
                     r5.setVisibility(View.GONE);
+                    r6.setVisibility(View.GONE);
                 }
             }
         });
@@ -204,6 +216,7 @@ public class Admin extends AppCompatActivity {
                     r3.setVisibility(View.GONE);
                     r4.setVisibility(View.GONE);
                     r5.setVisibility(View.VISIBLE);
+                    r6.setVisibility(View.GONE);
                 }
             }
         });
@@ -219,6 +232,23 @@ public class Admin extends AppCompatActivity {
                     r3.setVisibility(View.GONE);
                     r4.setVisibility(View.VISIBLE);
                     r5.setVisibility(View.GONE);
+                    r6.setVisibility(View.GONE);
+                }
+            }
+        });
+
+        b4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listview2 lView= new listview2(Admin.this,CE_e,CE_p,CE_uni,CE_t);
+                l3.setAdapter(lView);
+                if (!CE_e.isEmpty()){
+                    r1.setVisibility(View.GONE);
+                    r2.setVisibility(View.GONE);
+                    r3.setVisibility(View.GONE);
+                    r4.setVisibility(View.GONE);
+                    r5.setVisibility(View.GONE);
+                    r6.setVisibility(View.VISIBLE);
                 }
             }
         });
@@ -244,6 +274,7 @@ public class Admin extends AppCompatActivity {
                 r3.setVisibility(View.GONE);
                 r4.setVisibility(View.GONE);
                 r5.setVisibility(View.GONE);
+                r6.setVisibility(View.GONE);
             }
         });
 
@@ -360,6 +391,7 @@ public class Admin extends AppCompatActivity {
                 user.putString("id",userId);
                 user.putString("email",email);
                 user.putString("uniName",uniName);
+                user.putInt("value",0);
                 intent.putExtras(user);
                 Admin.this.startActivity(intent);
 
@@ -396,6 +428,7 @@ public class Admin extends AppCompatActivity {
                 user.putString("id",userId);
                 user.putString("email",email);
                 user.putString("uniName",uniName);
+                user.putInt("value",0);
                 intent.putExtras(user);
                 Admin.this.startActivity(intent);
 
@@ -430,8 +463,19 @@ public class Admin extends AppCompatActivity {
         l2.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String n = vuniName.get(position);
-                Toast.makeText(getApplicationContext(),n,Toast.LENGTH_LONG).show();
+                String n = vuniName.get(position).trim();
+                String fee = paylist.get(position).trim();
+
+                Intent intent=new Intent(Admin.this,UserDetail.class);
+                Bundle user = new Bundle();
+                user.putString("name",name);
+                user.putString("token",token);
+                user.putString("id",userId);
+                user.putString("uniName",n);
+                user.putString("total",fee);
+                user.putInt("value",1);
+                intent.putExtras(user);
+                Admin.this.startActivity(intent);
             }
         });
     }
@@ -506,6 +550,7 @@ public class Admin extends AppCompatActivity {
             r3.setVisibility(View.GONE);
             r4.setVisibility(View.GONE);
             r5.setVisibility(View.GONE);
+            r6.setVisibility(View.GONE);
         }
         else {
             if (doubleBackToExitPressedOnce) {
@@ -592,6 +637,79 @@ public class Admin extends AppCompatActivity {
                         }
                         for (int z1=0;z1<z;z1++){
                             hashMap.put(match[z1],list.get(z1));
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Toast.makeText(Admin.this,"Connection Error", Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    private void concludedEvent(){
+        count1 = 0;
+
+        Call<ResponseBody> call = RetrofitClient
+                .getInstance()
+                .getApi()
+                .admin_concludedEvenets("application/json","Bearer "+token);
+
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
+                String s = null;
+                try {
+                    s = response.body().string();
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+
+                if (s!=null){
+                    try {
+                        JSONObject jsonObject = new JSONObject(s);
+                        JSONArray jsonArray = jsonObject.getJSONArray("events");
+
+                        String eventName,name1,position,m1,m2,m3,m4,m5;
+                        CE_e = new ArrayList<>();
+                        CE_p = new ArrayList<>();
+                        CE_uni = new ArrayList<>();
+                        CE_t = new ArrayList<>();
+
+                        for (int i=0;i<jsonArray.length();i++){
+                            JSONObject e = jsonArray.getJSONObject(i);
+
+                            eventName = e.getString("event");
+                            name1 = e.getString("name");
+                            position = e.getString("position");
+                            m1 = e.getJSONObject("teams").getString("mem1");
+                            m2 = e.getJSONObject("teams").getString("mem2");
+                            m3 = e.getJSONObject("teams").getString("mem3");
+                            m4 = e.getJSONObject("teams").getString("mem4");
+                            m5 = e.getJSONObject("teams").getString("mem5");
+
+                            CE_e.add(eventName);
+                            CE_p.add("Position : "+position);
+                            CE_uni.add("\n"+name1);
+                            if (m1 != "null" && m2 == "null" && m3 == "null" && m4 == "null" && m5 == "null"){
+                                CE_t.add(m1);
+                            }
+                            else if (m1 != "null" && m2 != "null" && m3 == "null" && m4 == "null" && m5 == "null"){
+                                CE_t.add(m1+"\n"+m2);
+                            }
+                            else if (m1 != "null" && m2 != "null" && m3 != "null" && m4 == "null" && m5 == "null"){
+                                CE_t.add(m1+"\n"+m2+"\n"+m3);
+                            }
+                            else if (m1 != "null" && m2 != "null" && m3 != "null" && m4 != "null" && m5 == "null"){
+                                CE_t.add(m1+"\n"+m2+"\n"+m3+"\n"+m4);
+                            }
+                            else{
+                                CE_t.add(m1+"\n"+m2+"\n"+m3+"\n"+m4+"\n"+m5);
+                            }
+
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();

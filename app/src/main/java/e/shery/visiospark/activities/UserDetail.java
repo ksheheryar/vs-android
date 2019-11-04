@@ -4,8 +4,10 @@ import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,9 +28,13 @@ import retrofit2.Callback;
 
 public class UserDetail extends AppCompatActivity {
 
+    RelativeLayout r1,r2;
     SwipeRefreshLayout refresh;
-    String name,token,userId,email,uniName;
-    TextView textView,list,list1;
+    String name,token,userId,email,uniName,total;
+    TextView textView,list,list1,t1;
+    ArrayList<String> event,team,pay;
+    ListView l;
+    int value;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,29 +45,53 @@ public class UserDetail extends AppCompatActivity {
         list = findViewById(R.id.list);
         list1 = findViewById(R.id.list1);
         refresh = findViewById(R.id.refresh2);
+        r1 = findViewById(R.id.userDetail_r1);
+        r2 = findViewById(R.id.userDetail_r2);
+        l = findViewById(R.id.userFinanceDetail_list);
+        t1 = findViewById(R.id.userDetail_total);
 
         Bundle bundle = getIntent().getExtras();
-        name = bundle.getString("name");
-        token = bundle.getString("token");
-        userId = bundle.getString("id");
-        email = bundle.getString("email");
-        uniName = bundle.getString("uniName");
+        value = bundle.getInt("value");
+        if (value == 0){
+            name = bundle.getString("name");
+            token = bundle.getString("token");
+            userId = bundle.getString("id");
+            email = bundle.getString("email");
+            uniName = bundle.getString("uniName");
+
+            email_detail(email);
+            r1.setVisibility(View.VISIBLE);
+
+        }
+        else if (value == 1){
+            name = bundle.getString("name");
+            token = bundle.getString("token");
+            userId = bundle.getString("id");
+            uniName = bundle.getString("uniName");
+            total = bundle.getString("total");
+
+            r2.setVisibility(View.VISIBLE);
+            finance_detail(uniName);
+        }
+
+        textView.setText(uniName);
 
         refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 Toast.makeText(getApplicationContext(),"Refreshing...", Toast.LENGTH_LONG).show();
-                list.setText("");
-                list1.setText("");
-                email_detail(email);
+                if (value == 0){
+                    list.setText("");
+                    list1.setText("");
+                    email_detail(email);
+                }
+                else{
+                    finance_detail(uniName);
+                }
                 refresh.setRefreshing(false);
             }
         });
 
-        textView.setText(uniName);
-        email_detail(email);
-//        arrayAdapter = new ArrayAdapter<>(UserDetail.this,R.layout.listview4,R.id.listText4,teamDetail);
-//        list.setAdapter(arrayAdapter);
     }
 
     private void email_detail(String emailAddress){
@@ -146,6 +176,86 @@ public class UserDetail extends AppCompatActivity {
                             }
 
                         }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Toast.makeText(UserDetail.this,"Connection Error", Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    private void finance_detail(String universityName){
+
+        Call<ResponseBody> call = RetrofitClient
+                .getInstance()
+                .getApi()
+                .admin_UserFinanceDetail(universityName,"application/json","Bearer "+token);
+
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
+                String s = null;
+                try {
+                    s = response.body().string();
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+
+                if (s!=null){
+                    try {
+                        JSONObject jsonObject = new JSONObject(s);
+                        JSONArray jsonArray1 = jsonObject.getJSONArray("userTeams");
+
+                        event = new ArrayList<String>();
+                        team = new ArrayList<String>();
+                        pay = new ArrayList<String>();
+                        String[] al = new String[jsonArray1.length()];
+
+                        Boolean m;
+                        String eventName;
+                        int fee,totalTeams;
+                        int z=0,f,t;
+
+                        for (int i=0;i<jsonArray1.length();i++){
+                            JSONObject ev = jsonArray1.getJSONObject(i);
+
+                            eventName = ev.getString("name");
+
+                            m=false;
+
+                            for (int j=0;j<event.size();j++){
+                                if (eventName.equals(event.get(j)))
+                                    m=true;
+                            }
+                            if (m == false){
+                                event.add(eventName);
+                                al[z] = eventName;
+                                z++;
+                            }
+                        }
+                        for (int k=0;k<z;k++){
+                            f=0;
+                            t=0;
+                            for (int k1=0;k1<jsonArray1.length();k1++){
+                                JSONObject e = jsonArray1.getJSONObject(k1);
+                                eventName = e.getString("name");
+                                totalTeams = e.getInt("teams");
+                                fee = e.getInt("fee");
+                                if (eventName.equals(al[k])){
+                                    f = f + fee;
+                                    t = t + totalTeams;
+                                }
+                            }
+                            team.add("Total Teams : "+t);
+                            pay.add("Fees : "+f);
+                        }
+                        listview1 lView= new listview1(UserDetail.this,event,team,pay);
+                        l.setAdapter(lView);
+                        t1.setText("\nTotal : "+total+"/-");
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
