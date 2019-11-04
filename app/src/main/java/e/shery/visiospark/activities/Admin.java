@@ -427,6 +427,13 @@ public class Admin extends AppCompatActivity {
                 refresh.setEnabled(firstVisibleItem == 0);
             }
         });
+        l2.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String n = vuniName.get(position);
+                Toast.makeText(getApplicationContext(),n,Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     private void createNotificationChannel() {

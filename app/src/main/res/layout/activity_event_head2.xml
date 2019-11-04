@@ -29,7 +29,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@id/eventHead_dashText"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="100dp"
             android:orientation="vertical">
 
             <LinearLayout

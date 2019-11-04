@@ -53,6 +53,19 @@ public class Event_head extends AppCompatActivity {
         token = bundle.getString("token");
         userId = bundle.getString("id");
 
+        b3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(Event_head.this,QrReader.class);
+                Bundle user = new Bundle();
+                user.putString("name",name);
+                user.putString("token",token);
+                user.putString("id",userId);
+                intent.putExtras(user);
+                Event_head.this.startActivity(intent);
+            }
+        });
+
         b4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
