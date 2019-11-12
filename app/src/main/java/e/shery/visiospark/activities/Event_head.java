@@ -9,17 +9,21 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import e.shery.visiospark.R;
 import e.shery.visiospark.api.RetrofitClient;
@@ -35,9 +39,11 @@ public class Event_head extends AppCompatActivity {
     SwipeRefreshLayout refresh;
     String name,token,userId;
     RelativeLayout r1,r2,r3;
-    TextView t1,t2;
+    TextView t1,t2,t3;
+    ListView l;
     PreferenceData data;
     Button logout,passwordReset,b1,b2,b3,b4;
+    ArrayList uniName,members;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,12 +52,15 @@ public class Event_head extends AppCompatActivity {
 
         r1 = findViewById(R.id.eventHead_dashBoard);
         r2 = findViewById(R.id.eventHead_profile);
+        r3 = findViewById(R.id.eventHead_VerifiedUsers);
         t1 = findViewById(R.id.eventHead_tView);
         t2 = findViewById(R.id.eventHead_tView1);
+        t3 = findViewById(R.id.eventHead_VerifiedUsers_text);
         b1 = findViewById(R.id.eventHead_btn1);
         b2 = findViewById(R.id.eventHead_btn2);
         b3 = findViewById(R.id.eventHead_btn3);
         b4 = findViewById(R.id.eventHead_btn4);
+        l = findViewById(R.id.eventHead_VerifiedUsers_list);
         refresh = findViewById(R.id.refresh4);
         progressBar = findViewById(R.id.progressBar2);
         logout = findViewById(R.id.eventHead_logout);
@@ -62,19 +71,30 @@ public class Event_head extends AppCompatActivity {
         name = bundle.getString("name");
         token = bundle.getString("token");
         userId = bundle.getString("id");
+        status();
+        progressBar.setVisibility(View.VISIBLE);
+
 
         refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 Toast.makeText(getApplicationContext(),"Refreshing...", Toast.LENGTH_LONG).show();
 
-                if (r1.getVisibility() == View.VISIBLE) {
-
-                }
-                else if (r3.getVisibility() == View.VISIBLE) {
-
-                }
+                status();
+                listview3 lView= new listview3(Event_head.this,uniName,members);
+                l.setAdapter(lView);
                 refresh.setRefreshing(false);
+            }
+        });
+
+        b1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listview3 lView= new listview3(Event_head.this,uniName,members);
+                l.setAdapter(lView);
+                r1.setVisibility(View.GONE);
+                r2.setVisibility(View.GONE);
+                r3.setVisibility(View.VISIBLE);
             }
         });
 
@@ -86,7 +106,7 @@ public class Event_head extends AppCompatActivity {
                 user.putString("name",name);
                 user.putString("token",token);
                 user.putString("id",userId);
-                user.putInt("value",2);
+                user.putInt("value",1);
                 intent.putExtras(user);
                 Event_head.this.startActivity(intent);
             }
@@ -97,6 +117,7 @@ public class Event_head extends AppCompatActivity {
             public void onClick(View v) {
                 r1.setVisibility(View.GONE);
                 r2.setVisibility(View.VISIBLE);
+                r3.setVisibility(View.GONE);
             }
         });
 
@@ -124,6 +145,33 @@ public class Event_head extends AppCompatActivity {
                 pass_reset();
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        if (r1.getVisibility() != View.VISIBLE) {
+            r1.setVisibility(View.VISIBLE);
+            r2.setVisibility(View.GONE);
+            r3.setVisibility(View.GONE);
+        }
+        else {
+            if (doubleBackToExitPressedOnce) {
+                super.onBackPressed();
+                return;
+            }
+
+            this.doubleBackToExitPressedOnce = true;
+            Toast.makeText(this, "Press BACK again to exit", Toast.LENGTH_SHORT).show();
+
+            new Handler().postDelayed(new Runnable() {
+
+                @Override
+                public void run() {
+                    doubleBackToExitPressedOnce=false;
+                }
+            }, 3000);
+        }
     }
 
     public void pass_reset(){
@@ -195,32 +243,100 @@ public class Event_head extends AppCompatActivity {
         });
     }
 
-    @Override
-    public void onBackPressed() {
+    private void status(){
+        Call<ResponseBody> call = RetrofitClient
+                .getInstance()
+                .getApi()
+                .eventHead_data(userId,"application/json","Bearer "+token);
 
-        if (r1.getVisibility() != View.VISIBLE) {
-            r1.setVisibility(View.VISIBLE);
-            r2.setVisibility(View.GONE);
-//            r3.setVisibility(View.GONE);
-//            r4.setVisibility(View.GONE);
-//            r5.setVisibility(View.GONE);
-        }
-        else {
-            if (doubleBackToExitPressedOnce) {
-                super.onBackPressed();
-                return;
-            }
-
-            this.doubleBackToExitPressedOnce = true;
-            Toast.makeText(this, "Press BACK again to exit", Toast.LENGTH_SHORT).show();
-
-            new Handler().postDelayed(new Runnable() {
-
-                @Override
-                public void run() {
-                    doubleBackToExitPressedOnce=false;
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
+                String s = null;
+                try {
+                    s = response.body().string();
+                } catch (IOException e1) {
+                    e1.printStackTrace();
                 }
-            }, 3000);
-        }
+
+                if (s!=null){
+                    try {
+                        uniName = new ArrayList();
+                        members = new ArrayList();
+                        JSONObject jsonObject = new JSONObject(s);
+                        JSONObject jsonObject1 = jsonObject.getJSONObject("event");
+                        JSONArray jsonArray = jsonObject.getJSONArray("verifiedUsers");
+                        int uni_data = jsonObject.getInt("verifiedUsersCount");
+                        int vuni_data = jsonObject.getInt("notVerifiedUsersCount");
+                        String eventName = jsonObject1.getString("display_name");
+
+                        for (int i=0;i<jsonArray.length();i++){
+                            JSONObject member = jsonArray.getJSONObject(i);
+                            String m1 = member.getString("mem1");
+                            String m2 = member.getString("mem2");
+                            String m3 = member.getString("mem3");
+                            String m4 = member.getString("mem4");
+                            String m5 = member.getString("mem5");
+                            JSONObject jsonObject2 = member.getJSONObject("user");
+                            String nameUni = jsonObject2.getString("name");
+
+                            uniName.add(i+1+". "+nameUni);
+                            if (m1 != "null" && m2 == "null" && m3 == "null" && m4 == "null" && m5 == "null"){
+                                members.add(m1);
+                            }
+                            else if (m1 != "null" && m2 != "null" && m3 == "null" && m4 == "null" && m5 == "null"){
+                                members.add(m1+"\n"+m2);
+                            }
+                            else if (m1 != "null" && m2 != "null" && m3 != "null" && m4 == "null" && m5 == "null"){
+                                members.add(m1+"\n"+m2+"\n"+m3);
+                            }
+                            else if (m1 != "null" && m2 != "null" && m3 != "null" && m4 != "null" && m5 == "null"){
+                                members.add(m1+"\n"+m2+"\n"+m3+"\n"+m4);
+                            }
+                            else{
+                                members.add(m1+"\n"+m2+"\n"+m3+"\n"+m4+"\n"+m5);
+                            }
+                        }
+
+                        int onlineReg = jsonObject.getJSONObject("registrationForUsers").getInt("value");
+                        int onspotReg = jsonObject.getJSONObject("registrationOnSpot").getInt("value");
+
+                        b1.setText("Registered Teams ("+vuni_data+")");
+                        t3.setText("Registered Teams ("+vuni_data+")");
+
+                        if (onlineReg == 0){
+                            t1.setText("Online Registration is Open");
+                            t1.setTextColor(getResources().getColor(R.color.green));
+                            t1.setBackgroundColor(getResources().getColor(R.color.green0));
+                        }
+                        else if (onlineReg == 1){
+                            t1.setText("Online Registration is Closed");
+                            t1.setTextColor(getResources().getColor(R.color.red));
+                            t1.setBackgroundColor(getResources().getColor(R.color.red0));
+                        }
+
+                        if (onspotReg == 0){
+                            t2.setText("OnSpot Registration is Open");
+                            t2.setTextColor(getResources().getColor(R.color.green));
+                            t2.setBackgroundColor(getResources().getColor(R.color.green0));
+                        }
+                        else if (onspotReg == 1){
+                            t2.setText("OnSpot Registration is Closed");
+                            t2.setTextColor(getResources().getColor(R.color.red));
+                            t2.setBackgroundColor(getResources().getColor(R.color.red0));
+                        }
+                        progressBar.setVisibility(View.GONE);
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Toast.makeText(Event_head.this,"Connection Error", Toast.LENGTH_LONG).show();
+                progressBar.setVisibility(View.GONE);
+            }
+        });
     }
 }

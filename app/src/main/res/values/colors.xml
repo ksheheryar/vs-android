@@ -12,9 +12,11 @@
     <color name="gradStr">#28a6a4</color>
     <color name="gradStp">#23A7D8</color>
     <color name="red">#d11a21</color>
+    <color name="red0">#e79396</color>
     <color name="black">#000000</color>
     <color name="grey">#b6c0c1</color>
     <color name="green">#3ebf27</color>
+    <color name="green0">#a8ea9c</color>
     <color name="purple">#3ad485</color>
 
     <color name="green1">#11998e</color>
