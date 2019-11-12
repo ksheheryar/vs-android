@@ -164,6 +164,14 @@ public interface Api {
             @Header("Authorization") String Auth
     );
 
+    @FormUrlEncoded
+    @POST("superadministrator/qrReport")
+    Call<ResponseBody> admin_UserQrReport(
+            @Field("qr_code") String qrCode,
+            @Header("Active") String Active,
+            @Header("Authorization") String Auth
+    );
+
     @POST("superadministrator/concludedEvents")
     Call<ResponseBody> admin_concludedEvenets(
             @Header("Active") String Active,

@@ -3,6 +3,7 @@ package e.shery.visiospark.activities;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Handler;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -10,7 +11,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONException;
@@ -28,8 +31,11 @@ import retrofit2.Callback;
 public class Event_head extends AppCompatActivity {
 
     boolean doubleBackToExitPressedOnce = false;
+    ProgressBar progressBar;
+    SwipeRefreshLayout refresh;
     String name,token,userId;
-    RelativeLayout r1,r2;
+    RelativeLayout r1,r2,r3;
+    TextView t1,t2;
     PreferenceData data;
     Button logout,passwordReset,b1,b2,b3,b4;
 
@@ -40,10 +46,14 @@ public class Event_head extends AppCompatActivity {
 
         r1 = findViewById(R.id.eventHead_dashBoard);
         r2 = findViewById(R.id.eventHead_profile);
+        t1 = findViewById(R.id.eventHead_tView);
+        t2 = findViewById(R.id.eventHead_tView1);
         b1 = findViewById(R.id.eventHead_btn1);
         b2 = findViewById(R.id.eventHead_btn2);
         b3 = findViewById(R.id.eventHead_btn3);
         b4 = findViewById(R.id.eventHead_btn4);
+        refresh = findViewById(R.id.refresh4);
+        progressBar = findViewById(R.id.progressBar2);
         logout = findViewById(R.id.eventHead_logout);
         passwordReset = findViewById(R.id.eventHead_passreset);
         data = new PreferenceData();
@@ -53,6 +63,21 @@ public class Event_head extends AppCompatActivity {
         token = bundle.getString("token");
         userId = bundle.getString("id");
 
+        refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                Toast.makeText(getApplicationContext(),"Refreshing...", Toast.LENGTH_LONG).show();
+
+                if (r1.getVisibility() == View.VISIBLE) {
+
+                }
+                else if (r3.getVisibility() == View.VISIBLE) {
+
+                }
+                refresh.setRefreshing(false);
+            }
+        });
+
         b3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -61,6 +86,7 @@ public class Event_head extends AppCompatActivity {
                 user.putString("name",name);
                 user.putString("token",token);
                 user.putString("id",userId);
+                user.putInt("value",2);
                 intent.putExtras(user);
                 Event_head.this.startActivity(intent);
             }

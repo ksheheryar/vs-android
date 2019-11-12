@@ -28,6 +28,7 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -63,6 +64,7 @@ import static android.app.Notification.VISIBILITY_PUBLIC;
 
 public class Admin extends AppCompatActivity {
 
+    ProgressBar progressBar;
     SwipeRefreshLayout refresh;
     int count1 = 0;
     boolean doubleBackToExitPressedOnce = false,networkCheck;
@@ -111,6 +113,7 @@ public class Admin extends AppCompatActivity {
         passReset = findViewById(R.id.admin_passreset);
         logout = findViewById(R.id.admin_logout);
         refresh = findViewById(R.id.refresh3);
+        progressBar = findViewById(R.id.progressBar1);
 //        expandableListView.setGroupIndicator(null);
 
         r1 = findViewById(R.id.admin_dashboard);
@@ -136,6 +139,7 @@ public class Admin extends AppCompatActivity {
             participantData();
             VerifiedParticipantData();
             concludedEvent();
+            progressBar.setVisibility(View.VISIBLE);
 //            createNotificationChannel();
         }
 
@@ -261,6 +265,7 @@ public class Admin extends AppCompatActivity {
                 user.putString("name",name);
                 user.putString("token",token);
                 user.putString("id",userId);
+                user.putInt("value",1);
                 intent.putExtras(user);
                 Admin.this.startActivity(intent);
             }
@@ -638,6 +643,7 @@ public class Admin extends AppCompatActivity {
                         for (int z1=0;z1<z;z1++){
                             hashMap.put(match[z1],list.get(z1));
                         }
+                        progressBar.setVisibility(View.GONE);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -646,6 +652,7 @@ public class Admin extends AppCompatActivity {
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 Toast.makeText(Admin.this,"Connection Error", Toast.LENGTH_LONG).show();
+                progressBar.setVisibility(View.GONE);
             }
         });
     }
@@ -711,6 +718,7 @@ public class Admin extends AppCompatActivity {
                             }
 
                         }
+                        progressBar.setVisibility(View.GONE);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -719,6 +727,7 @@ public class Admin extends AppCompatActivity {
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 Toast.makeText(Admin.this,"Connection Error", Toast.LENGTH_LONG).show();
+                progressBar.setVisibility(View.GONE);
             }
         });
     }
@@ -789,6 +798,7 @@ public class Admin extends AppCompatActivity {
                         for (int z1=0;z1<z;z1++){
                             hashMap1.put(m[z1],list.get(z1));
                         }
+                        progressBar.setVisibility(View.GONE);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -797,6 +807,7 @@ public class Admin extends AppCompatActivity {
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 Toast.makeText(Admin.this,"Connection Error", Toast.LENGTH_LONG).show();
+                progressBar.setVisibility(View.GONE);
             }
         });
     }
@@ -857,6 +868,7 @@ public class Admin extends AppCompatActivity {
                             }
                             paylist.add("Rs. "+f);
                         }
+                        progressBar.setVisibility(View.GONE);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -865,6 +877,7 @@ public class Admin extends AppCompatActivity {
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 Toast.makeText(Admin.this,"Connection Error", Toast.LENGTH_LONG).show();
+                progressBar.setVisibility(View.GONE);
             }
         });
     }
@@ -882,10 +895,12 @@ public class Admin extends AppCompatActivity {
 
                 if (response.code() != 200)
                     Toast.makeText(getApplicationContext(),"Network Error",Toast.LENGTH_LONG).show();
+
             }
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 Toast.makeText(Admin.this,"Connection Error", Toast.LENGTH_LONG).show();
+                progressBar.setVisibility(View.GONE);
             }
         });
 

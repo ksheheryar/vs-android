@@ -249,6 +249,7 @@ public class MainActivity extends AppCompatActivity {
                                         user.putString("name",name);
                                         user.putString("token",j);
                                         user.putString("id",userId);
+                                        user.putInt("value",0);
                                         intent.putExtras(user);
 
                                         progressBar.setVisibility(View.GONE);

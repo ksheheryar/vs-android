@@ -11,8 +11,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.google.gson.JsonObject;
 import com.google.zxing.Result;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -29,6 +31,7 @@ public class QrReader extends AppCompatActivity implements ZXingScannerView.Resu
 
     private ZXingScannerView mScannerView;
     String name,token,userId;
+    int value;
 
     @Override
     public void onCreate(Bundle state) {
@@ -37,9 +40,17 @@ public class QrReader extends AppCompatActivity implements ZXingScannerView.Resu
         setContentView(mScannerView);                // Set the scanner view as the content view
 
         Bundle bundle = getIntent().getExtras();
-        name = bundle.getString("name");
-        token = bundle.getString("token");
-        userId = bundle.getString("id");
+        value = bundle.getInt("value");
+        if (value == 1){
+            name = bundle.getString("name");
+            token = bundle.getString("token");
+            userId = bundle.getString("id");
+        }
+        else {
+            name = bundle.getString("name");
+            token = bundle.getString("token");
+            userId = bundle.getString("id");
+        }
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
                 == PackageManager.PERMISSION_DENIED){
@@ -71,18 +82,24 @@ public class QrReader extends AppCompatActivity implements ZXingScannerView.Resu
         mScannerView.stopCamera();
 
         String result = rawResult.getText().toString().trim();
-        foodData(result);
+        if (value == 0){
+            foodData(result);
+        }
+        else
+        {
+            UserRecord(result);
+        }
 
         // If you would like to resume scanning, call this method below:
 //        mScannerView.resumeCameraPreview(this);
     }
 
-    private void foodData(String value){
+    private void foodData(String QrCode){
 
         Call<ResponseBody> call = RetrofitClient
                 .getInstance()
                 .getApi()
-                .food_token(value,"application/json","Bearer "+token);
+                .food_token(QrCode,"application/json","Bearer "+token);
 
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -100,6 +117,75 @@ public class QrReader extends AppCompatActivity implements ZXingScannerView.Resu
                         String data = jsonObject.getString("message");
 
                         showMessage("VisioSpark",data);
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Toast.makeText(QrReader.this,t.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
+
+    }
+
+    private void UserRecord(String QrCode){
+
+        Call<ResponseBody> call = RetrofitClient
+                .getInstance()
+                .getApi()
+                .admin_UserQrReport(QrCode,"application/json","Bearer "+token);
+
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
+                String s = null;
+                try {
+                    s = response.body().string();
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+
+                if (s!=null) {
+                    try {
+                        String data1 = "";
+                        JSONObject jsonObject = new JSONObject(s);
+                        String UniName = jsonObject.getString("name");
+                        String event = jsonObject.getString("event");
+                        int food = jsonObject.getInt("food");
+                        String m1,m2,m3,m4,m5,m6;
+
+                        if (food == 0)
+                            m6 = "No";
+                        else
+                            m6 = "Yes";
+
+                        m1 = jsonObject.getJSONObject("team").getString("mem1");
+                        m2 = jsonObject.getJSONObject("team").getString("mem2");
+                        m3 = jsonObject.getJSONObject("team").getString("mem3");
+                        m4 = jsonObject.getJSONObject("team").getString("mem4");
+                        m5 = jsonObject.getJSONObject("team").getString("mem5");
+
+                        if (m1 != "null" && m2 == "null" && m3 == "null" && m4 == "null" && m5 == "null"){
+                            data1 = "\nUniversity : "+UniName+"\nEvent         : "+event+"\n\nMember 1 : "+m1+"\n\nFood Taken : "+m6;
+                        }
+                        else if (m1 != "null" && m2 != "null" && m3 == "null" && m4 == "null" && m5 == "null"){
+                            data1 = "\nUniversity : "+UniName+"\nEvent         : "+event+"\n\nMember 1 : "+m1+"\nMember 2 : "+m2+"\n\nFood Taken : "+m6;
+                        }
+                        else if (m1 != "null" && m2 != "null" && m3 != "null" && m4 == "null" && m5 == "null"){
+                            data1 = "\nUniversity : "+UniName+"\nEvent         : "+event+"\n\nMember 1 : "+m1+"\nMember 2 : "+m2+"\nMember 3 : "+m3+"\n\nFood Taken : "+m6;
+                        }
+                        else if (m1 != "null" && m2 != "null" && m3 != "null" && m4 != "null" && m5 == "null"){
+                            data1 = "\nUniversity : "+UniName+"\nEvent         : "+event+"\n\nMember 1 : "+m1+"\nMember 2 : "+m2+"\nMember 3 : "+m3+"\nMember 4 : "+m4+"\n\nFood Taken : "+m6;
+                        }
+                        else{
+                            data1 = "\nUniversity : "+UniName+"\nEvent         : "+event+"\n\nMember 1 : "+m1+"\nMember 2 : "+m2+"\nMember 3 : "+m3+"\nMember 4 : "+m4+"\nMember 5 : "+m5+"\n\nFood Taken : "+m6;
+                        }
+
+                        showMessage("VisioSpark",data1);
+
 
                     } catch (JSONException e) {
                         e.printStackTrace();
