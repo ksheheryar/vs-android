@@ -205,4 +205,13 @@ public interface Api {
             @Header("Authorization") String Auth
     );
 
+    @FormUrlEncoded
+    @POST("eventHead/checkIn")
+    Call<ResponseBody> eventHead_UserCheckIn(
+            @Field("qr_code") String qr_code,
+            @Field("event_id") int eventId,
+            @Header("Active") String Active,
+            @Header("Authorization") String Auth
+    );
+
 }

@@ -43,7 +43,8 @@ public class Event_head extends AppCompatActivity {
     ListView l;
     PreferenceData data;
     Button logout,passwordReset,b1,b2,b3,b4;
-    ArrayList uniName,members;
+    ArrayList uniName,members,check;
+    int eventId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,7 +82,7 @@ public class Event_head extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(),"Refreshing...", Toast.LENGTH_LONG).show();
 
                 status();
-                listview3 lView= new listview3(Event_head.this,uniName,members);
+                listview3 lView= new listview3(Event_head.this,uniName,members,check);
                 l.setAdapter(lView);
                 refresh.setRefreshing(false);
             }
@@ -90,7 +91,7 @@ public class Event_head extends AppCompatActivity {
         b1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listview3 lView= new listview3(Event_head.this,uniName,members);
+                listview3 lView= new listview3(Event_head.this,uniName,members,check);
                 l.setAdapter(lView);
                 r1.setVisibility(View.GONE);
                 r2.setVisibility(View.GONE);
@@ -106,7 +107,8 @@ public class Event_head extends AppCompatActivity {
                 user.putString("name",name);
                 user.putString("token",token);
                 user.putString("id",userId);
-                user.putInt("value",1);
+                user.putInt("eventId",eventId);
+                user.putInt("value",2);
                 intent.putExtras(user);
                 Event_head.this.startActivity(intent);
             }
@@ -263,12 +265,15 @@ public class Event_head extends AppCompatActivity {
                     try {
                         uniName = new ArrayList();
                         members = new ArrayList();
+                        check = new ArrayList();
                         JSONObject jsonObject = new JSONObject(s);
                         JSONObject jsonObject1 = jsonObject.getJSONObject("event");
                         JSONArray jsonArray = jsonObject.getJSONArray("verifiedUsers");
                         int uni_data = jsonObject.getInt("verifiedUsersCount");
                         int vuni_data = jsonObject.getInt("notVerifiedUsersCount");
+                        int count = 0;
                         String eventName = jsonObject1.getString("display_name");
+                        eventId = jsonObject.getJSONObject("event").getInt("id");
 
                         for (int i=0;i<jsonArray.length();i++){
                             JSONObject member = jsonArray.getJSONObject(i);
@@ -277,8 +282,11 @@ public class Event_head extends AppCompatActivity {
                             String m3 = member.getString("mem3");
                             String m4 = member.getString("mem4");
                             String m5 = member.getString("mem5");
+                            int v = member.getInt("is_hardware");
                             JSONObject jsonObject2 = member.getJSONObject("user");
                             String nameUni = jsonObject2.getString("name");
+                            count++;
+                            check.add(v);
 
                             uniName.add(i+1+". "+nameUni);
                             if (m1 != "null" && m2 == "null" && m3 == "null" && m4 == "null" && m5 == "null"){
@@ -301,8 +309,8 @@ public class Event_head extends AppCompatActivity {
                         int onlineReg = jsonObject.getJSONObject("registrationForUsers").getInt("value");
                         int onspotReg = jsonObject.getJSONObject("registrationOnSpot").getInt("value");
 
-                        b1.setText("Registered Teams ("+vuni_data+")");
-                        t3.setText("Registered Teams ("+vuni_data+")");
+                        b1.setText("Registered Teams ("+count+")");
+                        t3.setText("Registered Teams ("+count+")");
 
                         if (onlineReg == 0){
                             t1.setText("Online Registration is Open");

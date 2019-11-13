@@ -31,7 +31,7 @@ public class QrReader extends AppCompatActivity implements ZXingScannerView.Resu
 
     private ZXingScannerView mScannerView;
     String name,token,userId;
-    int value;
+    int value,eventId;
 
     @Override
     public void onCreate(Bundle state) {
@@ -45,6 +45,12 @@ public class QrReader extends AppCompatActivity implements ZXingScannerView.Resu
             name = bundle.getString("name");
             token = bundle.getString("token");
             userId = bundle.getString("id");
+        }
+        else if (value == 2){
+            name = bundle.getString("name");
+            token = bundle.getString("token");
+            userId = bundle.getString("id");
+            eventId = bundle.getInt("eventId");
         }
         else {
             name = bundle.getString("name");
@@ -85,6 +91,10 @@ public class QrReader extends AppCompatActivity implements ZXingScannerView.Resu
         if (value == 0){
             foodData(result);
         }
+        else if (value == 2)
+        {
+            UserEntry(result);
+        }
         else
         {
             UserRecord(result);
@@ -92,6 +102,43 @@ public class QrReader extends AppCompatActivity implements ZXingScannerView.Resu
 
         // If you would like to resume scanning, call this method below:
 //        mScannerView.resumeCameraPreview(this);
+    }
+
+    private void UserEntry(String QrCode){
+
+        Call<ResponseBody> call = RetrofitClient
+                .getInstance()
+                .getApi()
+                .eventHead_UserCheckIn(QrCode,eventId,"application/json","Bearer "+token);
+
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
+                String s = null;
+                try {
+                    s = response.body().string();
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+
+                if (s!=null) {
+                    try {
+                        JSONObject jsonObject = new JSONObject(s);
+                        String data = jsonObject.getString("message");
+
+                        showMessage("VisioSpark",data);
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Toast.makeText(QrReader.this,t.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
+
     }
 
     private void foodData(String QrCode){
@@ -169,19 +216,19 @@ public class QrReader extends AppCompatActivity implements ZXingScannerView.Resu
                         m5 = jsonObject.getJSONObject("team").getString("mem5");
 
                         if (m1 != "null" && m2 == "null" && m3 == "null" && m4 == "null" && m5 == "null"){
-                            data1 = "\nUniversity : "+UniName+"\nEvent         : "+event+"\n\nMember 1 : "+m1+"\n\nFood Taken : "+m6;
+                            data1 = "\nUniversity : "+UniName+"\nEvent         : "+event+"\n\nMember 1 : "+m1+"\n\nFood Provided : "+m6;
                         }
                         else if (m1 != "null" && m2 != "null" && m3 == "null" && m4 == "null" && m5 == "null"){
-                            data1 = "\nUniversity : "+UniName+"\nEvent         : "+event+"\n\nMember 1 : "+m1+"\nMember 2 : "+m2+"\n\nFood Taken : "+m6;
+                            data1 = "\nUniversity : "+UniName+"\nEvent         : "+event+"\n\nMember 1 : "+m1+"\nMember 2 : "+m2+"\n\nFood Provided : "+m6;
                         }
                         else if (m1 != "null" && m2 != "null" && m3 != "null" && m4 == "null" && m5 == "null"){
-                            data1 = "\nUniversity : "+UniName+"\nEvent         : "+event+"\n\nMember 1 : "+m1+"\nMember 2 : "+m2+"\nMember 3 : "+m3+"\n\nFood Taken : "+m6;
+                            data1 = "\nUniversity : "+UniName+"\nEvent         : "+event+"\n\nMember 1 : "+m1+"\nMember 2 : "+m2+"\nMember 3 : "+m3+"\n\nFood Provided : "+m6;
                         }
                         else if (m1 != "null" && m2 != "null" && m3 != "null" && m4 != "null" && m5 == "null"){
-                            data1 = "\nUniversity : "+UniName+"\nEvent         : "+event+"\n\nMember 1 : "+m1+"\nMember 2 : "+m2+"\nMember 3 : "+m3+"\nMember 4 : "+m4+"\n\nFood Taken : "+m6;
+                            data1 = "\nUniversity : "+UniName+"\nEvent         : "+event+"\n\nMember 1 : "+m1+"\nMember 2 : "+m2+"\nMember 3 : "+m3+"\nMember 4 : "+m4+"\n\nFood Provided : "+m6;
                         }
                         else{
-                            data1 = "\nUniversity : "+UniName+"\nEvent         : "+event+"\n\nMember 1 : "+m1+"\nMember 2 : "+m2+"\nMember 3 : "+m3+"\nMember 4 : "+m4+"\nMember 5 : "+m5+"\n\nFood Taken : "+m6;
+                            data1 = "\nUniversity : "+UniName+"\nEvent         : "+event+"\n\nMember 1 : "+m1+"\nMember 2 : "+m2+"\nMember 3 : "+m3+"\nMember 4 : "+m4+"\nMember 5 : "+m5+"\n\nFood Provided : "+m6;
                         }
 
                         showMessage("VisioSpark",data1);
