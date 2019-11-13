@@ -6,8 +6,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class RetrofitClient {
 
 //    private static final String BASE_URL = "http://192.168.1.71/visiospark/public/api/";
-    private static final String BASE_URL = "http://10.130.4.158/visiospark/public/api/";
-//    private static final String BASE_URL = "http://vs.cuiwah.com/api/";
+//    private static final String BASE_URL = "http://10.130.4.158/visiospark/public/api/";
+    private static final String BASE_URL = "http://vs.cuiwah.com/api/";
     private static RetrofitClient mInstance;
     private Retrofit retrofit;
 
