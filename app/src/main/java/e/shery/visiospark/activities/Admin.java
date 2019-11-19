@@ -75,13 +75,13 @@ public class Admin extends AppCompatActivity {
     RelativeLayout r1,r2,r3,r4,r5,r6;
     ArrayList<String> plist,vplist,paylist,vuniName,CE_e,CE_uni,CE_p,CE_t;
     ListView l2,l3;
-    ArrayAdapter<String> arrayAdapter,a2;
+//    ArrayAdapter<String> arrayAdapter,a2;
     PreferenceData data;
-    PieChartView pieChartView;
+//    PieChartView pieChartView;
     NotificationManagerCompat notificationManager;
     NotificationCompat.Builder builder;
-    Timer timerObj;
-    TimerTask timerTaskObj;
+//    Timer timerObj;
+//    TimerTask timerTaskObj;
     ExpandableListView l,l1;
     ExpandableListAdapter adapter,a1;
     HashMap<String, List<String>> hashMap,hashMap1;
@@ -105,7 +105,7 @@ public class Admin extends AppCompatActivity {
         registerHeadText = findViewById(R.id.admin_verified_list_text);
         onlineHeadText = findViewById(R.id.admin_rp_list_text);
         financeHeadText = findViewById(R.id.admin_finance_list_text);
-        pieChartView = findViewById(R.id.pieChart);
+//        pieChartView = findViewById(R.id.pieChart);
         regToggleText = findViewById(R.id.buser);
         onSpotToggleText = findViewById(R.id.bonspot);
         regToggle = findViewById(R.id.toggle_user);
@@ -179,18 +179,18 @@ public class Admin extends AppCompatActivity {
             }
         });
 
-        List pieData = new ArrayList<>();
-        pieData.add(new SliceValue(18, getResources().getColor(R.color.green2)).setLabel("Speed Programming : 18"));
-        pieData.add(new SliceValue(10, getResources().getColor(R.color.blue2)).setLabel("IT Mushira : 10"));
-        pieData.add(new SliceValue(35, getResources().getColor(R.color.green1)).setLabel("Web Designing : 35"));
-        pieData.add(new SliceValue(20, getResources().getColor(R.color.design_default_color_primary)).setLabel("E Gaming : 20"));
-        pieData.add(new SliceValue(5, getResources().getColor(R.color.grey)).setLabel("ROBO Race : 5"));
-        pieData.add(new SliceValue(22, getResources().getColor(R.color.blue1)).setLabel("Logo Designing : 22"));
-
-        PieChartData pieChartData = new PieChartData(pieData);
-        pieChartData.setHasLabels(true).setValueLabelTextSize(10);
-//        pieChartData.setHasCenterCircle(true).setCenterText1("Competition Registration").setCenterText1FontSize(20).setCenterText1Color(Color.parseColor("#000000"));
-        pieChartView.setPieChartData(pieChartData);
+//        List pieData = new ArrayList<>();
+//        pieData.add(new SliceValue(18, getResources().getColor(R.color.green2)).setLabel("Speed Programming : 18"));
+//        pieData.add(new SliceValue(10, getResources().getColor(R.color.blue2)).setLabel("IT Mushira : 10"));
+//        pieData.add(new SliceValue(35, getResources().getColor(R.color.green1)).setLabel("Web Designing : 35"));
+//        pieData.add(new SliceValue(20, getResources().getColor(R.color.design_default_color_primary)).setLabel("E Gaming : 20"));
+//        pieData.add(new SliceValue(5, getResources().getColor(R.color.grey)).setLabel("ROBO Race : 5"));
+//        pieData.add(new SliceValue(22, getResources().getColor(R.color.blue1)).setLabel("Logo Designing : 22"));
+//
+//        PieChartData pieChartData = new PieChartData(pieData);
+//        pieChartData.setHasLabels(true).setValueLabelTextSize(10);
+////        pieChartData.setHasCenterCircle(true).setCenterText1("Competition Registration").setCenterText1FontSize(20).setCenterText1Color(Color.parseColor("#000000"));
+//        pieChartView.setPieChartData(pieChartData);
 
 
         b1.setOnClickListener(new View.OnClickListener() {
