@@ -44,7 +44,7 @@
                     android:layout_marginTop="20dp">
 
                     <TextView
-                        android:id="@+id/eventHead_tView"
+                        android:id="@+id/foodt1"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
@@ -53,10 +53,12 @@
                         android:textSize="20dp"
                         android:textStyle="bold"
                         android:textColor="@color/black"
-                        android:text="Total Teams : 0"/>
+                        android:background="@color/grey1"
+                        android:text="Food Not Provided To : 0"/>
 
                     <TextView
-                        android:id="@+id/eventHead_tView1"
+                        android:id="@+id/foodt2"
+                        android:background="@color/grey1"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
@@ -155,6 +157,15 @@
                 android:layout_marginRight="10dp"/>
 
         </RelativeLayout>
+
+        <ProgressBar
+            android:id="@+id/foodprogressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:outlineSpotShadowColor="@color/black"
+            android:outlineAmbientShadowColor="@color/black"
+            android:layout_centerInParent="true"/>
 
     </RelativeLayout>
 

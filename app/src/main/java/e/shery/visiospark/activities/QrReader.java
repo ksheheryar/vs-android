@@ -42,6 +42,7 @@ public class QrReader extends AppCompatActivity implements ZXingScannerView.Resu
     private ZXingScannerView mScannerView;
     String name,token,userId;
     int value,eventId;
+    String qrCo;
 
     @Override
     public void onCreate(Bundle state) {
@@ -99,6 +100,7 @@ public class QrReader extends AppCompatActivity implements ZXingScannerView.Resu
 
         String result = rawResult.getText().toString().trim();
         if (value == 0){
+            qrCo = result;
             foodData(result);
         }
         else if (value == 2)
@@ -179,6 +181,49 @@ public class QrReader extends AppCompatActivity implements ZXingScannerView.Resu
                         }
                         else {
                             fooooood(data,1);
+                        }
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Toast.makeText(QrReader.this,t.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
+
+    }
+
+    private void foodprovided(String QrCode){
+
+        Call<ResponseBody> call = RetrofitClient
+                .getInstance()
+                .getApi()
+                .food_provided(QrCode,"application/json","Bearer "+token);
+
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
+                String s = null;
+                try {
+                    s = response.body().string();
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+
+                if (s!=null) {
+                    try {
+                        JSONObject jsonObject = new JSONObject(s);
+                        int code = jsonObject.getInt("code");
+                        String data = jsonObject.getString("message");
+
+                        if (code == 200){
+                            finish();
+                        }
+                        else {
+                            fooooood("Connection Error",1);
                         }
 
                     } catch (JSONException e) {
@@ -277,6 +322,7 @@ public class QrReader extends AppCompatActivity implements ZXingScannerView.Resu
         final Button cnpass = dialog.findViewById(R.id.fooddialogbtnneg);
 
         cpass.setText(data);
+        cnpass.setVisibility(View.VISIBLE);
         npass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -310,7 +356,7 @@ public class QrReader extends AppCompatActivity implements ZXingScannerView.Resu
             npass.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    finish();
+                    foodprovided(qrCo);
                 }
             });
             cnpass.setOnClickListener(new View.OnClickListener() {

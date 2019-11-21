@@ -3,6 +3,7 @@ package e.shery.visiospark.activities;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Handler;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -10,7 +11,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONException;
@@ -27,8 +30,11 @@ import retrofit2.Callback;
 
 public class Food_incharge extends AppCompatActivity {
 
+    ProgressBar progressBar;
+    SwipeRefreshLayout refresh;
     Boolean doubleBackToExitPressedOnce = false;
     Button b1,b2,logout,passreset;
+    TextView t1,t2;
     String name,token,userId;
     RelativeLayout r1,r2;
 
@@ -39,15 +45,29 @@ public class Food_incharge extends AppCompatActivity {
 
         r1 = findViewById(R.id.food_dashboard);
         r2 = findViewById(R.id.food_profile);
+        t1 = findViewById(R.id.foodt1);
+        t2 = findViewById(R.id.foodt2);
+        refresh = findViewById(R.id.refresh5);
         passreset = findViewById(R.id.food_passreset);
         logout = findViewById(R.id.food_logout);
         b1 = findViewById(R.id.foodbtn1);
         b2 = findViewById(R.id.foodbtn2);
+        progressBar = findViewById(R.id.foodprogressBar);
 
         Bundle bundle = getIntent().getExtras();
         name = bundle.getString("name");
         token = bundle.getString("token");
         userId = bundle.getString("id");
+        foodStatus();
+        progressBar.setVisibility(View.VISIBLE);
+
+        refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                foodStatus();
+                refresh.setRefreshing(false);
+            }
+        });
 
         b1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -121,6 +141,47 @@ public class Food_incharge extends AppCompatActivity {
                 }
             }, 3000);
         }
+    }
+
+    private void foodStatus(){
+
+        Call<ResponseBody> call = RetrofitClient
+                .getInstance()
+                .getApi()
+                .foodCount("application/json","Bearer "+token);
+
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
+                String s = null;
+                try {
+                    s = response.body().string();
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+
+                if (s!=null) {
+                    try {
+                        JSONObject jsonObject = new JSONObject(s);
+                        int foodprovided = jsonObject.getInt("foodProvided");
+                        int foodnotprovided = jsonObject.getInt("foodNotProvided");
+
+                        t1.setText("Food Not Provided To : "+foodnotprovided);
+                        t2.setText("Food Provided To : "+foodprovided);
+                        progressBar.setVisibility(View.GONE);
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Toast.makeText(Food_incharge.this,t.getMessage(), Toast.LENGTH_LONG).show();
+                progressBar.setVisibility(View.GONE);
+            }
+        });
+
     }
 
     public void pass_reset(){

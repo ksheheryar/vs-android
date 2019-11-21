@@ -178,9 +178,23 @@ public interface Api {
             @Header("Authorization") String Auth
     );
 
+    @POST("foodToken/counts")
+    Call<ResponseBody> foodCount(
+            @Header("Active") String Active,
+            @Header("Authorization") String Auth
+    );
+
     @FormUrlEncoded
     @POST("foodToken")
     Call<ResponseBody> food_token(
+            @Field("qr_code") String qrCode,
+            @Header("Active") String Active,
+            @Header("Authorization") String Auth
+    );
+
+    @FormUrlEncoded
+    @POST("foodToken/provide")
+    Call<ResponseBody> food_provided(
             @Field("qr_code") String qrCode,
             @Header("Active") String Active,
             @Header("Authorization") String Auth
