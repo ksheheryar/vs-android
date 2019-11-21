@@ -1,14 +1,24 @@
 package e.shery.visiospark.activities;
 
 import android.Manifest;
+import android.app.Activity;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.Window;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.JsonObject;
@@ -161,9 +171,15 @@ public class QrReader extends AppCompatActivity implements ZXingScannerView.Resu
                 if (s!=null) {
                     try {
                         JSONObject jsonObject = new JSONObject(s);
+                        int code = jsonObject.getInt("code");
                         String data = jsonObject.getString("message");
 
-                        showMessage("VisioSpark",data);
+                        if (code == 200){
+                            fooooooooood(data);
+                        }
+                        else {
+                            fooooood(data,1);
+                        }
 
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -245,6 +261,76 @@ public class QrReader extends AppCompatActivity implements ZXingScannerView.Resu
             }
         });
 
+    }
+
+    public void fooooooooood(String data){
+
+        final Dialog dialog = new Dialog(QrReader.this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setTitle("VisioSpark");
+        dialog.setCancelable(false);
+        dialog.setContentView(R.layout.food_dialog);
+        dialog.show();
+
+        final TextView cpass = dialog.findViewById(R.id.fooddialogText);
+        final Button npass = dialog.findViewById(R.id.fooddialogbtnpos);
+        final Button cnpass = dialog.findViewById(R.id.fooddialogbtnneg);
+
+        cpass.setText(data);
+        npass.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fooooood("Have You Provided the Food??",0);
+            }
+        });
+        cnpass.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+    }
+
+    public void fooooood(String data,int i){
+
+        final Dialog dialog = new Dialog(QrReader.this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setTitle("VisioSpark");
+        dialog.setCancelable(false);
+        dialog.setContentView(R.layout.food_dialog);
+        dialog.show();
+
+        final TextView cpass = dialog.findViewById(R.id.fooddialogText);
+        final Button npass = dialog.findViewById(R.id.fooddialogbtnpos);
+        final Button cnpass = dialog.findViewById(R.id.fooddialogbtnneg);
+
+        if (i == 0){
+            cpass.setText(data);
+            cnpass.setVisibility(View.VISIBLE);
+            npass.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    finish();
+                }
+            });
+            cnpass.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.cancel();
+                }
+            });
+        }
+        else if (i == 1){
+            cpass.setText(data);
+            cpass.setTextColor(getResources().getColor(R.color.red));
+            cpass.setBackgroundColor(getResources().getColor(R.color.red0));
+            npass.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    finish();
+                }
+            });
+        }
     }
 
     public void showMessage(String title,String message){

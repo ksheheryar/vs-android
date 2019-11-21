@@ -56,7 +56,8 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".activities.Event_head"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
+        <activity android:name=".activities.Food_incharge"></activity>
     </application>
 
 </manifest>

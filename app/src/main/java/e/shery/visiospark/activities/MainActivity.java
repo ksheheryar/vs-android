@@ -111,6 +111,18 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
                 finish();
             }
+            else if (data.getUSERTYPE(MainActivity.this).equals("food_incharge")){
+                Intent intent = new Intent(MainActivity.this, Food_incharge.class);
+
+                Bundle user = new Bundle();
+                user.putString("name",data.getNAME(MainActivity.this));
+                user.putString("token",data.getTOKEN(MainActivity.this));
+                user.putString("id",data.getID(MainActivity.this));
+                intent.putExtras(user);
+
+                startActivity(intent);
+                finish();
+            }
         }
 
         handler.postDelayed(runnable,2000);
@@ -243,13 +255,12 @@ public class MainActivity extends AppCompatActivity {
                                         finish();
                                     }
                                     else if (r_name.equals("food_incharge")){
-                                        Intent intent = new Intent(MainActivity.this,QrReader.class);
+                                        Intent intent = new Intent(MainActivity.this,Food_incharge.class);
 
                                         Bundle user = new Bundle();
                                         user.putString("name",name);
                                         user.putString("token",j);
                                         user.putString("id",userId);
-                                        user.putInt("value",0);
                                         intent.putExtras(user);
 
                                         progressBar.setVisibility(View.GONE);

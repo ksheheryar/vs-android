@@ -79,7 +79,10 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
             LayoutInflater infalInflater = (LayoutInflater) this._context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = infalInflater.inflate(R.layout.list_group, parent, false);
         }
-        convertView.setBackgroundColor(Color.parseColor("#b6c0c1"));
+
+        if (groupPosition % 2 == 0){
+            convertView.setBackgroundColor(Color.parseColor("#b6c0c1"));
+        }
 
 
         //set content for the parent views
